@@ -863,7 +863,7 @@ const CONFIG = {
     {id:'ruta5', nombre:'Ruta 5', tipo:'ruta', x:100, y:28, mapas:['ruta5'], desc:'Al oeste de Ciudad Coral. Se abre con la Medalla Brasa. Al norte, la gran Cascada Chy.'},
     {id:'cascada', nombre:'Cueva Cascada', tipo:'cueva', x:98, y:12, mapas:['cascada','cascada2','cascada3','gruta'], desc:'Detrás de la Cascada Chy. Solo se abre tras vencer al Equipo COBRIX. Criaturas muy fuertes.'},
     {id:'laberinto', nombre:'Ruta 8', tipo:'ruta', x:108, y:89, mapas:['laberinto'], desc:'El Laberinto Verde: arbustos, hierba alta y muchos entrenadores.'},
-    {id:'pertico', nombre:'Bosque Pértico', tipo:'bosque', x:136, y:97, mapas:['pertico','refugio','santuario'], desc:'Bosque antiguo entre la Ruta 8 y Ciudad Tamayo.'},
+    {id:'pertico', nombre:'Bosque Pértico', tipo:'bosque', x:136, y:97, mapas:['pertico','refugio','gruta1','gruta2','santuario'], desc:'Bosque antiguo entre la Ruta 8 y Ciudad Tamayo.'},
     {id:'central', nombre:'Central Hidroeléctrica', tipo:'central', x:158, y:66, mapas:['presa','central'], desc:'Al oeste de la Ruta 7. Se abre tras ganar la Medalla Cantera. Dentro, una máquina antigua espera una MINI BOBINA para despertar a la legendaria Graikon.'},
     {id:'vikina', nombre:'Isla Vikina', tipo:'isla', x:54, y:108, mapas:['int_vikina_15','int_vikina_14','vikina','centrovk','gym_vikina','barco','camarote1','camarote2'], desc:'Gran isla al sudoeste, con el último gimnasio (hielo y eléctrico). Se llega en barco desde Puerto Salitre.'},
     {id:'islote', nombre:'Islote Kalim', tipo:'isla', x:62, y:97, mapas:['islote','kalim1','kalim2','kalim3','kalim4','kalim5','kalim6'], desc:'Islote al norte de Isla Vikina. Solo se llega surfeando. En él se alza la oscura Torre Kalim.'},
@@ -2491,12 +2491,45 @@ const CONFIG = {
           textos:['¡Gracias por rescatarnos! Eres la persona más valiente que conozco.','La guardiana dice que detrás de la puerta blindada duerme algo muy antiguo...']}
       ]
     },
+    gruta1: {
+      nombre:'Gruta Pértica · Sótano 1', borde:'C', oscuro:true, oscuridad:.62, fondo:'cueva', musica:'cueva', encuentrosEn:'c', prob:.07, trampasGruta:true, caeA:'gruta2',
+      caidas:{"45,7": [43, 7], "46,32": [43, 32], "10,32": [10, 32], "52,19": [52, 19]},
+      casillas:["CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC.*..CCCCCC", "CCCCCccccCCCCCCCCC....*..CCCCCCCCCCCCCCCCCCCCCCCCCC.**,,,....^CC", "CCccccrccccCCCCC**..,,,..*.*CCCCCCCCCcccccCCCCCC.*.,,,,,,,,,*.CC", "CCcececccccCCCC..,,,,,,,,,...CCCCCeccecccccccCCC..,,,,,,,,,,,.CC", "CCccccceccccCC*.,,,,,,,,,,,...CCCcccccccccccccc*.,,,,,,,,,,,,,CC", "CCccccccccccc*ⓜ,,,,,,,,,,,,,..cecccccccccccccⓢc*.,,,,,,,,,,,,,CC", "CCccecccccccc..,,,,,,,,,,,,ⓜ.*cccccccccecrcccce**,,,,,,,,,,,,,CC", "CCccccccccccc*.,,,,,,,,,,,,,*.cCCCCecccccccc<CCC.*,,,,,,,,,,,.CC", "CCceccccccCCc.**ⓜ,,,,,,,,,,...CCCCCCCcrce<CCCCCCC..,,,,,,,,,**CC", "CCCcccccCCCCCC...,,,,,,,,,..CCCCCCCCCCcccCCCCCCCCC*..ⓜ,,,*...CCC", "CCCCcc<CCCCCCCCC.*.*,,,...*CCCCCCCCCCCcccCCCCCCCCCCC......CCCCCC", "CCCCccCCCCCCCCCCCCC.*...**CCCCCCCCCCCCccecCCCCCCCCCCCccecCCCCCCC", "CCCCecCCCCCCCCCCCCCCCcccccCCCCCCCCCCcccccccCCCCCCCCCcccccCCCCCCC", "CCCcccCCCCCCCCCCCCCCCcceccCCCCCCCCCccccccrccCCCCCCCcccccccCCCCCC", "CCCccccCCCCCCCCCCCCCcccccccCCCCCCCccccccccccCCCCCCcccccccⓡcCCCCC", "CCcccccccCCCCCCCCcccrccccccccccCCccccccccccccCCCCcecccccccccCCCC", "CCcccccccccCCCC<ccccrrcccccccccccrcccccccccccccccccccrccccccCCCC", "CCccccccⓡccccccceccccccccccccceccccrccccccccccccccccⓢccccccrCCCC", "CCccrccceccccccc<cccercccccccccececccccccceccCCCCCcccccccccCCCCC", "CCccccccccCCCCCCCeccr<ecccccccCCCCCcccccccccCCCCCCCcccccccCCCCCC", "CCCccccccCCCCCCCCCCCccccccCCCCCCCCCCccccⓡccCCCCCCCCCccccCCCCCCCC", "CCCCCccccCCCCCCCCCCCCccccCCCCCCCCCCCCCccccCCCCCCCCCCCcccCCCCCCCC", "CCCCCCcccCCCCCCCCCCCCeccCCCCCCCCCCCCCCccccCCCCCCCCCCCcccCCCCCCCC", "CCCCCCcccCCCCCCCCCCCCccCCCCCCCCCCCCCCCccccCCCCCCCCCCcccccCCCCCCC", "CCCCCcccccCCCCCCCCCCCccCCCCCCCCCCCCCCccccccCCCCC<ccccccccceCCCCC", "CCceccccccrccCCCCCCCCccCCCCCCCCCCCccccceccccCCcccccccccccccccCCC", "CCccccccccccccCCCCCCCcccCCCCCCCCCccccccccccccccccccⓡecceccccceCC", "CCcccccccrcccccCCCCC.....cCCCCCCccecceccccccccccccccccccccccccCC", "CCcccc~~~ccccrccC*.,,,,,*.cccec<eccrcccccccccccccccccccccccccCCC", "CCcccc~~~ccceccc.*,,,,,,,.*ccccrcccccccccccccccccccccccccccccCCC", "CCccccccccⓢcccrc.ⓜ,,,,,,,,.cCCCCCcceccccccccccⓢcccⓡccccecccCCCCC", "CC^ccrccccccr<cc..,,,,,,,.*CCCCCCCCccccccccccCCCCCCcccccCCCCCCCC", "CCCCCCCccCCCCCCCC..,,,,,..CCCCCCCCCCC<cccCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCC...*CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"],
+      salidas:[{x:2,y:33,a:'refugio',x2:8,y2:1,dir:'abajo'},{x:61,y:3,a:'gruta2',x2:60,y2:33,dir:'izq'}],
+      encuentros:[{esp:'murcielin',min:36,max:38,peso:24},{esp:'cristalo',min:36,max:38,peso:20},{esp:'lodus',min:36,max:38,peso:14},{esp:'kroak',min:37,max:38,peso:10},{esp:'rocco',min:37,max:39,peso:12},{esp:'braculin',min:36,max:38,peso:12},{esp:'nadirion',min:37,max:39,peso:8}], encuentrosPor:{',':[{esp:'hojarro',min:36,max:38,peso:24},{esp:'lefereon',min:36,max:38,peso:18},{esp:'edulis',min:36,max:38,peso:15},{esp:'wenny',min:36,max:38,peso:12},{esp:'silisco',min:37,max:39,peso:10},{esp:'bilka',min:36,max:38,peso:9},{esp:'leolirio',min:37,max:39,peso:8},{esp:'skrabaton',min:37,max:38,peso:4}]},
+      rocas:{'10,27':{id:'gruta1_roca1',superesferas:2},'14,32':{id:'gruta1_roca2',revivires:1}},
+      objetos:[{id:'obj_gruta1_1',x:41,y:13,superesferas:3},{id:'obj_gruta1_2',x:61,y:29,superpociones:2},{id:'obj_gruta1_3',x:35,y:33,revivires:1},{id:'obj_gruta1_4',x:20,y:22,curaestados:3}],
+      npcs:[
+        {id:'gruta1_e1',x:42,y:33,dir:'arriba',nombre:'BOTÁNICA LILA',accion:'entrenador',dinero:2600,premio:2,aspecto:{piel:'#f3c9a0',pelo:'#3a8a4a',camiseta:'#7ab84a',pantalon:'#5a4a3a',peinado:'trenzas',prenda:'chaleco'},
+          antes:'Estas setas brillan en la oscuridad... ¡y mis criaturas también!', despues:'Me voy a estudiar las flores de la gruta.', equipo:[['lefereon',38],['silisco',39]]},
+        {id:'gruta1_e2',x:3,y:16,dir:'abajo',nombre:'ESPELEÓLOGO MARTÍN',accion:'entrenador',dinero:2600,premio:2,aspecto:{piel:'#d89a70',pelo:'#2a2a2a',camiseta:'#e8a030',pantalon:'#4a5a3a',gorro:'lana',gorra:'#e8a030',barba:'corta'},
+          antes:'Cuidado con las grietas del suelo: yo ya me he caído dos veces.', despues:'Vale, vale. Te dejo pasar sin caerte.', equipo:[['cristalo',38],['rocco',39],['kroak',39]]},
+        {id:'gruta1_e3',x:53,y:25,dir:'arriba',nombre:'DRUIDA SELVA',accion:'entrenador',dinero:2600,premio:2,aspecto:{piel:'#e2b088',pelo:'#c8c8c8',camiseta:'#2a5a3a',pantalon:'#3a2a2a',peinado:'largo',capa:'#3a8a4a',capaLarga:true},
+          antes:'Las raíces de esta gruta guardan un poder antiguo. ¡Demuéstrame que lo mereces!', despues:'Las raíces te dejan pasar...', equipo:[['bilka',39],['leolirio',40]]}
+      ]
+    },
+    gruta2: {
+      nombre:'Gruta Pértica · Sótano 2', borde:'C', oscuro:true, oscuridad:.7, fondo:'cueva', musica:'cueva', encuentrosEn:'c', prob:.08, trampasGruta:true,
+      casillas:["CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCcccCCCCCCCCCCcccccccccccCCCCCCCCCCCCCCCCCCCCCC..,,,,,..CCC", "CCCccccccccCCCCCCCccccccccceecccCCCCCCCCCCCCCCCCCCC**,,,,,,,*.CC", "CCCcccccccccCCCCCccccccccⓡcccccc<CCCceccCCCCCCCCCC.ⓜ,,,,,,,,,.CC", "CCcccccccccccCCCcccccccccrcccccccccccccrcecCCCCCCC..,,,,,,,,,.CC", "CCcccccⓡccccccccccceccecccccccccecccccccccc<CCCCCC..,,,,,,,,,.CC", "CCcccccccccccccccccccccccccccccccccccccccccccCCCCCC**,,,,,,,..CC", "CCCcccccccccCCCCcceccccccccⓡcccccccccccccccccCCCCCCC.*,,,ⓜ,..CCC", "CCCCecⓡccccCCCCCCccccccccccccccccccccccccccccCCCCCCCc.*.**.CCCCC", "CCCC<ccccrCCCCCCCCCcccccccccccCCCcccccⓡccccrCCCCCCCCccc<CCCCCCCC", "CCCCccccCCCCCCCCCCCCCCcccccccCCCCCcccccccccCCCCCCCCCcceCCCCCCCCC", "CCCCCccCCCCCCCCCCCCCCCcⓡcccccCCCCCCCCcccccCCCCCCCCCCeccCCCCCCCCC", "CCCCCccCCCCCCCCCCCCCCcccecccccCCCCCCCCcceeCCCCCCCCCCcccCCCCCCCCC", "CCCCCccCCCCCCCCCCCCCcccccccccccCCCCCCCccceCCCCCCCCC..**CCCCCCCCC", "CCCCCccCCCCCCCCCCCCCcccccccccccCCCCCCCccccCCCCCCC.*,,,..CCCCCCCC", "CCCCccccCCCc<rCCCCCcccccccccccccCCCCCccccccCCCCC.,ⓜ,,,,,*CCCCCCC", "CCccecccccccccccccccceccccccccrcccccccccccccrcc*.,,,,,,,.CCCCCCC", "CCcecccccccccccceccccccccccccccccccccccccccccre.,,,,,,,,,*CCCCCC", "CCccccccccccccCCCCCccccccccrcccccccccccccccrcec..,,,,,,,..CCCCCC", "CCcccceccceccCCCCCCCcccccccccccccccccccccrcccccⓜ.,,,,,,,ⓜCCCCCCC", "CCcccccccccccCCCCCCCCecccccccrccccccccccccccrccc.**,,,.*.CCCCCCC", "CCcccccccccCCCCCCCCCCCCcccccCCCCccccccccrccccccCCCC....cccCCCCCC", "CCCcccccCCCCCCCCCCCCCCCCCCCCCCCCCcceccccccecccCCCCCCCCCcccCCCCCC", "CCCcccccCCCCCCCCCCCCCCCCCCCCCCCCCCCCcceccc<CCCCCCCCCCCCcce<CCCCC", "CCCcccccCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccCCCCCCCCCCCCCC.....CCCC", "CCcccccccCCCCCCCCCCCCCCCCCCCCCCCCCCCccccCCCCCCCCCCCCCC..*,...CCC", "CCccccccccCCCCCCCccccccCCCCCCCCCCCcccccccCCCCCCCCCCCC.*,,,,,..CC", "CCccrccccccCCCC<ccccccceccCCCCCCCcccccccccCCCCCCCCCCC.,,,,,,,.CC", "CCc~~~ccccccCCcececcccccccccCCCrcccccccccccCCCCCCCCC..,ⓜ,,,,,.CC", "CCc~~~eccccccccccccccccccrccCCCccccecccccccc<CCCCCCC.,,,,,,,,,CC", "CCccceccccccccccccccccccccrccCcccccccccccccccCCCCCCC**,,,,,,,.CC", "CCccccccccccccccccccccccccccCCcccccccceccccccCCCCCCCC.,,,,,,,.CC", "CCCcrcCCCCCCCcccceccccccccc^CCerccccccccccccCCCCCCCCC..,,,,,.^CC", "CCCCCCCCCCCCCCcrcccccccccccCCCCcccccrcccccccCCCCCCCCCC...,*.*CCC", "CCCCCCCCCCCCCCCCCeccccc<CCCCCCCccccceccccceCCCCCCCCCCCCC*.*CCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"],
+      salidas:[{x:61,y:33,a:'gruta1',x2:60,y2:3,dir:'izq'},{x:27,y:33,a:'santuario',x2:10,y2:14,dir:'arriba'}],
+      encuentros:[{esp:'murcielin',min:38,max:40,peso:22},{esp:'cristalo',min:38,max:40,peso:18},{esp:'lodus',min:38,max:40,peso:14},{esp:'rocco',min:39,max:41,peso:14},{esp:'braculin',min:38,max:40,peso:14},{esp:'nadirion',min:39,max:41,peso:10},{esp:'velvigor',min:36,max:37,peso:8}], encuentrosPor:{',':[{esp:'hojarro',min:38,max:40,peso:20},{esp:'lefereon',min:38,max:40,peso:16},{esp:'silisco',min:39,max:41,peso:14},{esp:'bilka',min:38,max:40,peso:12},{esp:'leolirio',min:39,max:41,peso:12},{esp:'simentor',min:39,max:41,peso:10},{esp:'edulis',min:38,max:40,peso:10},{esp:'skrabaton',min:39,max:40,peso:6}]},
+      rocas:{'4,33':{id:'gruta2_roca1',superpociones:2},'39,5':{id:'gruta2_roca2',dinero:2000}},
+      objetos:[{id:'obj_gruta2_1',x:14,y:29,superesferas:4},{id:'obj_gruta2_2',x:3,y:33,revivires:2},{id:'obj_gruta2_3',x:45,y:17,superpociones:3},{id:'obj_gruta2_4',x:4,y:11,dinero:3000}],
+      npcs:[
+        {id:'gruta2_e1',x:25,y:22,dir:'arriba',nombre:'GUARDIÁN ROBLE',accion:'entrenador',dinero:2600,premio:2,aspecto:{piel:'#8a5a3a',pelo:'#3a2a1a',camiseta:'#5a4a2a',pantalon:'#3a3a2a',barba:'larga',bigote:'morsa'},
+          antes:'Nadie baja al santuario sin pasar por mí.', despues:'Sigue bajando... Ivyra te espera.', equipo:[['skrabaton',40],['nadirion',41],['lefereon',41]]},
+        {id:'gruta2_e2',x:35,y:7,dir:'abajo',nombre:'CHICA SETA MICA',accion:'entrenador',dinero:2600,premio:2,aspecto:{piel:'#f3c9a0',pelo:'#c8506a',camiseta:'#e8e0d0',pantalon:'#c8506a',peinado:'monoAlto',piernas:'falda'},
+          antes:'¿Has pisado mis setas? ¡Ahora te toca dormir!', despues:'Achís... tus criaturas no se duermen fácil.', equipo:[['edulis',40],['wenny',40],['silisco',41]]},
+        {id:'gruta2_e3',x:22,y:15,dir:'arriba',nombre:'EXPLORADORA NIEBLA',accion:'entrenador',dinero:2600,premio:2,aspecto:{piel:'#e6b48a',pelo:'#5a3a2a',camiseta:'#4a6a8a',pantalon:'#3a3a4a',gorro:'sombrero',gorra:'#a87a4a',lentes:'redondas'},
+          antes:'He cartografiado toda la gruta... menos las trampas, que se mueven.', despues:'Apunto en mi mapa: aquí perdí contra ti.', equipo:[['braculin',41],['simentor',41],['lodus',42]]}
+      ]
+    },
     santuario: {
       encSurf:[{esp:'selo',min:10,max:12,peso:35},{esp:'berang',min:10,max:12,peso:25},{esp:'conchin',min:10,max:12,peso:25},{esp:'pukeo',min:7,max:9,peso:15}],encPesca:[{esp:'conchin',min:8,max:10,peso:45},{esp:'pukeo',min:8,max:10,peso:45},{esp:'siorin',min:8,max:10,peso:10}],
       nombre:'Santuario de Ivyra', borde:'C', oscuro:true, oscuridad:.35, fondo:'cueva', musica:'legendaria',
-      casillas:["CCCCCCCCCCCCCCCCCC","CCCCC<cccccc<CCCCC","CCC*ccccccccccc*CC","CC**ccc<ccc<ccc**C","CC*ccccccccccccc*C","CCcc~~ccccccc~~ccC","CCcc~~ccccccc~~ccC","CC*ccccccccccccc*C","CC**cccccccccc**CC","CCC*cccccccccc*CCC","CCCCCcccccccCCCCCC","CCCCCCCC^CCCCCCCCC","CCCCCCCCCCCCCCCCCC"],
-      salidas:[{x:8,y:11,a:'refugio',x2:8,y2:1,dir:'abajo'}],
-      legendaria:{esp:'ivyra', nivel:62, x:8, y:3, flag:'ivyra', imagen:'ivyra', tam:46, brillo:'#e080ff',
+      casillas:["CCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCC", "CCCCCC<ccccccc<CCCCCC", "CCCCccccc...cccccCCCC", "CCCccc.........cccCCC", "CCcc~~..*****..~~ccCC", "CCcc~~.*.....*.~~ccCC", "CCcc..*e,,,,,e*..ccCC", "CCc<..*.,,,,,.*..<cCC", "CCcc..*e,,,,,e*..ccCC", "CCcc~~.*..,..*.~~ccCC", "CCcc~~..*****..~~ccCC", "CCCccc.........cccCCC", "CCCCccccc.c.cccccCCCC", "CCCCCC<ccCcCcc<CCCCCC", "CCCCCCCCCC^CCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCC"],
+      salidas:[{x:10,y:15,a:'gruta2',x2:26,y2:33,dir:'izq'}],
+      legendaria:{esp:'ivyra', nivel:62, x:10, y:8, flag:'ivyra', imagen:'ivyra', tam:46, brillo:'#e080ff',
         textos:{inicio:'Una energía misteriosa llena el santuario... Las raíces brillan y las flores se abren. ¡Ivyra despierta!', victoria:'Ivyra se ha fundido con las raíces del santuario... Seguro que volverá a aparecer.', huida:'Ivyra sigue meditando en el corazón del santuario.'}}
     },
     barco: {
@@ -4679,6 +4712,7 @@ function alLlegar(){
   { const ch0=casilla(J.x,J.y); if(ch0==='0') J.dir='abajo'; if(ch0==='1') J.dir=({arriba:'arriba',der:'der',izq:'izq',abajo:'abajo'})[dirSilla(J.x,J.y)]; }
   if(s){ run(()=>cambiarMapa(s)); return; }
   { const ev=mapa.eventoRival; if(ev&&ev.zona&&enZona(ev)&&!TELETRANSPORTE&&cumple(ev.desde)&&!E.flags['venc_'+ev.id]&&!(ev.salvo&&E.flags[ev.salvo])){ run(()=>eventoRival(ev)); return; } }
+  if(mapa.trampasGruta&&!J.surf){ const tch=casilla(J.x,J.y); if('ⓢⓜⓡ'.includes(tch)){ run(()=>trampaGruta(tch)); return; } }
   if(mapa.puzle&&!J.surf&&pzForzado()) return;
   const ch=casilla(J.x,J.y), tabla0=J.surf&&ch==='~'?tablaAgua():ch==='s'?(mapa.encuentrosVado||mapa.encuentrosAgua):(mapa.encuentrosPor&&mapa.encuentrosPor[ch])?mapa.encuentrosPor[ch]:((mapa.encuentrosEn||',').includes(ch)?mapa.encuentros:null), tabla=tabla0&&tabla0.filter(e=>!e.noche||esDeNoche());
   if(E.huevos&&E.huevos.length&&!ocupado){ for(const h of E.huevos) h.pasos--; const h=E.huevos.find(x=>x.pasos<=0); if(h){ E.huevos.splice(E.huevos.indexOf(h),1); run(()=>eclosion(h)); return; } }
@@ -4815,11 +4849,11 @@ function interactuar(){
   if(mapa.id==='abuelo1'&&fx===2&&fy===1){ run(()=>armario('El armario de tu padre cuando era pequeño. El abuelo ha guardado aquí ropa para ti.')); return; }
   if(mapa.id==='habtermas'&&fx===2&&fy===1){ run(armarioTermas); return; }
   if(casilla(fx,fy)===']'){ run(async()=>{
-      if(E.flags.grutaAbierta){ await say('Bajas por la escalera de detrás de la puerta blindada...'); await cambiarMapa({a:'santuario',x2:8,y2:10,dir:'arriba'}); return; }
+      if(E.flags.grutaAbierta){ await say('Bajas por la escalera de detrás de la puerta blindada...'); await cambiarMapa({a:'gruta1',x2:3,y2:33,dir:'der'}); return; }
       if(!E.flags.codigoGruta){ await say('Una puerta blindada incrustada en la roca. Tiene un teclado numérico... Necesitas un código.'); return; }
       await say('Marcas en el teclado el código que te dio la guardiana: 4... 7... 1... 9...'); sfx('ok'); await esperar(400);
       ui.temblorMundo=performance.now()+500; sfx('objeto'); await say('¡CLONC! ¡La puerta blindada se abre! Detrás hay una escalera que baja.'); E.flags.grutaAbierta=true; guardar();
-      const r=await elegir(['BAJAR','AHORA NO'],{prompt:'¿Bajas por la escalera?'}); if(r===0) await cambiarMapa({a:'santuario',x2:8,y2:10,dir:'arriba'}); }); return; }
+      const r=await elegir(['BAJAR','AHORA NO'],{prompt:'¿Bajas por la escalera?'}); if(r===0) await cambiarMapa({a:'gruta1',x2:3,y2:33,dir:'der'}); }); return; }
   if(casilla(fx,fy)==='{'){ const secreto=mapa.hojaSecreta===fx+','+fy;
     run(async()=>{ if(secreto&&E.flags.refugio){ await say('Bajas por la trampilla escondida...'); await cambiarMapa({a:'refugio',x2:8,y2:9,dir:'arriba'}); return; }
       await say('Un montón de hojas secas... Las apartas con las manos.');
@@ -5459,6 +5493,19 @@ async function pcCaja(){
     guardar();
   }
 }
+async function trampaGruta(ch){
+  if(ch==='ⓢ'){ const t=(mapa.caidas||{})[J.x+','+J.y]; if(!t) return;
+    ui.temblorMundo=performance.now()+1000; await say('¡CRAAACK! El suelo agrietado cede bajo tus pies...');
+    const [dx,dy]=DIRS[J.dir]; ui.caida={x:J.x,y:J.y,dx:0,dy:0,t:performance.now()}; sfx('choque'); await esperar(1100);
+    await anim('fundido',300,1); ui.caida=null; ponerMapa(mapa.caeA,t[0],t[1],'abajo'); Musica.poner(musicaDelMapa()); guardar(); await esperar(250); ui.aterriza=performance.now(); await anim('fundido',250,0); await esperar(450); sfx('choque');
+    await say('¡Has caído al sótano de abajo! Busca la escalera si quieres volver a subir.'); return; }
+  if(ch==='ⓜ'){ sfx('choque'); await say('¡Puf! Pisas unas setas y sueltan una nube de esporas moradas...');
+    const c=E.equipo.find(c=>c.ps>0&&!c.estado);
+    if(c){ c.estado='dor'; c.sueno=2+Math.floor(Math.random()*2); guardar(); await say(`¡${nom(c)} ha respirado las esporas y se ha quedado dormido!`); }
+    else await say('Por suerte, tus criaturas aguantan la respiración.'); return; }
+  if(ch==='ⓡ'){ const dx=-J.dx||0, dy=-J.dy||0; ui.temblorMundo=performance.now()+400; await say('¡Unas raíces se enredan en tus pies y tiran de ti hacia atrás!');
+    for(let k=0;k<3;k++){ const nx=J.x+dx, ny=J.y+dy; if(!(dx||dy)||!pzLibre(nx,ny)||'ⓢⓜⓡ^'.includes(casilla(nx,ny))||salidaEn(nx,ny)) break; J.x=nx; J.y=ny; J.prog=1; J.mov=false; sfx('choque'); await esperar(140); }
+    return; } }
 async function trampaHielo(t){
   ui.temblorMundo=performance.now()+1200; await say('¡CRAAACK! El hielo se resquebraja bajo tus pies...');
   const [dx,dy]=DIRS[J.dir]; ui.caida={x:J.x+dx,y:J.y+dy,dx,dy,t:performance.now()}; sfx('choque'); await esperar(1350);
@@ -6821,7 +6868,7 @@ function piezaPuzle(ch,tx,ty){ const fr=Math.floor(tiempo*6)%6, st=pzEstado(), t
     else if(ch==='●'){ x.fillStyle='rgba(30,20,10,.3)'; x.beginPath(); x.ellipse(24,44,20,4,0,0,Math.PI*2); x.fill(); x.fillStyle='#2a1e14'; x.fillRect(4,6,40,38); x.fillStyle='#b07a3a'; x.fillRect(6,8,36,34); x.fillStyle='#c8904a'; for(let i=0;i<4;i++) x.fillRect(6,9+i*9,36,6); x.strokeStyle='#5a3a1a'; x.lineWidth=2; x.beginPath(); x.moveTo(7,9); x.lineTo(41,41); x.moveTo(41,9); x.lineTo(7,41); x.stroke(); x.fillStyle='#7a7e8a'; x.fillRect(6,8,36,3); x.fillRect(6,39,36,3); x.fillStyle='#e8b818'; x.font='bold 11px sans-serif'; x.textAlign='center'; x.fillText('⇆',24,29); }
     else if(ch==='Ꙩ'){ x.fillStyle='#6a4a2a'; for(let i=0;i<4;i++) x.fillRect(4,6+i*11,40,4); x.fillStyle='#8a8e9a'; x.fillRect(12,2,4,44); x.fillRect(32,2,4,44);
       x.fillStyle='#5a5e6a'; x.beginPath(); x.moveTo(8,14); x.lineTo(40,14); x.lineTo(36,34); x.lineTo(12,34); x.closePath(); x.fill(); x.strokeStyle='#2a2a34'; x.lineWidth=2.5; x.stroke(); x.fillStyle='#e8b818'; x.fillRect(10,16,28,4); x.fillStyle='#2a2a34'; x.beginPath(); x.arc(16,36,4,0,Math.PI*2); x.arc(32,36,4,0,Math.PI*2); x.fill(); } }); }
-const PROF={barcoab1:0,barcoab2:-1,mar_coral:-2,abuelo0:0,abuelo1:-1,faro1:0,faro2:-1,faro3:-2,faro4:-3,faro5:-4,gym_hondo:0,gym_hondo2:-1,gym_volkano:0,gym_volkano2:-1,gym_puerto:0,gym_puerto2:-1,gym_tamayo:0,gym_tamayo2:-1,gym_vikina:0,gym_vikina2:-1,barco:0,cubierta_inf:1,mansion0:0,mansion1:-1,mansion2:-2,mansionS1:1,mansionS2:2,int_tamayo_4:0,com_p1:-1,com_p2:-2,cueva:0,cueva2:1,volcan1:0,volcan2:-1,cima:-2,cascada:0,cascada2:1,cascada3:2,gruta:3,refugio:0,santuario:1,victoria1:0,victoria2:1,victoria3:2,victoria4:1,victoria5:0,kalim1:-1,kalim2:-2,kalim3:-3,kalim4:-4,kalim5:-5,kalim6:-6};
+const PROF={barcoab1:0,barcoab2:-1,mar_coral:-2,abuelo0:0,abuelo1:-1,faro1:0,faro2:-1,faro3:-2,faro4:-3,faro5:-4,gym_hondo:0,gym_hondo2:-1,gym_volkano:0,gym_volkano2:-1,gym_puerto:0,gym_puerto2:-1,gym_tamayo:0,gym_tamayo2:-1,gym_vikina:0,gym_vikina2:-1,barco:0,cubierta_inf:1,mansion0:0,mansion1:-1,mansion2:-2,mansionS1:1,mansionS2:2,int_tamayo_4:0,com_p1:-1,com_p2:-2,cueva:0,cueva2:1,volcan1:0,volcan2:-1,cima:-2,cascada:0,cascada2:1,cascada3:2,gruta:3,refugio:0,gruta1:1,gruta2:2,santuario:3,victoria1:0,victoria2:1,victoria3:2,victoria4:1,victoria5:0,kalim1:-1,kalim2:-2,kalim3:-3,kalim4:-4,kalim5:-5,kalim6:-6};
 function escaleraHD(tx,ty){ const s=mapa.salidas.find(q=>q.x===tx&&q.y===ty), baja=s&&(PROF[s.a]??0)>(PROF[mapa.id]??0);
   let base='c'; for(const [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){ const c=(mapa.casillas[ty+dy]||'')[tx+dx]; if(c&&c!=='^'&&!SOLIDAS.has(c)&&c!=='░'){ base=c; break; } }
   return hdCasilla('ESC'+(baja?'b':'s')+mapa.id+'_'+tx+'_'+ty,lienzoCasilla0(base,tx,ty),x=>{ x.lineJoin='round';
@@ -6945,6 +6992,13 @@ function lienzoCasilla0(ch,tx,ty){
     case ':': { const sm='@:'.includes(casilla(tx-1,ty)||'#')||'@:'.includes(casilla(tx+1,ty)||'#')||'@'.includes(casilla(tx,ty-1)||'#')||'@'.includes(casilla(tx,ty+1)||'#'); if(!mapa.borde) return cacheado(':int'+tx+'_'+ty,()=>pCajas(2,tx%4,tx,ty)); return cacheado(':'+sm+(tx%4),()=>pCajas(sm,tx%4)); }
     case '+': return cacheado('+',pFaroBase);
     case 'ⓕ': case 'ⓓ': return lienzoCasilla0('A',tx,ty);
+    case 'ⓢ': return hdCasilla('GRIETA'+(tx%3)+(ty%2),lienzoCasilla0('c',tx,ty),x=>{ x.strokeStyle='#0c0810'; x.lineCap='round'; x.lineWidth=3.2; x.beginPath(); x.moveTo(6,10); x.lineTo(18,20); x.lineTo(15,30); x.lineTo(26,38); x.moveTo(18,20); x.lineTo(32,16); x.lineTo(42,24); x.moveTo(26,38); x.lineTo(38,42); x.moveTo(15,30); x.lineTo(5,36); x.stroke();
+        x.strokeStyle='rgba(255,255,255,.18)'; x.lineWidth=1; x.beginPath(); x.moveTo(7,9); x.lineTo(19,19); x.lineTo(33,15); x.stroke(); x.fillStyle='rgba(10,6,14,.35)'; x.beginPath(); x.ellipse(22,26,13,9,.3,0,7); x.fill(); });
+    case 'ⓜ': { const verde='.,*'.includes(casilla(tx+1,ty)||'')||'.,*'.includes(casilla(tx-1,ty)||'')||'.,*'.includes(casilla(tx,ty+1)||'')||'.,*'.includes(casilla(tx,ty-1)||'');
+      return hdCasilla('SETAS'+verde+(tx%2),lienzoCasilla0(verde?'.':'c',tx,ty),x=>{ for(const [cx,cy,r] of [[14,32,7],[30,26,9],[36,38,6]]){ x.fillStyle='#efe4d0'; x.fillRect(cx-2,cy,4,r+2); x.fillStyle='#8a2a8a'; x.beginPath(); x.ellipse(cx,cy,r,r*.65,0,Math.PI,0); x.fill(); x.fillStyle='#b84ab8'; x.beginPath(); x.ellipse(cx,cy-1,r*.85,r*.45,0,Math.PI,0); x.fill(); x.fillStyle='#ffffff'; x.beginPath(); x.arc(cx-r*.3,cy-r*.35,1.6,0,7); x.arc(cx+r*.35,cy-r*.25,1.3,0,7); x.fill(); }
+        x.fillStyle='rgba(220,160,255,.35)'; for(const [px,py] of [[22,14],[10,20],[40,16]]){ x.beginPath(); x.arc(px,py,1.8,0,7); x.fill(); } }); }
+    case 'ⓡ': return hdCasilla('RAICES'+(tx%2)+(ty%2),lienzoCasilla0('c',tx,ty),x=>{ x.lineCap='round'; for(const [c,w] of [['#3a2414',6],['#6a4424',3.4]]){ x.strokeStyle=c; x.lineWidth=w; x.beginPath(); x.moveTo(0,14); x.bezierCurveTo(14,4,24,30,48,18); x.moveTo(4,46); x.bezierCurveTo(16,30,30,44,46,34); x.moveTo(20,0); x.bezierCurveTo(26,16,14,28,24,48); x.stroke(); }
+        x.fillStyle='#4a8a3a'; for(const [px,py] of [[12,10],[34,22],[22,40]]){ x.beginPath(); x.ellipse(px,py,4,2.2,.6,0,7); x.fill(); } });
     case 'ⓒ': case 'ⓛ': { const [ox,oy,w,h]=bloqueDe(tx,ty,ch), fr=ch==='ⓛ'?Math.floor(tiempo*5)%4:0, N=nucleoFaro(ch,w,h,fr);
       return hdCasilla('NUC'+ch+(tx-ox)+'_'+(ty-oy)+'_'+w+'x'+h+'_'+fr,lienzoCasilla0('z',tx,ty),x=>x.drawImage(N,(tx-ox)*48,(ty-oy)*48,48,48,0,0,48,48)); }
     case '<': return cacheado('<'+(v%2),()=>pCristalCueva(v%2));
