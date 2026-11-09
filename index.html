@@ -5936,17 +5936,18 @@ async function combate0(rivales,entrenador){
     await say(`¡A ${CONFIG.heroe.nombre} no le quedan criaturas en pie!`);
     const perdido=Math.floor(E.dinero/5); E.dinero-=perdido;
     if(perdido>0) await say(`Con las prisas, se te han caído ${perdido} monedas...`);
-    if(E.habTermas){ const d=await elegir(['CASA (PUEBLO CHY)','HABITACIÓN DE LAS TERMAS'],{prompt:'¿Adónde quieres volver a descansar?'}); B._destino=d===1?'habtermas':'casa2'; }
-    await say(B._destino==='habtermas'?`${CONFIG.heroe.nombre} vuelve corriendo a su habitación de las Termas...`:`${CONFIG.heroe.nombre} vuelve corriendo a casa...`);
+    { const ops=[['CASA (PUEBLO CHY)','casa2']]; if(E.habTermas) ops.push(['HABITACIÓN DE LAS TERMAS','habtermas']); if(E.flags.abuelo) ops.push(['CASA DEL ABUELO (SALITRE)','abuelo1']);
+      if(ops.length>1){ const d=await elegir(ops.map(o=>o[0]),{prompt:'¿Adónde quieres volver a descansar?'}); B._destino=(ops[d]||ops[0])[1]; } }
+    await say(B._destino==='habtermas'?`${CONFIG.heroe.nombre} vuelve corriendo a su habitación de las Termas...`:B._destino==='abuelo1'?`${CONFIG.heroe.nombre} vuelve corriendo a casa del abuelo...`:`${CONFIG.heroe.nombre} vuelve corriendo a casa...`);
   }
   const destino=B&&B._destino;
   await anim('fundido',300,1);
   escena='mundo'; B=null;
-  if(fin==='derrota'){ curarTodo(); if(destino==='habtermas') ponerMapa('habtermas',2,2,'izq'); else ponerMapa('casa2',2,2,'izq'); }
+  if(fin==='derrota'){ curarTodo(); if(destino==='habtermas') ponerMapa('habtermas',2,2,'izq'); else if(destino==='abuelo1') ponerMapa('abuelo1',2,2,'izq'); else ponerMapa('casa2',2,2,'izq'); }
   Musica.poner(musicaDelMapa());
   guardar();
   await anim('fundido',300,0);
-  if(fin==='derrota') await say('Te despiertas en tu cama. ¡Qué susto! Tus criaturas ya han descansado. Ten cuidado ahí fuera.');
+  if(fin==='derrota') await say(destino==='abuelo1'?'Te despiertas en la cama de casa del abuelo. Abuelo: «¡Menudo susto me has dado! Descansa, que tus criaturas ya están como nuevas.»':'Te despiertas en tu cama. ¡Qué susto! Tus criaturas ya han descansado. Ten cuidado ahí fuera.');
   return fin;
 }
 
