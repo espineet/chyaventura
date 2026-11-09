@@ -1,0 +1,302 @@
+<title>Guía de Chy Aventura</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+/* Layout: cabecera con pestañas pegajosas; cada pestaña es una sección de consulta rápida (tablas y fichas) */
+:root{
+  --bg:#f3f6f1; --panel:#ffffff; --panel2:#e8efe6; --fg:#1d2b24; --muted:#5d6e64; --line:#cfdcd2;
+  --accent:#1d5a45; --accent-fg:#ffffff; --sun:#e8a93a; --leg:#fff4d6; --legline:#e2b84a;
+  --display:"Fredoka",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111a16; --panel:#18241f; --panel2:#1f2e27; --fg:#e4ede7; --muted:#9db0a5; --line:#2e4038;
+  --accent:#5fc19a; --accent-fg:#0d1813; --sun:#f0b955; --leg:#2e2a18; --legline:#a88a32; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#111a16; --panel:#18241f; --panel2:#1f2e27; --fg:#e4ede7; --muted:#9db0a5; --line:#2e4038;
+  --accent:#5fc19a; --accent-fg:#0d1813; --sun:#f0b955; --leg:#2e2a18; --legline:#a88a32; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+header h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);margin:0;color:var(--accent);text-wrap:balance}
+header p{margin:4px 0 0;color:var(--muted);max-width:65ch}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;padding-block:12px;margin-top:12px;border-bottom:1px solid var(--line)}
+nav a{font-family:var(--display);font-weight:600;font-size:15px;text-decoration:none;color:var(--fg);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+nav a:hover{border-color:var(--accent)}
+nav a[aria-current="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+nav a:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+h2{font-family:var(--display);font-weight:600;font-size:24px;margin:22px 0 4px}
+.intro{color:var(--muted);margin:0 0 14px;max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.card.leg{background:var(--leg);border-color:var(--legline)}
+.num{align-self:flex-start;font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.card img{height:76px;width:auto;object-fit:contain}
+.nom{font-family:var(--display);font-weight:600}
+.tipos{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.t{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;padding:1px 6px;border-radius:4px;text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--panel2);position:sticky;top:0}
+tr:last-child td{border-bottom:none}
+td.obj{font-weight:700}
+.sub{color:var(--muted);font-size:13px}
+.fam{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.fam.leg{background:var(--leg);border-color:var(--legline)}
+.etapas{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.etapa{display:flex;flex-direction:column;align-items:center;min-width:96px}
+.etapa img{height:84px;width:auto}
+.flecha{font-family:var(--display);font-weight:600;color:var(--accent);text-align:center;font-size:13px}
+.flecha b{display:block;font-size:22px;line-height:1}
+details{margin-top:8px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+.movs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 14px;margin-top:6px;font-size:13px}
+.mov{display:flex;gap:6px;align-items:center;min-width:0}
+.mov .lv{font-variant-numeric:tabular-nums;color:var(--muted);width:44px;flex:none}
+.mov .pw{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums}
+.bloque{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.bloque h3{font-family:var(--display);font-weight:600;margin:0 0 2px;font-size:18px}
+.mini{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.cri{display:flex;align-items:center;gap:6px;background:var(--panel2);border-radius:10px;padding:4px 10px 4px 4px;min-width:0}
+.cri img{height:44px;width:44px;object-fit:contain}
+.cri .d{display:flex;flex-direction:column;line-height:1.2}
+.cri .d span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.etq{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-top:10px}
+.buscar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.buscar input{flex:1;min-width:0;max-width:340px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:inherit}
+.cols2{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.cols2 .bloque{margin:0}
+@media (max-width:440px){ .cols2{grid-template-columns:1fr} .grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))} }
+
+/* organigrama del Equipo COBRIX */
+.org{overflow-x:auto;padding:4px 0 10px;margin:6px 0 18px;-webkit-overflow-scrolling:touch}
+.org ul{display:flex;justify-content:center;align-items:flex-start;padding:18px 0 0;margin:0;list-style:none;position:relative;min-width:max-content}
+.org li{position:relative;padding:18px 3px 0;display:flex;flex-direction:column;align-items:center}
+.org li::before,.org li::after{content:'';position:absolute;top:0;right:50%;border-top:2px solid var(--line);width:50%;height:18px}
+.org li::after{right:auto;left:50%;border-left:2px solid var(--line)}
+.org li:only-child{padding-top:0}.org li:only-child::before,.org li:only-child::after{display:none}
+.org li:first-child::before,.org li:last-child::after{border:0 none}
+.org li:last-child::before{border-right:2px solid var(--line);border-radius:0 8px 0 0}
+.org li:first-child::after{border-radius:8px 0 0 0}
+.org ul ul::before{content:'';position:absolute;top:0;left:50%;border-left:2px solid var(--line);height:18px}
+.on{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center;min-width:140px;max-width:190px}
+.on b{font-family:var(--display);font-weight:600;display:block;line-height:1.2}.on span{font-size:12px;color:var(--muted)}
+.on.jefe{border-color:#c8323a;background:color-mix(in srgb,#c8323a 10%,var(--panel))}
+.on.com{border-color:#e08a2a;background:color-mix(in srgb,#e08a2a 10%,var(--panel))}
+.on.rama{border-style:dashed}
+/* organigrama: el Jefe arriba, una fila por coronel y sus comandantes en tarjetas que bajan de línea solas */
+.org2{margin:10px 0 4px}
+.org2 .tope{display:flex;justify-content:flex-start;margin-left:6px}
+.org2 .secs{margin-left:28px;border-left:2px solid var(--line);padding:6px 0 2px 18px}
+.org2 .sec{position:relative;margin:14px 0 18px}
+.org2 .sec::before{content:'';position:absolute;left:-18px;top:20px;width:16px;border-top:2px solid var(--line)}
+.org2 .sec>.on{display:inline-block}
+.org2 .coms{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));align-items:start;gap:12px;margin:10px 0 0 22px;position:relative}
+.org2 .coms::before{content:'';position:absolute;left:-22px;top:-10px;height:30px;width:16px;border-left:2px solid var(--line);border-bottom:2px solid var(--line);border-bottom-left-radius:8px}
+.org2 .tcom{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:flex-start}
+.org2 .tcom>.on{max-width:none;width:100%}
+.org2 .pila{width:auto;align-self:stretch}
+.org2 .tcom>.on.rama+.pila>.og:first-child{display:none}
+.org2 .pila::before{left:-2px;width:22px}
+@media (max-width:520px){ .org2 .secs{margin-left:10px;padding-left:10px} .org2 .sec::before{left:-10px;width:8px} .org2 .coms{margin-left:6px;grid-template-columns:1fr} .org2 .coms::before{display:none} }
+/* armario: crear avatares con la misma ropa que el juego */
+.arm{display:grid;grid-template-columns:200px minmax(220px,300px) 1fr;gap:14px;align-items:start}
+.arm .lista{display:flex;flex-direction:column;gap:6px}
+.arm .pjsel{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:13px;margin-bottom:8px}
+.arm .pjsel select{font:inherit;font-weight:600;padding:7px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);max-width:100%}
+.arm .pj small{display:block;color:var(--muted);font-size:11px}
+.arm .nube{margin-top:10px;font-weight:700;color:var(--accent)}
+.arm .llevar{margin-top:10px;font-size:13px}.arm .llevar summary{cursor:pointer;font-weight:700}.arm .llevar textarea{width:100%;font:12px ui-monospace,monospace;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.arm .pj{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--panel);cursor:pointer;font:inherit;color:inherit;text-align:left}
+.arm .pj canvas{width:30px;height:45px;flex:none}
+.arm .pj[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.arm .acc{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.arm button.b{font:inherit;font-weight:700;font-size:13px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.arm button.b.pri{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.arm .vista{border-radius:14px;padding:10px;background:repeating-linear-gradient(0deg,#2a7a5e 0 2px,#2e8064 2px 4px);display:flex;flex-direction:column;align-items:center;gap:8px}
+.arm .vista .cuadro{background:#e8f4ec;border-radius:10px;width:100%;display:flex;justify-content:center;padding:8px 0}
+.arm .vista canvas.grande{width:180px;height:270px;image-rendering:auto}
+.arm .vista input{font:inherit;font-weight:700;text-align:center;width:100%;border-radius:8px;border:1px solid #cfe3d6;padding:6px;background:#fffef8;color:#303840}
+.arm .giro{display:flex;gap:6px}
+.arm .giro button{font:inherit;font-weight:700;border-radius:8px;border:0;padding:6px 10px;background:#fffef8;color:#303840;cursor:pointer}
+.arm .comb{display:flex;align-items:flex-end;gap:10px;color:#e8f4ec;font-size:12px}
+.arm .comb canvas{width:70px;height:120px}
+.arm .filas{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:6px 8px}
+.arm .fila{display:grid;grid-template-columns:110px 34px 1fr 34px 22px;align-items:center;gap:6px;padding:4px 2px;border-bottom:1px dashed var(--line)}
+.arm .fila:last-child{border-bottom:0}
+.arm .fila b{font-family:var(--display);font-weight:600;font-size:14px}
+.arm .fila .val{text-align:center;font-weight:700;color:var(--accent)}
+.arm .fila button{font:inherit;font-weight:700;width:34px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--fg);cursor:pointer}
+.arm .fila .sw{width:18px;height:18px;border-radius:5px;border:2px solid #303840}
+@media (max-width:900px){ .arm{grid-template-columns:1fr} .arm .lista{flex-direction:row;flex-wrap:wrap} .arm .pj{flex:1 1 140px} }
+
+.on.cor{border-color:#8a3ab8;background:color-mix(in srgb,#8a3ab8 10%,var(--panel))}
+.os.sar{border:2px solid #d4a72c;background:color-mix(in srgb,#d4a72c 12%,var(--panel))}
+.bajo{display:flex;flex-direction:column;gap:6px;margin-left:12px;border-left:2px solid var(--line);padding-left:12px}
+.ley{display:flex;flex-wrap:wrap;gap:6px 12px;margin:8px 0 2px;font-size:12px;color:var(--muted)}
+.ley .l::before{content:'';display:inline-block;width:12px;height:12px;border-radius:3px;border:2px solid var(--line);margin-right:5px;vertical-align:-2px}
+.ley .jefe::before{border-color:#c8323a}.ley .cor::before{border-color:#8a3ab8}.ley .com::before{border-color:#e08a2a}.ley .sar::before{border-color:#d4a72c}
+.pila{display:flex;flex-direction:column;align-items:stretch;gap:6px;margin-top:14px;position:relative;width:172px;border-left:2px solid var(--line);padding-left:12px}
+.pila::before{content:'';position:absolute;top:-14px;left:-2px;width:calc(50% + 2px);height:14px;border-right:2px solid var(--line);border-bottom:2px solid var(--line);border-bottom-right-radius:8px;box-sizing:border-box}
+.os{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px 7px;font-size:12px;font-weight:600}
+.os::before{content:'';position:absolute;left:-13px;top:50%;width:12px;border-top:2px solid var(--line)}
+.os span{font-weight:400;color:var(--muted);font-size:12px;white-space:nowrap}
+.og{font-size:12px;color:var(--accent);font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:.03em}
+@media (max-width:760px){
+  .org ul{min-width:0}
+  .org ul ul{flex-direction:column;align-items:center;gap:0}
+  .org ul ul li{padding:18px 0 0}
+  .org ul ul li::before{display:none}
+  .org ul ul li::after{border-top:0;border-left:2px solid var(--line);border-radius:0;left:50%;width:0;height:18px}
+  .pila{width:min(300px,86vw)}
+}
+</style>
+<div class="wrap">
+<header><h1>Guía de Chy Aventura</h1><p>Chykedex, regalos, bloqueos, evoluciones, gimnasios, Equipo COBRIX, criaturas de cada lugar y rivales. Sacado directamente de la versión actual del juego.</p></header>
+<nav id="nav"></nav>
+<main id="main"></main>
+</div>
+<script id="datos" type="application/json">__DATOS__</script>
+<script>__ARMARIO__</script>
+<script>
+const D=JSON.parse(document.getElementById('datos').textContent);
+const IM=D.imgs, COL=D.colores, NT=D.nomTipo||{};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tipo=t=>`<span class="t" style="background:${COL[t]||'#888'}">${esc(NT[t]||t)}</span>`;
+const DER=new Set(D.der||[]); // las que están dibujadas mirando a la derecha se giran: todas miran a la izquierda
+const img=(k,alt)=>IM[k]?`<img src="${IM[k]}" alt="${esc(alt)}" loading="lazy"${DER.has(k)?' style="transform:scaleX(-1)"':''}>`:'';
+const RIV=[["Auron", "Puerta del gimnasio de Coral", 9, "Sale del gimnasio y te reta"], ["Thomas", "Ruta 3", 15, "Tras cruzar la Cueva Eco"], ["Martina", "Desierto Árido", 20, "Con la Medalla Brasa"], ["Thomas", "Pueblo Termas", 27, ""], ["Auron", "Ciudad Bukera", 29, "Con la Medalla Raíz"], ["Martina", "Puerto Salitre", 31, ""], ["Auron", "Poblado Hondo", 34, ""], ["Thomas", "Laberinto Verde (Ruta 8)", 40, "Con la Medalla Cantera"], ["Martina", "Presa del Río Chy", 44, "Te da el PASE DE BARCO"], ["Thomas", "Bosque Pértico", 46, "Con el PASE DE TAMAYO"], ["Auron", "Calle Victoria", 56, ""], ["Martina", "Liga Chy", 60, "Antes de la Liga"]];
+const S={
+ dex:{t:'Chykedex',f:()=>`<h2>Chykedex</h2><p class="intro">${D.dex.length} criaturas. Las de fondo dorado son legendarias.</p><div class="grid">${D.dex.map(e=>`<div class="card${e.leg?' leg':''}"><span class="num">Nº ${String(e.n).padStart(3,'0')}</span>${img(e.img,e.nombre)}<span class="nom">${esc(e.nombre)}</span><span class="tipos">${e.tipos.map(tipo).join('')}</span></div>`).join('')}</div>`},
+ regalos:{t:'Regalos',f:()=>`<h2>Personas que te dan objetos</h2><p class="intro">Ordenados según cuándo puedes conseguirlos en la aventura: primero los que están a tu alcance al empezar. Incluye encargos, líderes de gimnasio y premios por ganar combates.</p><div class="tablebox"><table><thead><tr><th>Dónde</th><th>Quién</th><th>Te da</th><th>Cuándo</th></tr></thead><tbody>${D.regalos.map(r=>`<tr><td>${esc(r.lugar)}<div class="sub">${esc(r.mapa)}</div></td><td>${esc(r.quien)}</td><td class="obj">${esc(r.obj)}</td><td>${esc(r.cuando)}</td></tr>`).join('')}</tbody></table></div>`},
+ bloqueos:{t:'Bloqueos',f:()=>`<h2>Bloqueos del mapa</h2><p class="intro">Todo lo que te corta el paso y lo que tienes que hacer para que se abra.</p><div class="tablebox"><table><thead><tr><th>Dónde</th><th>Qué bloquea</th><th>Cómo se abre</th></tr></thead><tbody>${D.bloq.map(r=>`<tr><td>${esc(r.lugar)}<div class="sub">${esc(r.mapa)}</div></td><td>${esc(r.que)}</td><td class="obj">${esc(r.abre.charAt(0).toUpperCase()+r.abre.slice(1))}</td></tr>`).join('')}</tbody></table></div>`},
+ evoluciones:{t:'Evoluciones',f:()=>`<h2>Evoluciones y ataques</h2><p class="intro">Cada familia con su nivel de evolución. Abre «Ataques» para ver qué aprende y a qué nivel (los ataques son los mismos para toda la familia).</p><div class="buscar"><input id="q" type="search" placeholder="Buscar criatura…" aria-label="Buscar criatura"></div><div id="fams">${D.familias.map(f=>{ const leg=f.some(x=>x.leg); const et=f.map((x,i)=>`${i?`<div class="flecha"><b>→</b>Nv. ${f[i-1].nivel}</div>`:''}<div class="etapa">${img(x.img,x.nombre)}<span class="nom">${esc(x.nombre)}</span><span class="tipos">${x.tipos.map(tipo).join('')}</span></div>`).join('');
+   const ult=f[f.length-1]; return `<div class="fam${leg?' leg':''}" data-n="${esc(f.map(x=>x.nombre).join(' ').toLowerCase())}"><div class="etapas">${et}${f.length===1?'<div class="sub">No evoluciona</div>':''}</div><details><summary>Ataques (${ult.ataques.length})</summary><div class="movs">${ult.ataques.map(a=>`<div class="mov"><span class="lv">Nv. ${a.l}</span>${tipo(a.t)}<span>${esc(a.n)}</span><span class="pw">${a.p||'—'}</span></div>`).join('')}</div></details></div>`; }).join('')}</div>`,
+   on:()=>{ const q=document.getElementById('q'); q.addEventListener('input',()=>{ const v=q.value.trim().toLowerCase(); document.querySelectorAll('.fam').forEach(el=>{ el.hidden=!!v&&!el.dataset.n.includes(v); }); }); }},
+ gimnasios:{t:'Gimnasios',f:()=>{ const eq=l=>`<div class="mini">${l.map(x=>`<div class="cri">${img(x.img,x.nombre)}<div class="d"><b>${esc(x.nombre)}</b><span>Nv. ${x.l}</span></div></div>`).join('')}</div>`;
+   return `<h2>Gimnasios</h2><p class="intro">En el orden en que se consiguen las medallas. Para retar al líder hay que vencer antes a todos los entrenadores del gimnasio. En los gimnasios los entrenadores no se mueven: te retan en cuanto te ven.</p>${D.gyms.map(gy=>`<div class="bloque"><h3>${gy.orden}. ${esc(gy.nombre)} <span style="color:${gy.lider.color}">● ${esc(gy.lider.medalla)}</span></h3><div class="sub">${esc(gy.lugar)} · ${gy.pisos} ${gy.pisos>1?'pisos':'piso'} · ${esc(gy.mecanica)}</div>
+     ${gy.entrenadores.map(e=>`<div class="etq">${esc(e.nombre)}${gy.pisos>1?' · piso '+e.piso:''}</div>${eq(e.equipo)}`).join('')}
+     <div class="etq"><b>LÍDER ${esc(gy.lider.nombre)}</b>${gy.pisos>1?' · piso '+gy.lider.piso:''} · ${gy.lider.equipo.length} criaturas</div>${eq(gy.lider.equipo)}</div>`).join('')}`; }},
+ cobrix:{t:'Equipo COBRIX',f:()=>{ const tot={}; D.cobrix.forEach(c=>c.equipo.forEach(x=>{ tot[x.id]=tot[x.id]||{...x,n:0,min:x.l,max:x.l}; tot[x.id].n++; tot[x.id].min=Math.min(tot[x.id].min,x.l); tot[x.id].max=Math.max(tot[x.id].max,x.l); }));
+   const lista=Object.values(tot).sort((a,b)=>b.n-a.n);
+   const nv=c=>Math.max(...c.equipo.map(x=>x.l)), corto=n=>n.replace(/ DE COBRIX$/,''), rango=c=>c.nombre.split(' ')[0], clave=c=>corto(c.nombre).split(' ')[1], por=(a,b)=>nv(a)-nv(b);
+   const lug=c=>c.mapa==='Mar de Coral'?'Barco abandonado':c.mapa.startsWith('Barco abandonado')?c.mapa:c.lugar==='Puerto Salitre'?'Faro de Salitre':c.lugar;
+   const jefe=D.cobrix.find(c=>rango(c)==='JEFE'), cors=D.cobrix.filter(c=>rango(c)==='CORONEL');
+   const coms=D.cobrix.filter(c=>rango(c)==='COMANDANTE').sort(por);
+   const CORONEL_DE={ESPERANZA:'TEO',ESPARZA:'TEO',VERA:'TEO',GOOSE:'MAGNO',RAYMAN:'YERO',STEYA:'YERO',KLAUS:'MAGNO'};
+   const MANDO={'Playa Coral':'ESPERANZA','Cueva Eco':'ESPERANZA','Bosque Pértico':'ESPERANZA','Ciudad Tamayo':'ESPARZA','Cueva Cascada':'VERA','Isla Mechi':'VERA','Faro de Salitre':'GOOSE','Barco abandonado · Bodega':'RAYMAN','Barco abandonado · Camarotes':'STEYA'};
+   const SAR_MAPA={'PAUL':'Cueva Cascada S1','GEO':'Cueva Cascada S2'};
+   const resto=D.cobrix.filter(c=>c!==jefe&&!cors.includes(c)&&!coms.includes(c));
+   const lugares=[...new Set(resto.map(lug))];
+   const caja=(c,cls='')=>`<div class="os ${cls}">${esc(corto(c.nombre))} <span>Nv. ${nv(c)}</span></div>`;
+   const grupo=l=>{ const L=resto.filter(c=>lug(c)===l), sar=L.filter(c=>rango(c)==='SARGENTO').sort(por); let sol=L.filter(c=>rango(c)!=='SARGENTO').sort(por);
+     const bloques=sar.map(g=>{ const m=SAR_MAPA[clave(g)]; const mios=m?sol.filter(c=>c.mapa===m):(sar.length===1?sol:[]); sol=sol.filter(c=>!mios.includes(c));
+       return `${caja(g,'sar')}${mios.length?`<div class="bajo">${mios.map(c=>caja(c)).join('')}</div>`:''}`; }).join('');
+     return `<div class="og">${esc(l)}</div>${bloques}${sol.map(c=>caja(c)).join('')}`; };
+   const nodo=(nombre,sub,cls)=>`<div class="on ${cls}"><b>${esc(nombre)}</b><span>${esc(sub)}</span></div>`;
+   const nivelLug=l=>Math.min(...resto.filter(c=>lug(c)===l).map(nv));
+   const tarjeta=(nombre,sub,cls,ls)=>`<div class="tcom">${nodo(nombre,sub,cls)}${ls.length?`<div class="pila">${ls.map(grupo).join('')}</div>`:''}</div>`;
+   const rama=c=>{ const ls=lugares.filter(l=>MANDO[l]===clave(c)).sort((a,b)=>nivelLug(a)-nivelLug(b));
+     return tarjeta(corto(c.nombre),(ls.length?ls:[lug(c)]).join(', ').replace(/, ([^,]*)$/,' y $1')+' · Nv. '+nv(c),'com',ls); };
+   const secs=cors.sort((a,b)=>coms.filter(c=>CORONEL_DE[clave(c)]===clave(b)).length-coms.filter(c=>CORONEL_DE[clave(c)]===clave(a)).length).map(cr=>{ const mis=coms.filter(c=>CORONEL_DE[clave(c)]===clave(cr));
+     return `<div class="sec">${nodo(corto(cr.nombre),'Coronel · '+(cr.mapa.startsWith('Mansión')?'Isla Mechi':lug(cr))+' · Nv. '+nv(cr),'cor')}<div class="coms">${mis.map(rama).join('')}</div></div>`; });
+   const directos=lugares.filter(l=>!MANDO[l]).sort((a,b)=>(b==='Monte Ignis')-(a==='Monte Ignis')||nivelLug(a)-nivelLug(b));
+   if(directos.length) secs.push(`<div class="sec">${nodo('Mando directo del Jefe','sin coronel ni comandante','rama')}<div class="coms">${directos.map(l=>tarjeta(l,'Nv. '+nivelLug(l)+'+','rama',[l])).join('')}</div></div>`);
+   const leyenda=`<div class="ley"><span class="l jefe">Jefe</span><span class="l cor">Coroneles</span><span class="l com">Comandantes</span><span class="l sar">Sargentos</span><span class="l sol">Soldados</span></div>`;
+   const organigrama=`<div class="bloque"><h3>Organigrama</h3><div class="sub">De arriba abajo: el Jefe, los coroneles, los comandantes, los sargentos y los soldados. Cada sargento manda a los soldados que tiene debajo. En Monte Ignis manda directamente el Jefe Kaiser.</div>${leyenda}<div class="org2"><div class="tope">${nodo(corto(jefe.nombre),'Jefe supremo · '+jefe.lugar+' · Nv. '+nv(jefe),'jefe')}</div><div class="secs">${secs.join('')}</div></div></div>`;
+   return `<h2>Equipo COBRIX</h2><p class="intro">Cómo se organiza el Equipo COBRIX, las criaturas que usa y, debajo, el equipo de cada miembro.</p>${organigrama}<div class="bloque"><h3>Todas sus criaturas</h3><div class="mini">${lista.map(x=>`<div class="cri">${img(x.img,x.nombre)}<div class="d"><b>${esc(x.nombre)}</b><span>Nv. ${x.min}${x.max>x.min?'–'+x.max:''} · ${x.n} veces</span></div></div>`).join('')}</div></div>
+   <div class="cols2">${D.cobrix.map(c=>`<div class="bloque"><h3>${esc(c.nombre)}</h3><div class="sub">${esc(c.lugar)} · ${esc(c.mapa)}</div><div class="mini">${c.equipo.map(x=>`<div class="cri">${img(x.img,x.nombre)}<div class="d"><b>${esc(x.nombre)}</b><span>Nv. ${x.l}</span></div></div>`).join('')}</div></div>`).join('')}</div>`; }},
+ criaturas:{t:'Criaturas por lugar',f:()=>{ const fila=(t,et)=>t&&t.length?`<div class="etq">${et}</div><div class="mini">${t.map(x=>`<div class="cri">${img(x.img,x.nombre)}<div class="d"><b>${esc(x.nombre)}</b><span>Nv. ${x.min}${x.max>x.min?'–'+x.max:''} · ${x.pct}%${x.noche?' · de noche':''}</span></div></div>`).join('')}</div>`:'';
+   return `<h2>Criaturas salvajes por lugar</h2><p class="intro">Nivel y probabilidad aproximada de cada criatura. «Andando por la orilla» es al caminar por el agua poco profunda, «Surf» al ir por el agua con la TABLA SURF y «Pesca» con la CAÑA. Las criaturas iniciales y sus evoluciones nunca salen en estado salvaje.</p><div class="cols2">${D.enc.map(r=>`<div class="bloque"><h3>${esc(r.mapa)}</h3>${r.lugar&&r.lugar!==r.mapa?`<div class="sub">${esc(r.lugar)}</div>`:''}${fila(r.tierra,'Hierba / suelo')}${(r.zonas||[]).map(z=>fila(z[1],z[0])).join('')}${fila(r.vado,'Andando por la orilla')}${fila(r.agua,'Surf')}${fila(r.pesca,'Pesca')}</div>`).join('')}</div>`; }},
+ ataques:{t:'Ataques',f:()=>{ const tipos=[...new Set(D.ataques.map(a=>a.t))].sort((x,y)=>(NT[x]||x).localeCompare(NT[y]||y));
+   return `<h2>Ataques por tipo</h2><p class="intro">${D.ataques.length} ataques. Potencia y precisión de cada uno, qué hace y qué criaturas lo aprenden (con el nivel). «—» en potencia es un ataque de estado.</p>`+tipos.map(t=>{ const L=D.ataques.filter(a=>a.t===t).sort((a,b)=>a.p-b.p);
+     return `<div class="bloque"><h3>${tipo(t)} ${L.length} ataques</h3><div class="tablebox"><table><thead><tr><th>Ataque</th><th>Potencia</th><th>Precisión</th><th>Efecto</th><th>Lo aprenden</th></tr></thead><tbody>${L.map(a=>`<tr><td class="obj">${esc(a.n)}</td><td>${a.p||'—'}</td><td>${a.pr}</td><td class="sub">${esc(a.e)}</td><td><details><summary>${a.q.length} criaturas · desde Nv. ${a.q[0].l}</summary><div class="sub">${a.q.map(x=>esc(x.n)+' '+x.l).join(', ')}</div></details></td></tr>`).join('')}</tbody></table></div></div>`; }).join(''); }},
+ armario:{t:'Armario',f:()=>`<h2>Armario</h2><p class="intro">Crea avatares para tus personajes con la misma ropa del armario del juego. Se guardan en este navegador. Puedes descargar cada uno como imagen.</p>
+   <div class="arm"><div><label class="pjsel">Personas del juego<select id="armJuego"><option value="">Elige a alguien para cambiarle el avatar…</option>${(()=>{ const G={}; (D.personas||[]).forEach((p,i)=>(G[p.grupo]=G[p.grupo]||[]).push([p,i])); return Object.entries(G).map(([g,L])=>`<optgroup label="${esc(g)}">${L.map(([p,i])=>`<option value="${i}">${esc(p.nombre)}</option>`).join('')}</optgroup>`).join(''); })()}</select></label><div class="lista" id="armLista"></div><div class="acc"><button class="b pri" id="armNuevo">+ Nuevo</button><button class="b" id="armDup">Duplicar</button><button class="b" id="armBorrar">Borrar</button><button class="b" id="armOrig" hidden>Volver al original</button></div><p class="sub nube" id="armNube" role="status"></p><details class="llevar" id="armLlevar" hidden><summary>Ver el texto de los cambios</summary><p class="sub">Si hiciera falta, también puedes copiar este texto y pegárselo a Claude.</p><textarea id="armCodigo" readonly rows="6"></textarea></details></div>
+   <div class="vista"><input id="armNombre" maxlength="18" aria-label="Nombre del personaje"><div class="cuadro"><canvas class="grande" id="armCv" width="360" height="540"></canvas></div>
+   <div class="giro"><button id="armIzq" aria-label="Girar a la izquierda">◀</button><button id="armGirar">GIRAR</button><button id="armDer" aria-label="Girar a la derecha">▶</button></div>
+   <div class="comb"><canvas id="armComb" width="140" height="240"></canvas><span>Así se ve<br>en combate</span></div><button class="b" id="armPng">Descargar imagen</button></div>
+   <div class="filas" id="armFilas"></div></div>`, on:armarioGuia},
+ rivales:{t:'Rivales',f:()=>`<h2>Combates contra rivales</h2><p class="intro">En orden de aparición. El nivel es el de su inicial; sus otras criaturas van 1 o 2 niveles por debajo. Ningún rival repite tipo dentro de su equipo.</p><div class="tablebox"><table><thead><tr><th>#</th><th>Rival</th><th>Dónde</th><th>Nivel</th><th>Nota</th></tr></thead><tbody>${RIV.map((r,i)=>`<tr><td>${i+1}</td><td class="obj">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="sub">${r[3]}</td></tr>`).join('')}</tbody></table></div>`}
+};
+// ---------- armario de la guía ----------
+const ARM_CLAVE='chy_guia_armario';
+const ARM_BASE=[{nombre:'Tú',a:{genero:'chico',piel:'#f3c9a0',pelo:'#5a3420',camiseta:'#e0483e',pantalon:'#2f4f9a',gorra:'#f4f4f4',mochila:'#f0a838',peinado:'corto'}},
+  {nombre:'Soldado COBRIX',a:{genero:'chico',piel:'#e2b088',pelo:'#1a1a1a',camiseta:'#5a1424',pantalon:'#16161c',gorra:'#c8282a',prenda:'jersey',emblema:'cuervo',cara:'seria',peinado:'corto'}},
+  {nombre:'Comandante',a:{genero:'chica',piel:'#f0c8a0',pelo:'#c8c8d8',camiseta:'#5a1424',pantalon:'#16161c',prenda:'jersey',emblema:'cuervo',capa:'#6a1828',capaBorde:'#2a0a12',capaLarga:true,cara:'decidida',peinado:'largo'}},
+  {nombre:'Capitán',a:{genero:'chico',piel:'#c98e66',pelo:'#e8e8e8',camiseta:'#1e2a5a',pantalon:'#1e2a5a',gorra:'#ffffff',gorro:'capitan',capa:'#1e3a8a',capaBorde:'#ffffff',cara:'decidida',peinado:'corto'}}];
+let armEstado=null, armDir='abajo';
+// Las personas del juego que edites se guardan también en la base de datos de la guía (colección «avatares»),
+// para que Claude pueda leerlas y aplicarlas al juego.
+let _armDb=null, _armSyncT=null, _armEstadoNube='';
+async function armDb(){ if(_armDb!==null) return _armDb; try{ _armDb=(window.claude&&window.claude.use)?await window.claude.use('db'):false; }catch(e){ _armDb=false; } return _armDb||false; }
+function armHechos(){ try{ return JSON.parse(localStorage.getItem('chy_guia_armario_nube')||'{}'); }catch(e){ return {}; } }
+function armHechosGuardar(h){ try{ localStorage.setItem('chy_guia_armario_nube',JSON.stringify(h)); }catch(e){} }
+function armSync(){ clearTimeout(_armSyncT); _armSyncT=setTimeout(armSyncYa,700); }
+async function armSyncYa(){ const db=await armDb(); const st=armCargar(); if(!db){ _armEstadoNube='sin'; armPintaNube(); return; }
+  const hechos=armHechos(), ahora={};
+  for(const q of st.lista) if(q.juego){ const a=armAspecto(q); ahora[q.juego]={nombre:q.nombre,a}; }
+  try{
+    for(const [id,v] of Object.entries(ahora)){ const k=JSON.stringify(v); if(hechos[id]===k) continue; await db.collection('avatares').doc(id).set({id,nombre:v.nombre,a:v.a,t:Date.now()}); hechos[id]=k; }
+    for(const id of Object.keys(hechos)) if(!ahora[id]){ await db.collection('avatares').doc(id).delete(); delete hechos[id]; }
+    armHechosGuardar(hechos); _armEstadoNube=Object.keys(ahora).length?'ok':'';
+  }catch(e){ _armEstadoNube='error'; }
+  armPintaNube(); }
+function armPintaNube(){ const el=document.getElementById('armNube'); if(!el) return;
+  el.textContent=_armEstadoNube==='ok'?'✓ Cambios guardados para el juego. Dile a Claude «aplica los cambios del armario al juego».':_armEstadoNube==='error'?'No se han podido guardar los cambios para el juego. Copia el texto de abajo y pégaselo a Claude.':_armEstadoNube==='sin'?'Aquí no se pueden guardar para el juego: copia el texto de abajo y pégaselo a Claude.':''; }
+
+function armCargar(){ if(armEstado) return armEstado; try{ const t=localStorage.getItem(ARM_CLAVE); if(t) armEstado=JSON.parse(t); }catch(e){} if(!armEstado||!armEstado.lista||!armEstado.lista.length) armEstado={lista:JSON.parse(JSON.stringify(ARM_BASE)),sel:0}; return armEstado; }
+function armGuardar(){ try{ localStorage.setItem(ARM_CLAVE,JSON.stringify(armEstado)); }catch(e){} }
+function armAspecto(p){ const a=Object.assign({},p.a); delete a.genero; return a; }
+function armarioGuia(){ if(!window.ARMJS) return; const J=window.ARMJS, st=armCargar(), $=id=>document.getElementById(id);
+  const normal=p=>{ if(p&&p.a&&!p.a.gorra&&!p.a.gorro){ p.a.gorro='ninguno'; p.a.gorra='#e0483e'; } if(p&&p.juego&&!p.a.emblema&&(D.personas||[]).some(q=>q.id===p.juego&&q.grupo==='Equipo COBRIX')) p.a.emblema='cuervo'; return p; };
+  st.lista.forEach(normal);
+  const actual=()=>normal(st.lista[st.sel]);
+  const dibujar=()=>{ const p=actual(); J.genero(p.a.genero); const a=armAspecto(p);
+    const cv=$('armCv'), x=cv.getContext('2d'); x.clearRect(0,0,cv.width,cv.height); x.save(); x.globalAlpha=.25; x.fillStyle='#1c3a30'; x.beginPath(); x.ellipse(180,500,80,16,0,0,7); x.fill(); x.restore();
+    const h=J.personaHD(a,armDir,0,a.mochila||null,6); x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high'; x.drawImage(h,0,0,h.width,h.height,0,6,360,540);
+    const cb=$('armComb'), y=cb.getContext('2d'); y.clearRect(0,0,cb.width,cb.height); const pc=J.personaCombate(a), k=Math.min(cb.width/pc.width,cb.height/pc.height); y.imageSmoothingEnabled=true; y.drawImage(pc,(cb.width-pc.width*k)/2,cb.height-pc.height*k,pc.width*k,pc.height*k);
+    $('armNombre').value=p.nombre; };
+  const filas=()=>{ const p=actual(); J.genero(p.a.genero);
+    const F=[{n:'CHICO / CHICA',k:'genero',ops:[['CHICO','chico'],['CHICA','chica']]},...J.ARMARIO];
+    $('armFilas').innerHTML=F.map((f,i)=>{ const ops=f.ops, v=p.a[f.k]??null, j=ops.findIndex(o=>o[1]===v), nom=j>=0?ops[j][0]:v==null?'—':'DEL JUEGO';
+      return `<div class="fila"><b>${esc(f.n)}</b><button data-f="${i}" data-p="-1" aria-label="Anterior">◀</button><span class="val">${esc(nom)}</span><button data-f="${i}" data-p="1" aria-label="Siguiente">▶</button>${f.color&&v?`<span class="sw" style="background:${v}"></span>`:'<span></span>'}</div>`; }).join('');
+    $('armFilas').querySelectorAll('button').forEach(b=>b.onclick=()=>{ const f=F[+b.dataset.f], p=actual(); J.genero(p.a.genero); const ops=f.ops, v=p.a[f.k]??null, j=ops.findIndex(o=>o[1]===v), n=ops.length, q=j<0?0:(j+(+b.dataset.p)+n)%n;
+      const nv=ops[q][1]; p.a[f.k]=nv;
+      if(f.k==='genero'){ J.genero(nv); const lista=J.ARMARIO.find(r=>r.k==='peinado').ops; if(!lista.some(o=>o[1]===p.a.peinado)) p.a.peinado=lista[0][1]; }
+      if(f.k==='gorro'&&!p.a.gorra) p.a.gorra='#e0483e';
+
+      armGuardar(); filas(); lista(); dibujar(); }); };
+  const lista=()=>{ $('armLista').innerHTML=st.lista.map((p,i)=>`<button class="pj" data-i="${i}" aria-current="${i===st.sel}"><canvas width="60" height="90"></canvas><span>${esc(p.nombre)}${p.juego?'<small>del juego</small>':''}</span></button>`).join('');
+    $('armLista').querySelectorAll('.pj').forEach(b=>{ const p=st.lista[+b.dataset.i]; J.genero(p.a.genero); const c=b.querySelector('canvas'), x=c.getContext('2d'), h=J.personaHD(armAspecto(p),'abajo',0,p.a.mochila||null,2); x.imageSmoothingEnabled=true; x.drawImage(h,0,0,60,90);
+      b.onclick=()=>{ st.sel=+b.dataset.i; armGuardar(); lista(); filas(); dibujar(); }; }); };
+  const giro=p=>{ const D=['abajo','izq','arriba','der']; armDir=D[(D.indexOf(armDir)+p+4)%4]; dibujar(); };
+  $('armGirar').onclick=()=>giro(1); $('armDer').onclick=()=>giro(1); $('armIzq').onclick=()=>giro(-1);
+  $('armNombre').oninput=e=>{ actual().nombre=e.target.value||'Sin nombre'; armGuardar(); lista(); };
+  $('armNuevo').onclick=()=>{ st.lista.push({nombre:'Personaje '+(st.lista.length+1),a:JSON.parse(JSON.stringify(ARM_BASE[0].a))}); st.sel=st.lista.length-1; armDir='abajo'; armGuardar(); lista(); filas(); dibujar(); };
+  $('armDup').onclick=()=>{ const p=actual(); st.lista.splice(st.sel+1,0,{nombre:(p.nombre+' 2').slice(0,18),a:JSON.parse(JSON.stringify(p.a))}); st.sel++; armGuardar(); lista(); filas(); dibujar(); };
+  $('armBorrar').onclick=()=>{ if(st.lista.length<=1) return; if(!confirm('¿Borrar a '+actual().nombre+'?')) return; st.lista.splice(st.sel,1); st.sel=Math.max(0,st.sel-1); armGuardar(); lista(); filas(); dibujar(); };
+  $('armPng').onclick=()=>{ const p=actual(), c=document.createElement('canvas'); c.width=4*200; c.height=320; const x=c.getContext('2d'); x.fillStyle='#e8f4ec'; x.fillRect(0,0,c.width,c.height); J.genero(p.a.genero);
+    ['abajo','izq','arriba','der'].forEach((d,i)=>{ const h=J.personaHD(armAspecto(p),d,0,p.a.mochila||null,4); x.imageSmoothingEnabled=true; x.drawImage(h,i*200+10,10,180,270); });
+    x.fillStyle='#303840'; x.font='bold 22px Fredoka, sans-serif'; x.textAlign='center'; x.fillText(p.nombre,c.width/2,308);
+    const nombre=(p.nombre||'personaje').replace(/[^\w\-áéíóúñÁÉÍÓÚÑ ]/g,'').trim()||'personaje';
+    c.toBlob(async blob=>{ try{ const dl=window.claude&&await window.claude.use('downloads'); if(dl){ await dl.save({filename:nombre+'.png',data:blob}); return; } }catch(e){ return; }
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=nombre+'.png'; a.click(); },'image/png'); };
+  const extra=()=>{ const p=actual(); $('armOrig').hidden=!p.juego; const mod=st.lista.filter(q=>q.juego);
+    $('armLlevar').hidden=!mod.length; armSync(); $('armCodigo').value=mod.length?'Cambia el aspecto de estas personas del juego:\n'+mod.map(q=>q.juego+' ('+q.nombre+'): '+JSON.stringify(armAspecto(q))).join('\n'):''; };
+  const _filas=filas, _dibujar=dibujar;
+  $('armJuego').onchange=e=>{ const i=e.target.value; if(i==='') return; const P=D.personas[+i]; let k=st.lista.findIndex(q=>q.juego===P.id);
+    if(k<0){ const chica=['largo','coletas','melena','trenzas','monos','coleta','bob','monoAlto','ondulado','coletaAlta','pixie','trenzaLado','flequilloRecto','monoBajo','permanente'].includes(P.a.peinado)||!!P.a.bikini||!!P.a.falda; st.lista.push(normal({nombre:P.nombre.slice(0,18),juego:P.id,a:Object.assign({genero:chica?'chica':'chico'},JSON.parse(JSON.stringify(P.a)))})); k=st.lista.length-1; }
+    st.sel=k; armDir='abajo'; e.target.value=''; armGuardar(); lista(); filas(); dibujar(); extra(); };
+  $('armOrig').onclick=()=>{ const p=actual(), P=(D.personas||[]).find(q=>q.id===p.juego); if(!P) return; p.a=Object.assign({genero:p.a.genero},JSON.parse(JSON.stringify(P.a))); armGuardar(); lista(); filas(); dibujar(); extra(); };
+  document.querySelector('.arm').addEventListener('click',()=>setTimeout(extra,0)); $('armNombre').addEventListener('input',extra);
+  lista(); filas(); dibujar(); extra();
+  if(window.claude&&window.claude.use) window.claude.use('downloads').then(d=>{ if(!d&&$('armPng')) $('armPng').hidden=true; }).catch(()=>{}); }
+try{ if(armCargar().lista.some(q=>q.juego)) armSync(); }catch(e){}
+const nav=document.getElementById('nav'), main=document.getElementById('main');
+nav.innerHTML=Object.entries(S).map(([k,v])=>`<a href="#${k}" data-k="${k}">${v.t}</a>`).join('');
+function ver(){ let k=location.hash.slice(1); if(!S[k]) k='dex'; main.innerHTML=S[k].f(); if(S[k].on) S[k].on(); nav.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',a.dataset.k===k?'true':'false')); }
+addEventListener('hashchange',()=>{ ver(); window.scrollTo(0,0); }); ver();
+</script>
