@@ -62,6 +62,7 @@ button:focus-visible{outline:2px solid var(--acento);outline-offset:3px}
 .fila{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .secundario{background:transparent;border:1px solid var(--linea);color:var(--texto);border-radius:6px;padding:8px 14px;font-family:var(--f-texto);font-size:14px;cursor:pointer}
 .secundario.peligro{border-color:#7a3a33;color:#f0a39a}
+.nota{font-size:13px;line-height:1.45;opacity:.8;margin:8px 0 0}
 .ayuda{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px;color:var(--texto-suave)}
 .ayuda b{font-family:var(--f-pixel);font-weight:400;color:var(--texto)}
 hr{border:none;border-top:1px solid var(--linea);margin:0}
@@ -107,8 +108,12 @@ body.completa canvas{position:fixed;inset:0;width:100vw;height:100vh;aspect-rati
     <div class="campo"><label for="f-rival">Nombre del rival</label><input type="text" id="f-rival" maxlength="8"></div>
   </div>
   <div class="fila">
+    <button class="secundario" id="exportar">Exportar partida</button>
+    <button class="secundario" id="importar">Importar partida</button>
     <button class="secundario peligro" id="borrar">Borrar partida</button>
+    <input type="file" id="f-importar" accept=".json,application/json" hidden>
   </div>
+  <p id="aviso-partida" class="nota">La partida se guarda sola cada vez que cambias de zona. Exporta un archivo de vez en cuando para no perderla si se borran los datos del navegador o cambias de móvil.</p>
   <hr>
   <h2>Cómo jugar</h2>
   <div class="ayuda">
@@ -840,7 +845,7 @@ const CONFIG = {
     hojimi:{ nombre:'Bichyrrat', tipo:'bicho', tipo2:'psiquico', base:{ps:46,atq:48,def:44,vel:58}, captura:.45, xp:60, imagen:'hojimi', tam:42, evoluciona:[20,'felifolia'], aprende:[[1,'aranazos'],[1,'pinza'],[5,'mareoMental'],[9,'picadura'],[14,'ondaMental'],[19,'rayoBicho'],[24,'telepatia'],[29,'tijeretazo'],[34,'psicocorte'],[40,'enjambre'],[46,'destelloMental'],[52,'zumbido']] },
     felifolia:{ nombre:'Rabichy', tipo:'bicho', tipo2:'psiquico', base:{ps:64,atq:72,def:60,vel:80}, captura:.2, xp:142, imagen:'felifolia', tam:60, evoluciona:[38,'silfelina'], aprende:[[1,'aranazos'],[1,'pinza'],[5,'mareoMental'],[9,'picadura'],[14,'ondaMental'],[19,'rayoBicho'],[24,'telepatia'],[29,'tijeretazo'],[34,'psicocorte'],[40,'enjambre'],[46,'destelloMental'],[52,'zumbido']] },
     silfelina:{ nombre:'Bicharryn', tipo:'bicho', tipo2:'psiquico', base:{ps:84,atq:98,def:80,vel:106}, captura:.06, xp:245, imagen:'silfelina', tam:78, aprende:[[1,'aranazos'],[1,'pinza'],[5,'mareoMental'],[9,'picadura'],[14,'ondaMental'],[19,'rayoBicho'],[24,'telepatia'],[29,'tijeretazo'],[34,'psicocorte'],[40,'enjambre'],[46,'destelloMental'],[52,'zumbido']] },
-    serpyra:{ nombre:'Serpyra', tipo:'dragon', tipo2:'fuego', base:{ps:46,atq:54,def:44,vel:50}, captura:.3, xp:70, imagen:'serpyra', tam:44, evoluciona:[30,'dragyra'], aprende:[[1,'aranazos'],[1,'brasa'],[7,'alientoDragon'],[12,'fogonazo'],[18,'dracoletazo'],[24,'giroArdiente'],[30,'zarpaDraconica'],[36,'alientoIgneo'],[42,'pulsoDragon'],[48,'llamarada'],[55,'furiaDraconica']] },
+    serpyra:{ nombre:'Serpyra', tipo:'dragon', tipo2:'fuego', base:{ps:46,atq:54,def:44,vel:50}, captura:.3, xp:70, imagen:'serpyra', tam:44, evoluciona:[36,'dragyra'], aprende:[[1,'aranazos'],[1,'brasa'],[7,'alientoDragon'],[12,'fogonazo'],[18,'dracoletazo'],[24,'giroArdiente'],[30,'zarpaDraconica'],[36,'alientoIgneo'],[42,'pulsoDragon'],[48,'llamarada'],[55,'furiaDraconica']] },
     dragyra:{ nombre:'Dragyra', tipo:'dragon', tipo2:'fuego', base:{ps:64,atq:80,def:64,vel:70}, captura:.12, xp:150, imagen:'dragyra', tam:64, evoluciona:[50,'pyrodrak'], aprende:[[1,'aranazos'],[1,'brasa'],[7,'alientoDragon'],[12,'fogonazo'],[18,'dracoletazo'],[24,'giroArdiente'],[30,'zarpaDraconica'],[36,'alientoIgneo'],[42,'pulsoDragon'],[48,'llamarada'],[55,'furiaDraconica']] },
     pyrodrak:{ nombre:'Pyrodrak', tipo:'dragon', tipo2:'fuego', base:{ps:90,atq:120,def:88,vel:96}, captura:.04, xp:270, imagen:'pyrodrak', tam:90, aprende:[[1,'aranazos'],[1,'brasa'],[7,'alientoDragon'],[12,'fogonazo'],[18,'dracoletazo'],[24,'giroArdiente'],[30,'zarpaDraconica'],[36,'alientoIgneo'],[42,'pulsoDragon'],[48,'llamarada'],[55,'furiaDraconica']] },
     volpi:{ nombre:'Volpi', tipo:'electrico', base:{ps:40,atq:48,def:38,vel:66}, captura:.45, xp:58, imagen:'volpi', tam:38, evoluciona:[18,'volkuro'], aprende:[[1,'aranazos'],[1,'chispazo'],[5,'ataqueRapido'],[9,'mordisco'],[14,'chispa'],[19,'colmillo'],[24,'descarga'],[30,'punoVoltio'],[36,'relampago'],[42,'tormentaElectrica'],[50,'voltioCruel']] },
@@ -2149,7 +2154,7 @@ const CONFIG = {
       salidas:[{x:29,y:20,a:'ciudad',x2:1,y2:13,dir:'der'},{x:29,y:21,a:'ciudad',x2:1,y2:14,dir:'der'},
         {x:14,y:3,a:'cascada',x2:12,y2:18,dir:'arriba'},{x:15,y:3,a:'cascada',x2:13,y2:18,dir:'arriba'}],
       carteles:{'26,19':'RUTA 5\nAl este: Ciudad Coral. Al norte: la Cascada Chy.','17,10':'CASCADA CHY\nCruza las piedras del lago y atraviesa la cascada. Dicen que detrás hay una cueva...'},
-      encuentros:[{esp:'volpi',min:16,max:18,peso:6},{esp:'castorin',min:16,max:19,peso:7},{esp:'masher',min:17,max:21,peso:18},{esp:'wolah',min:17,max:19,peso:14},{esp:'hippo',min:16,max:17,peso:12},{esp:'pilyon',min:17,max:19,peso:11},{esp:'bucky',min:18,max:19,peso:9},{esp:'wamio',min:17,max:19,peso:7},{esp:'tirgy',min:17,max:19,peso:7},{esp:'bambi',min:17,max:19,peso:6},{esp:'zemya',min:17,max:19,peso:5},{esp:'klecspin',min:16,max:18,peso:4},{esp:'rask',min:18,max:19,peso:4},{esp:'bampiri',min:16,max:18,peso:3,noche:true}],
+      encuentros:[{esp:'volpi',min:16,max:18,peso:6},{esp:'osnevi',min:16,max:18,peso:3},{esp:'rinev',min:16,max:18,peso:3},{esp:'castorin',min:16,max:19,peso:7},{esp:'masher',min:17,max:21,peso:18},{esp:'wolah',min:17,max:19,peso:14},{esp:'hippo',min:16,max:17,peso:12},{esp:'pilyon',min:17,max:19,peso:11},{esp:'bucky',min:18,max:19,peso:9},{esp:'wamio',min:17,max:19,peso:7},{esp:'tirgy',min:17,max:19,peso:7},{esp:'bambi',min:17,max:19,peso:6},{esp:'zemya',min:17,max:19,peso:5},{esp:'klecspin',min:16,max:18,peso:4},{esp:'rask',min:18,max:19,peso:4},{esp:'bampiri',min:16,max:18,peso:3,noche:true}],
       objetos:[{id:'obj_r5a',x:3,y:24,esferas:3},{id:'obj_r5b',x:27,y:11,pociones:2}],
       npcs:[
         {id:'guardacasc1',x:14,y:10,dir:'abajo',accion:'texto',hasta:{vencidos:['cobrix_jefe']},aspecto:{piel:'#d89a70',pelo:'#5a3a1a',camiseta:'#4a7a3a',pantalon:'#5a4a2a',gorra:'#3a6a2a'},
@@ -2192,7 +2197,7 @@ const CONFIG = {
         "CCCCCCCCCCCCEECCCCCCCCCCCC"
       ],
       salidas:[{x:21,y:13,a:'cascada2',x2:12,y2:16,dir:'arriba'},{x:12,y:19,a:'ruta5',x2:14,y2:4,dir:'abajo'},{x:13,y:19,a:'ruta5',x2:15,y2:4,dir:'abajo'}],
-      encuentros:[{esp:'osnevi',min:35,max:37,peso:6},{esp:'rinev',min:35,max:37,peso:5},{esp:'hiponax',min:37,max:39,peso:22},{esp:'karspy',min:37,max:39,peso:15},{esp:'kander',min:36,max:37,peso:13},{esp:'kraus',min:37,max:39,peso:12},{esp:'guino',min:37,max:39,peso:10},{esp:'pyonix',min:37,max:39,peso:10},{esp:'berang',min:37,max:39,peso:8},{esp:'lodus',min:37,max:39,peso:6},{esp:'seloan',min:36,max:37,peso:3},{esp:'kypras',min:40,max:41,peso:1}],
+      encuentros:[{esp:'osoglacio',min:35,max:37,peso:6},{esp:'rinoskal',min:35,max:37,peso:5},{esp:'hiponax',min:37,max:39,peso:22},{esp:'karspy',min:37,max:39,peso:15},{esp:'kander',min:36,max:37,peso:13},{esp:'kraus',min:37,max:39,peso:12},{esp:'guino',min:37,max:39,peso:10},{esp:'pyonix',min:37,max:39,peso:10},{esp:'berang',min:37,max:39,peso:8},{esp:'lodus',min:37,max:39,peso:6},{esp:'seloan',min:36,max:37,peso:3},{esp:'kypras',min:40,max:41,peso:1}],
       objetos:[{id:'obj_casc1',x:20,y:6,revivires:1},{id:'obj_casc2',x:4,y:6,dinero:600},{id:'obj_casc3',x:15,y:15,esferas:4}],
       npcs:[
         {id:'cobrix_c0',x:6,y:7,dir:'der',nombre:'SOLDADO MARCOS DE COBRIX',accion:'entrenador',dinero:3000,premio:3,aspecto:{piel:'#f0c8a0',pelo:'#1a1a1a',camiseta:'#1e1e28',pantalon:'#2a2a34',gorra:'#c8282a'},
@@ -2561,7 +2566,7 @@ const CONFIG = {
       caidas:{"45,7": [43, 7], "46,32": [43, 32], "10,32": [10, 32], "52,19": [52, 19]},
       casillas:["CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC.*..CCCCCC", "CCCCCccccCCCCCCCCC....*..CCCCCCCCCCCCCCCCCCCCCCCCCC.**,,,....^CC", "CCccccrccccCCCCC**..,,,..*.*CCCCCCCCCcccccCCCCCC.*.,,,,,,,,,*.CC", "CCcececccccCCCC..,,,,,,,,,...CCCCCeccecccccccCCC..,,,,,,,,,,,.CC", "CCccccceccccCC*.,,,,,,,,,,,...CCCcccccccccccccc*.,,,,,,,,,,,,,CC", "CCccccccccccc*ⓜ,,,,,,,,,,,,,..cecccccccccccccⓢc*.,,,,,,,,,,,,,CC", "CCccecccccccc..,,,,,,,,,,,,ⓜ.*cccccccccecrcccce**,,,,,,,,,,,,,CC", "CCccccccccccc*.,,,,,,,,,,,,,*.cCCCCecccccccc<CCC.*,,,,,,,,,,,.CC", "CCceccccccCCc.**ⓜ,,,,,,,,,,...CCCCCCCcrce<CCCCCCC..,,,,,,,,,**CC", "CCCcccccCCCCCC...,,,,,,,,,..CCCCCCCCCCcccCCCCCCCCC*..ⓜ,,,*...CCC", "CCCCcc<CCCCCCCCC.*.*,,,...*CCCCCCCCCCCcccCCCCCCCCCCC......CCCCCC", "CCCCccCCCCCCCCCCCCC.*...**CCCCCCCCCCCCccecCCCCCCCCCCCccecCCCCCCC", "CCCCecCCCCCCCCCCCCCCCcccccCCCCCCCCCCcccccccCCCCCCCCCcccccCCCCCCC", "CCCcccCCCCCCCCCCCCCCCcceccCCCCCCCCCccccccrccCCCCCCCcccccccCCCCCC", "CCCccccCCCCCCCCCCCCCcccccccCCCCCCCccccccccccCCCCCCcccccccⓡcCCCCC", "CCcccccccCCCCCCCCcccrccccccccccCCccccccccccccCCCCcecccccccccCCCC", "CCcccccccccCCCC<ccccrrcccccccccccrcccccccccccccccccccrccccccCCCC", "CCccccccⓡccccccceccccccccccccceccccrccccccccccccccccⓢccccccrCCCC", "CCccrccceccccccc<cccercccccccccececccccccceccCCCCCcccccccccCCCCC", "CCccccccccCCCCCCCeccr<ecccccccCCCCCcccccccccCCCCCCCcccccccCCCCCC", "CCCccccccCCCCCCCCCCCccccccCCCCCCCCCCccccⓡccCCCCCCCCCccccCCCCCCCC", "CCCCCccccCCCCCCCCCCCCccccCCCCCCCCCCCCCccccCCCCCCCCCCCcccCCCCCCCC", "CCCCCCcccCCCCCCCCCCCCeccCCCCCCCCCCCCCCccccCCCCCCCCCCCcccCCCCCCCC", "CCCCCCcccCCCCCCCCCCCCccCCCCCCCCCCCCCCCccccCCCCCCCCCCcccccCCCCCCC", "CCCCCcccccCCCCCCCCCCCccCCCCCCCCCCCCCCccccccCCCCC<ccccccccceCCCCC", "CCceccccccrccCCCCCCCCccCCCCCCCCCCCccccceccccCCcccccccccccccccCCC", "CCccccccccccccCCCCCCCcccCCCCCCCCCccccccccccccccccccⓡecceccccceCC", "CCcccccccrcccccCCCCC.....cCCCCCCccecceccccccccccccccccccccccccCC", "CCcccc~~~ccccrccC*.,,,,,*.cccec<eccrcccccccccccccccccccccccccCCC", "CCcccc~~~ccceccc.*,,,,,,,.*ccccrcccccccccccccccccccccccccccccCCC", "CCccccccccⓢcccrc.ⓜ,,,,,,,,.cCCCCCcceccccccccccⓢcccⓡccccecccCCCCC", "CC^ccrccccccr<cc..,,,,,,,.*CCCCCCCCccccccccccCCCCCCcccccCCCCCCCC", "CCCCCCCccCCCCCCCC..,,,,,..CCCCCCCCCCC<cccCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCC...*CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"],
       salidas:[{x:2,y:33,a:'refugio',x2:8,y2:1,dir:'abajo'},{x:61,y:3,a:'gruta2',x2:60,y2:33,dir:'izq'}],
-      encuentros:[{esp:'murcielin',min:36,max:38,peso:24},{esp:'cristalo',min:36,max:38,peso:20},{esp:'lodus',min:36,max:38,peso:14},{esp:'kroak',min:37,max:38,peso:10},{esp:'rocco',min:37,max:39,peso:12},{esp:'braculin',min:36,max:38,peso:12},{esp:'nadirion',min:37,max:39,peso:8}], encuentrosPor:{',':[{esp:'hojarro',min:36,max:38,peso:24},{esp:'lefereon',min:36,max:38,peso:18},{esp:'edulis',min:36,max:38,peso:15},{esp:'wenny',min:36,max:38,peso:12},{esp:'silisco',min:37,max:39,peso:10},{esp:'bilka',min:36,max:38,peso:9},{esp:'leolirio',min:37,max:39,peso:8},{esp:'skrabaton',min:37,max:38,peso:4}]},
+      encuentros:[{esp:'murcielin',min:36,max:38,peso:24},{esp:'kraus',min:36,max:38,peso:20},{esp:'lodus',min:36,max:38,peso:14},{esp:'kroak',min:37,max:38,peso:10},{esp:'rocco',min:37,max:39,peso:12},{esp:'braculin',min:36,max:38,peso:12},{esp:'nadirion',min:37,max:39,peso:8}], encuentrosPor:{',':[{esp:'hojarro',min:36,max:38,peso:24},{esp:'lefereon',min:36,max:38,peso:18},{esp:'edulis',min:36,max:38,peso:15},{esp:'wenny',min:36,max:38,peso:12},{esp:'silisco',min:37,max:39,peso:10},{esp:'bilka',min:36,max:38,peso:9},{esp:'leolirio',min:37,max:39,peso:8},{esp:'skrabaton',min:37,max:38,peso:4}]},
       rocas:{'10,27':{id:'gruta1_roca1',superesferas:2},'14,32':{id:'gruta1_roca2',revivires:1}},
       objetos:[{id:'obj_gruta1_1',x:41,y:13,superesferas:3},{id:'obj_gruta1_2',x:61,y:29,superpociones:2},{id:'obj_gruta1_3',x:35,y:33,revivires:1},{id:'obj_gruta1_4',x:20,y:22,curaestados:3}],
       npcs:[
@@ -2577,7 +2582,7 @@ const CONFIG = {
       nombre:'Gruta Pértica · Sótano 2', borde:'C', oscuro:true, oscuridad:.7, fondo:'cueva', musica:'cueva', encuentrosEn:'c', prob:.08, trampasGruta:true,
       casillas:["CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCcccCCCCCCCCCCcccccccccccCCCCCCCCCCCCCCCCCCCCCC..,,,,,..CCC", "CCCccccccccCCCCCCCccccccccceecccCCCCCCCCCCCCCCCCCCC**,,,,,,,*.CC", "CCCcccccccccCCCCCccccccccⓡcccccc<CCCceccCCCCCCCCCC.ⓜ,,,,,,,,,.CC", "CCcccccccccccCCCcccccccccrcccccccccccccrcecCCCCCCC..,,,,,,,,,.CC", "CCcccccⓡccccccccccceccecccccccccecccccccccc<CCCCCC..,,,,,,,,,.CC", "CCcccccccccccccccccccccccccccccccccccccccccccCCCCCC**,,,,,,,..CC", "CCCcccccccccCCCCcceccccccccⓡcccccccccccccccccCCCCCCC.*,,,ⓜ,..CCC", "CCCCecⓡccccCCCCCCccccccccccccccccccccccccccccCCCCCCCc.*.**.CCCCC", "CCCC<ccccrCCCCCCCCCcccccccccccCCCcccccⓡccccrCCCCCCCCccc<CCCCCCCC", "CCCCccccCCCCCCCCCCCCCCcccccccCCCCCcccccccccCCCCCCCCCcceCCCCCCCCC", "CCCCCccCCCCCCCCCCCCCCCcⓡcccccCCCCCCCCcccccCCCCCCCCCCeccCCCCCCCCC", "CCCCCccCCCCCCCCCCCCCCcccecccccCCCCCCCCcceeCCCCCCCCCCcccCCCCCCCCC", "CCCCCccCCCCCCCCCCCCCcccccccccccCCCCCCCccceCCCCCCCCC..**CCCCCCCCC", "CCCCCccCCCCCCCCCCCCCcccccccccccCCCCCCCccccCCCCCCC.*,,,..CCCCCCCC", "CCCCccccCCCc<rCCCCCcccccccccccccCCCCCccccccCCCCC.,ⓜ,,,,,*CCCCCCC", "CCccecccccccccccccccceccccccccrcccccccccccccrcc*.,,,,,,,.CCCCCCC", "CCcecccccccccccceccccccccccccccccccccccccccccre.,,,,,,,,,*CCCCCC", "CCccccccccccccCCCCCccccccccrcccccccccccccccrcec..,,,,,,,..CCCCCC", "CCcccceccceccCCCCCCCcccccccccccccccccccccrcccccⓜ.,,,,,,,ⓜCCCCCCC", "CCcccccccccccCCCCCCCCecccccccrccccccccccccccrccc.**,,,.*.CCCCCCC", "CCcccccccccCCCCCCCCCCCCcccccCCCCccccccccrccccccCCCC....cccCCCCCC", "CCCcccccCCCCCCCCCCCCCCCCCCCCCCCCCcceccccccecccCCCCCCCCCcccCCCCCC", "CCCcccccCCCCCCCCCCCCCCCCCCCCCCCCCCCCcceccc<CCCCCCCCCCCCcce<CCCCC", "CCCcccccCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccCCCCCCCCCCCCCC.....CCCC", "CCcccccccCCCCCCCCCCCCCCCCCCCCCCCCCCCccccCCCCCCCCCCCCCC..*,...CCC", "CCccccccccCCCCCCCccccccCCCCCCCCCCCcccccccCCCCCCCCCCCC.*,,,,,..CC", "CCccrccccccCCCC<ccccccceccCCCCCCCcccccccccCCCCCCCCCCC.,,,,,,,.CC", "CCc~~~ccccccCCcececcccccccccCCCrcccccccccccCCCCCCCCC..,ⓜ,,,,,.CC", "CCc~~~eccccccccccccccccccrccCCCccccecccccccc<CCCCCCC.,,,,,,,,,CC", "CCccceccccccccccccccccccccrccCcccccccccccccccCCCCCCC**,,,,,,,.CC", "CCccccccccccccccccccccccccccCCcccccccceccccccCCCCCCCC.,,,,,,,.CC", "CCCcrcCCCCCCCcccceccccccccc^CCerccccccccccccCCCCCCCCC..,,,,,.^CC", "CCCCCCCCCCCCCCcrcccccccccccCCCCcccccrcccccccCCCCCCCCCC...,*.*CCC", "CCCCCCCCCCCCCCCCCeccccc<CCCCCCCccccceccccceCCCCCCCCCCCCC*.*CCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"],
       salidas:[{x:61,y:33,a:'gruta1',x2:60,y2:3,dir:'izq'},{x:27,y:33,a:'santuario',x2:10,y2:14,dir:'arriba'}],
-      encuentros:[{esp:'murcielin',min:38,max:40,peso:22},{esp:'cristalo',min:38,max:40,peso:18},{esp:'lodus',min:38,max:40,peso:14},{esp:'rocco',min:39,max:41,peso:14},{esp:'braculin',min:38,max:40,peso:14},{esp:'nadirion',min:39,max:41,peso:10},{esp:'velvigor',min:36,max:37,peso:8}], encuentrosPor:{',':[{esp:'hojarro',min:38,max:40,peso:20},{esp:'lefereon',min:38,max:40,peso:16},{esp:'silisco',min:39,max:41,peso:14},{esp:'bilka',min:38,max:40,peso:12},{esp:'leolirio',min:39,max:41,peso:12},{esp:'simentor',min:39,max:41,peso:10},{esp:'edulis',min:38,max:40,peso:10},{esp:'skrabaton',min:39,max:40,peso:6}]},
+      encuentros:[{esp:'murcielin',min:38,max:40,peso:22},{esp:'kraus',min:38,max:40,peso:18},{esp:'lodus',min:38,max:40,peso:14},{esp:'rocco',min:39,max:41,peso:14},{esp:'braculin',min:38,max:40,peso:14},{esp:'nadirion',min:39,max:41,peso:10},{esp:'velvigor',min:36,max:37,peso:8}], encuentrosPor:{',':[{esp:'hojarro',min:38,max:40,peso:20},{esp:'lefereon',min:38,max:40,peso:16},{esp:'silisco',min:39,max:41,peso:14},{esp:'bilka',min:38,max:40,peso:12},{esp:'leolirio',min:39,max:41,peso:12},{esp:'simentor',min:39,max:41,peso:10},{esp:'edulis',min:38,max:40,peso:10},{esp:'skrabaton',min:39,max:40,peso:6}]},
       rocas:{'4,33':{id:'gruta2_roca1',superpociones:2},'39,5':{id:'gruta2_roca2',dinero:2000}},
       objetos:[{id:'obj_gruta2_1',x:14,y:29,superesferas:4},{id:'obj_gruta2_2',x:3,y:33,revivires:2},{id:'obj_gruta2_3',x:45,y:17,superpociones:3},{id:'obj_gruta2_4',x:4,y:11,dinero:3000}],
       npcs:[
@@ -3144,7 +3149,7 @@ const CONFIG = {
       carteles:{'15,9':'RUTA 9\nRío Vapor. Al oeste: PUEBLO TERMAS. Hay escaleras para subir a la meseta y puentes para cruzar el río.','70,8':'CASA DE DOÑA CIRILA\nExperta en criaturas. Si las plantas te muerden, no es culpa mía.'},
       objetos:[{id:'obj_ruta9d',x:41,y:22,superesferas:3},{id:'obj_ruta9e',x:77,y:1,curaestados:2},{id:'obj_ruta9a',x:2,y:1,superpociones:2},{id:'obj_ruta9b',x:35,y:1,esferas:5},{id:'obj_ruta9c',x:1,y:22,revivires:1}],
       encuentros:[{esp:'volpi',min:20,max:22,peso:5},{esp:'avstel',min:22,max:24,peso:5},{esp:'leften',min:22,max:24,peso:10},{esp:'hipzon',min:22,max:24,peso:10},{esp:'rask',min:22,max:24,peso:9},{esp:'lupus',min:22,max:24,peso:10},{esp:'trent',min:22,max:24,peso:10},{esp:'lumispa',min:21,max:23,peso:8,noche:true},{esp:'leobone',min:22,max:24,peso:6,noche:true},{esp:'wedge',min:22,max:23,peso:10},{esp:'bambi',min:20,max:21,peso:8},{esp:'klecspin',min:22,max:24,peso:6},{esp:'qwin',min:22,max:24,peso:7}],
-      encuentrosAgua:[{esp:'pukeo',min:20,max:23,peso:30},{esp:'gotelo',min:21,max:23,peso:15},{esp:'kroby',min:21,max:23,peso:20},{esp:'qwin',min:22,max:24,peso:15},{esp:'boony',min:21,max:23,peso:10}],
+      encuentrosAgua:[{esp:'pukeo',min:20,max:23,peso:30},{esp:'kroby',min:21,max:23,peso:20},{esp:'qwin',min:22,max:24,peso:15},{esp:'boony',min:21,max:23,peso:10}],
       npcs:[
         {id:'r9_pesc',x:30,y:14,dir:'abajo',nombre:'PESCADOR TOMÁS',accion:'entrenador',premio:2,aspecto:{piel:'#e2b088',pelo:'#5a3a1a',camiseta:'#3a8a6a',pantalon:'#3a3a4a',gorra:'#e8c040'},
           antes:'¡Shhh! Estaba a punto de pescar uno enorme... ¡Por tu culpa se ha escapado! ¡Combate!', despues:'Bueno, volveré a intentarlo.', equipo:[['pukeo',23],['kroby',24],['gotelo',23]]},
@@ -3204,7 +3209,7 @@ const CONFIG = {
       carteles:{'20,5':'RUTA 10\nEl Río Vapor baja hasta PUEBLO CHY. Solo se llega al pueblo por el río, con una TABLA DE SURF.'},
       objetos:[{id:'obj_ruta10a',x:1,y:1,superpociones:2},{id:'obj_ruta10b',x:30,y:26,megaesferas:1}],
       encuentros:[{esp:'leften',min:22,max:24,peso:18},{esp:'trent',min:22,max:24,peso:18},{esp:'hipzon',min:22,max:24,peso:15},{esp:'bambi',min:20,max:21,peso:13},{esp:'krappo',min:22,max:24,peso:12},{esp:'qwin',min:22,max:24,peso:10},{esp:'klecspin',min:22,max:24,peso:6},{esp:'lumispa',min:21,max:23,peso:8,noche:true}],
-      encuentrosAgua:[{esp:'pukeo',min:21,max:23,peso:30},{esp:'gotelo',min:21,max:23,peso:15},{esp:'kroby',min:21,max:23,peso:20},{esp:'qwin',min:22,max:24,peso:15},{esp:'boony',min:21,max:23,peso:15},{esp:'selo',min:22,max:24,peso:5}],
+      encuentrosAgua:[{esp:'pukeo',min:21,max:23,peso:30},{esp:'kroby',min:21,max:23,peso:20},{esp:'qwin',min:22,max:24,peso:15},{esp:'boony',min:21,max:23,peso:15},{esp:'selo',min:22,max:24,peso:5}],
       npcs:[
         {id:'rocasRio0',x:37,y:15,dir:'abajo',accion:'texto',cosa:'rocasAgua',hasta:{flag:'rocasRio'},textos:['Unas rocas enormes han caído al río y bloquean el paso hacia Pueblo Chy.','No se puede pasar ni surfeando... Quizá alguien de Pueblo Termas sepa algo.']},
         {id:'rocasRio1',x:37,y:16,dir:'abajo',accion:'texto',cosa:'rocasAgua',hasta:{flag:'rocasRio'},textos:['Unas rocas enormes han caído al río y bloquean el paso hacia Pueblo Chy.','No se puede pasar ni surfeando... Quizá alguien de Pueblo Termas sepa algo.']},
@@ -4095,7 +4100,7 @@ const CONFIG = {
     },
     mar_coral: {
       nombre:'Mar de Coral', barcoCubierta:true, abandonado:true, borde:'~', fondo:'playa', musica:'puerto', clima:{tipo:'niebla',prob:.5},
-      encSurf:[{esp:'delphi',min:30,max:33,peso:30},{esp:'cuentxu',min:30,max:32,peso:20},{esp:'skraby',min:30,max:32,peso:20},{esp:'qwin',min:30,max:33,peso:20},{esp:'seloan',min:32,max:34,peso:10}],
+      encSurf:[{esp:'delphi',min:30,max:33,peso:30},{esp:'cuentxu',min:30,max:32,peso:20},{esp:'skraby',min:30,max:32,peso:20},{esp:'qwinnie',min:30,max:33,peso:20},{esp:'seloan',min:32,max:34,peso:10}],
       casillas:["rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~rr~~~~~~~r","r~~~rr~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~r~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~Ⓕ~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Ⓕ~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~ⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷ~~~~~~~~r","r~~~~~~~Ⓑ@@@:@ⓉⓉⓉⓉⓉⓉ@@@@@@:@@@:Ⓑ~~~~~~~r","~~~~~~~Ⓑ@@@@@@ⓉⓉⓉⓉⓉⓉ@@@Ⓜ@@:@@@:@Ⓑ~~~~~~r","~~~~~~~Ⓑ@@@@@@ⓌⓌⓌⓌⓌⓌ@@@@@@:@@@:@@Ⓑ~~~~~r","~~~~~~~Ⓑ@@@@@@@@@@@@@@@@@@:@@@@@@:Ⓑ~~~~r","~~~~~~~Ⓑ@@@Ⓔ@@@@@@@@@@Ⓜ@@@@@@@:@@@Ⓑ~~~~r","~~~~~~~Ⓑ@@@@@@@@@@@@@@@@@@:@@@:@@:Ⓑ~~~~r","~~~~~~~Ⓑ@@::@@@@@@@@@@@@@@:@@@:@@Ⓑ~~~~~r","~~~~~~~~Ⓑ@@@@@@@@@@@@@@@@@:@@@:Ⓑ~~~~~~~r","r~~~~~~~~ⒷⒷⒷⒷⒷⒷⒷⓗⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷ~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~r~~~~~~~~~~~~~~~~~~~~~~~Ⓕ~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r~~~~~r","r~~~~~~~~rr~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","r~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~r","rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"],
       salidas:[{x:0,y:12,a:'playa',x2:38,y2:12,dir:'izq'},{x:0,y:13,a:'playa',x2:38,y2:13,dir:'izq'},{x:0,y:14,a:'playa',x2:38,y2:14,dir:'izq'},{x:0,y:15,a:'playa',x2:38,y2:15,dir:'izq'},{x:0,y:16,a:'playa',x2:38,y2:16,dir:'izq'},{x:0,y:17,a:'playa',x2:38,y2:17,dir:'izq'},{x:0,y:18,a:'playa',x2:38,y2:18,dir:'izq'},{x:16,y:19,a:'barcoab1',x2:3,y2:7,dir:'arriba'},{x:11,y:15,a:'barcoab2',x2:2,y2:6,dir:'arriba'}],
       carteles:{},
@@ -4582,6 +4587,10 @@ const ui={texto:null,eleccion:null,fundido:0,destello:0,cartel:null};
 function nuevaPartida(){ return {mapa:'casa',x:5,y:6,dir:'abajo',equipo:[],caja:[],esferas:0,pociones:0,revivires:0,dinero:300,hora:8,flags:{}}; }
 // La partida solo se guarda desde el menú, al dormir y al ganar a un líder de gimnasio
 function guardar(){ return true; }
+// guardado automático: al cambiar de zona y al cerrar o esconder la pestaña (nunca en mitad de un combate)
+function autoguardar(){ if(E&&E.flags&&E.flags.inicial&&escena==='mundo'&&!B&&mapa) guardarAhora(); }
+addEventListener('pagehide',()=>{ if(!ocupado) autoguardar(); });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden&&!ocupado) autoguardar(); });
 function guardarAhora(){ E.mapa=mapa.id; E.x=J.x; E.y=J.y; E.dir=J.dir;
   try{ localStorage.setItem(CLAVE_PARTIDA,JSON.stringify(E,(k,v)=>k.startsWith('_')?undefined:v)); return true; }catch(e){ return false; } }
 function cargar(){ try{ const s=JSON.parse(localStorage.getItem(CLAVE_PARTIDA)||'null'); if(s&&MAPAS[s.mapa]){ s.dinero??=300; s.caja??=[]; s.pociones??=3; s.revivires??=0; s.medallas??=[]; s.hora??=8; for(const c of [...(s.equipo||[]),...(s.caja||[]),...(s.guarderia||[]).map(r=>r.c)]){ if(c&&c.esp==='hojacero') c.esp='palmacero'; if(c&&c.esp==='vinier') c.esp='litki'; if(c&&c.esp==='vinitek') c.esp='liketon'; ponerSexo(c); } for(const k of ['vistos','capturados']) if(s[k]&&s[k].hojacero){ s[k].palmacero=1; delete s[k].hojacero; } return s; } }catch(e){} return null; }
@@ -4834,6 +4843,7 @@ async function cambiarMapa(s){
   const av=mapa.avisoEntrada; if(av&&!E.flags[av.flag]&&!E.flags.comisariaLibre){ E.flags[av.flag]=true; guardar(); await avisoGuarda(av); }
   if(mapa.id==='casa'&&E.flags.campeon&&!E.flags.avisoLago){ const n=npcs.find(o=>o.id==='mama'&&!o._enCama); if(n) await avisoLagoMama(n); }
   if(!LF) J._trasPuerta=dirActual();
+  autoguardar();
 }
 async function avisoGuarda(av){
   const asp={piel:'#e2b088',pelo:'#2a2a2a',camiseta:'#2c3e70',pantalon:'#1e2a4a',gorra:'#2c3e70',placa:true}, P=av.puerta;
@@ -5636,7 +5646,7 @@ async function usarCuerda(){ const s=destinoCuerda(); if(!s) return; const N=CON
   ui.cuerda={t0:performance.now(),dur:1000}; await esperar(1000); await anim('fundido',260,1); ui.cuerda=null;
   ponerMapa(s.a,s.x2,s.y2,'abajo'); if(esExterior(s.a)) completarVecinos(); { const cc=casilla(J.x,J.y); if(cc==='~'&&E.tabla) J.surf=true; }
   Musica.poner(musicaDelMapa()); ui.cartel={texto:mapa.nombre,t:performance.now()}; ui.cuerda={t0:performance.now(),dur:800,bajar:true};
-  await anim('fundido',260,0); await esperar(800); ui.cuerda=null; J.dir='abajo'; guardar(); }
+  await anim('fundido',260,0); await esperar(800); ui.cuerda=null; J.dir='abajo'; autoguardar(); }
 const ROPA=[['ROJO','#e0483e'],['GRANATE','#7a1a2a'],['CORAL','#f07a6a'],['AZUL','#2f4f9a'],['MARINO','#1e2a5a'],['CELESTE','#4aa8e0'],['TURQUESA','#2ab0a8'],['VERDE','#3a9a4a'],['OLIVA','#6a7a3a'],['AMARILLO','#f0c838'],['DORADO','#d4a72c'],['NARANJA','#f08a2a'],['MORADO','#8a4ac8'],['LILA','#b89ad8'],['ROSA','#f07ab0'],['NEGRO','#2a2a32'],['BLANCO','#f4f4f4'],['GRIS','#8a8f98'],['PLATEADO','#b8bec8'],['BEIGE','#d8c8a8'],['MARRÓN','#7a4a2a']];
 const PEINADOS_CHICO=[['CORTO','corto'],['DE PUNTA','pinchos'],['RIZADO','rizado'],['CRESTA','cresta'],['FLEQUILLO','flequillo'],['RAPADO','rapado'],['TUPÉ','tupe'],['AFRO','afro'],['MELENITA','melenita'],['CALVO','calvo'],['RAYA AL LADO','raya'],['DESPEINADO','despeinado'],['MOÑO','mono'],['RASTAS','rastas'],['REPEINADO','repeinado'],['MILITAR','militar'],['COLETILLA','coletilla'],['ENTRADAS','entradas']];
 const PEINADOS_CHICA=[['LARGO','largo'],['COLETA','coleta'],['DOS MOÑOS','monos'],['TRENZAS','trenzas'],['MELENA','melena'],['CORTITO','bob'],['MOÑO ALTO','monoAlto'],['ONDULADO','ondulado'],['AFRO','afro'],['COLETA ALTA','coletaAlta'],['PIXIE','pixie'],['TRENZA AL LADO','trenzaLado'],['FLEQUILLO RECTO','flequilloRecto'],['MOÑO DE ABUELA','monoBajo'],['PERMANENTE','permanente']];
@@ -9941,6 +9951,28 @@ bBorrar.addEventListener('click',()=>{
   ui.texto=null; ui.eleccion=null; escena='mundo'; B=null; ui.fundido=0; ui.destello=0; iniciar(null);
   setTimeout(()=>bBorrar.textContent='Borrar partida',1500);
 });
+
+// ---------- exportar / importar la partida en un archivo ----------
+const avisoPartida=t=>{ const el=document.getElementById('aviso-partida'); if(el){ el.textContent=t; } };
+document.getElementById('exportar').addEventListener('click',()=>{
+  if(E&&E.flags&&E.flags.inicial&&!B) guardarAhora();
+  let txt=null; try{ txt=localStorage.getItem(CLAVE_PARTIDA); }catch(e){}
+  if(!txt){ avisoPartida('Todavía no hay ninguna partida guardada que exportar.'); return; }
+  const datos={juego:'chyaventura',version:2,fecha:new Date().toISOString(),heroe:{heroe:CONFIG.heroe,rival:CONFIG.rival.nombre},partida:JSON.parse(txt)};
+  const nombre='chyaventura-'+(CONFIG.heroe.nombre||'partida').toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.json';
+  const blob=new Blob([JSON.stringify(datos)],{type:'application/json'}), url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=nombre; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+  avisoPartida('Partida exportada en el archivo '+nombre+'. Guárdalo bien: con él puedes recuperarla en cualquier navegador.'); });
+const fImp=document.getElementById('f-importar');
+document.getElementById('importar').addEventListener('click',()=>{ fImp.value=''; fImp.click(); });
+fImp.addEventListener('change',async()=>{ const f=fImp.files&&fImp.files[0]; if(!f) return;
+  let d=null; try{ d=JSON.parse(await f.text()); }catch(e){}
+  const p=d&&(d.partida||d);
+  if(!p||!MAPAS[p.mapa]||!Array.isArray(p.equipo)){ avisoPartida('Ese archivo no es una partida de Chy Aventura.'); return; }
+  if(!confirm('¿Cargar la partida del archivo? La partida actual de este navegador se sustituirá.')) return;
+  try{ localStorage.setItem(CLAVE_PARTIDA,JSON.stringify(p)); if(d.heroe){ Object.assign(CONFIG.heroe,d.heroe.heroe||{}); guardarHeroe(); const fn=document.getElementById('f-nombre'); if(fn) fn.value=CONFIG.heroe.nombre; } }catch(e){ avisoPartida('Este navegador no deja guardar la partida.'); return; }
+  ui.texto=null; ui.eleccion=null; escena='mundo'; B=null; ui.fundido=0; ui.destello=0; ocupado=false; iniciar(cargar());
+  avisoPartida('Partida cargada: '+(CONFIG.heroe.nombre||'')+' en '+mapa.nombre+', con '+(E.medallas||[]).length+((E.medallas||[]).length===1?' medalla.':' medallas.')); });
 
 // ---------- botón de música ----------
 const bMusica=document.getElementById('b-musica');
