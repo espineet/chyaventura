@@ -1451,7 +1451,7 @@ const CONFIG = {
     },
     tamayo: {
       
-      avisoEntrada:{flag:'avisoComisaria',textos:['GUARDIA: ¡Eh, tú! ¡Espera! ¿Tienes criaturas fuertes?','¡El Equipo COBRIX ha tomado la comisaría! Han encerrado al Comisario Rojas, que también es el líder del gimnasio.','Son muchos y están repartidos por las tres plantas. Mis compañeros no pueden con ellos...','La comisaría es el edificio de ladrillo de la derecha. ¡Por favor, ayúdanos!']},
+      avisoEntrada:{flag:'avisoComisaria',puerta:[32,10],textos:['¡Eh, tú! ¡Espera! ¿Tienes criaturas fuertes?','¡El Equipo COBRIX ha tomado la comisaría! Han encerrado al Comisario Rojas, que también es el líder del gimnasio.','Son muchos y están repartidos por las tres plantas. Mis compañeros no pueden con ellos...','La comisaría es el edificio de ladrillo de la derecha. ¡Por favor, ayúdanos!']},
       nombre:'Ciudad Tamayo', borde:'T',
       casillas:[
         "TTTTTTTTTTTTTTTTTTvvTTTTTTTTTTTTTTTTTT",
@@ -2379,7 +2379,7 @@ const CONFIG = {
         "CCCCCCCCCCCCCCCCCCCC"],
       salidas:[{x:10,y:14,a:'cascada3',x2:12,y2:4,dir:'abajo'}],
       legendaria:{esp:'arcelon', nivel:70, x:10, y:7, flag:'arcelon', imagen:'arcelon', tam:46, volteo:true, brillo:'#80e0ff',
-        textos:{inicio:'El aire se congela de golpe... ¡Arcelon despierta y te cierra el paso!', victoria:'Arcelon se ha refugiado bajo el hielo... Seguro que volverá a aparecer en la gruta.', huida:'Arcelon sigue vigilando su gruta helada.'}}
+        textos:{inicio:'El aire se congela de golpe... ¡Arcelon despierta y te cierra el paso!', victoria:'Arcelon se ha refugiado bajo el hielo...', huida:'Arcelon sigue vigilando su gruta helada.'}}
     },
     gym_hondo: {
       oscuro:true, oscuridad:.93, luz:[18,64], nombre:'Gimnasio Hondo', borde:null, musica:'gimnasio', suelo:'int-gym_hondo', interior:{papel:'#e8dcc8',papelB:'#d8c8a8',zocalo:'#7a5a3a',baldosa:'#efe4d0',baldosaB:'#c8b088',alfombra:'#8a5a2a',cortina:'#a8804a'},
@@ -2453,7 +2453,7 @@ const CONFIG = {
       interior:{papel:'#d8dce4',papelB:'#c4c8d4',zocalo:'#3a4a5a',baldosa:'#e8ecf0',baldosaB:'#b8c0cc',alfombra:'#e8c020',cortina:'#5a6a8a',mostrador:'#8a96a8',sofa:'#5a6a8a'},
       casillas:["xwww6wwwww6wwwww6x", "xqqzzzlltzzzmmmmqx", "xzzzzzzzzzzzzzzzzx", "xzzqqzzzzzzzzqqzzx", "xzzqqzzzmmzzzqqzzx", "xzzzzzzzmmzzzzzzzx", "xzzzzzzzzzzzzzzzzx", "xqqzzqqzzzzqqzzqqx", "xzzzzzzzzzzzzzzzzx", "xzzzzzzzzzzzzzzzzx", "xzzqqzzzzzzzzqqzzx", "xpzzzzzzaazzzzzzpx", "xzzzzzzzzzzzzzzzzx", "xxxxxxxxkxxxxxxxxx"],
       legendaria:{esp:'graikon', nivel:65, x:14, y:5, flag:'graikon', requiere:'bobinaPuesta', imagen:'graikon', tam:42, volteo:true, brillo:'#a8e0ff',
-        textos:{inicio:'Los generadores chisporrotean y el aire se congela... ¡Graikon aparece entre rayos y escarcha!', victoria:'Graikon ha desaparecido entre las chispas... Seguro que volverá junto a los generadores.', huida:'Graikon sigue vigilando los generadores de la central.'}},
+        textos:{inicio:'Los generadores chisporrotean y el aire se congela... ¡Graikon aparece entre rayos y escarcha!', victoria:'Graikon ha desaparecido entre las chispas...', huida:'Graikon sigue vigilando los generadores de la central.'}},
       salidas:[{x:8,y:13,a:'presa',x2:11,y2:10,dir:'abajo'}],
       encuentros:[{esp:'panthil',min:24,max:26,peso:4},{esp:'karspy',min:26,max:28,peso:16},{esp:'hipzon',min:26,max:28,peso:16},{esp:'pilyon',min:26,max:28,peso:14},{esp:'krobtoise',min:28,max:29,peso:12},{esp:'seloan',min:26,max:28,peso:10},{esp:'cuentxu',min:26,max:28,peso:10},{esp:'delphi',min:26,max:28,peso:8},{esp:'karspy',min:29,max:30,peso:2}],
       objetos:[{id:'obj_central1',x:16,y:2,revivires:2},{id:'obj_central2',x:1,y:9,esferas:6}],
@@ -2527,10 +2527,10 @@ const CONFIG = {
     santuario: {
       encSurf:[{esp:'selo',min:10,max:12,peso:35},{esp:'berang',min:10,max:12,peso:25},{esp:'conchin',min:10,max:12,peso:25},{esp:'pukeo',min:7,max:9,peso:15}],encPesca:[{esp:'conchin',min:8,max:10,peso:45},{esp:'pukeo',min:8,max:10,peso:45},{esp:'siorin',min:8,max:10,peso:10}],
       nombre:'Santuario de Ivyra', borde:'C', oscuro:true, oscuridad:.35, fondo:'cueva', musica:'legendaria',
-      casillas:["CCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCC", "CCCCCC<ccccccc<CCCCCC", "CCCCccccc...cccccCCCC", "CCCccc.........cccCCC", "CCcc~~..*****..~~ccCC", "CCcc~~.*.....*.~~ccCC", "CCcc..*e,,,,,e*..ccCC", "CCc<..*.,,,,,.*..<cCC", "CCcc..*e,,,,,e*..ccCC", "CCcc~~.*..,..*.~~ccCC", "CCcc~~..*****..~~ccCC", "CCCccc.........cccCCC", "CCCCccccc.c.cccccCCCC", "CCCCCC<ccCcCcc<CCCCCC", "CCCCCCCCCC^CCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCC"],
+      casillas:["CCCCCCCCCCCCCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCC", "CCCCCC<ccccccc<CCCCCC", "CCCCccccc...cccccCCCC", "CCCccc.........cccCCC", "CCcc~~..*****..~~ccCC", "CCcc~~.*.....*.~~ccCC", "CCcc..*eⓘⓘⓘⓘⓘe*..ccCC", "CCc<..*.ⓘⓘⓘⓘⓘ.*..<cCC", "CCcc..*eⓘⓘⓘⓘⓘe*..ccCC", "CCcc~~.*..ⓘ..*.~~ccCC", "CCcc~~..*****..~~ccCC", "CCCccc.........cccCCC", "CCCCccccc.c.cccccCCCC", "CCCCCC<ccCcCcc<CCCCCC", "CCCCCCCCCC^CCCCCCCCCC", "CCCCCCCCCCCCCCCCCCCCC"],
       salidas:[{x:10,y:15,a:'gruta2',x2:26,y2:33,dir:'izq'}],
       legendaria:{esp:'ivyra', nivel:62, x:10, y:8, flag:'ivyra', imagen:'ivyra', tam:46, brillo:'#e080ff',
-        textos:{inicio:'Una energía misteriosa llena el santuario... Las raíces brillan y las flores se abren. ¡Ivyra despierta!', victoria:'Ivyra se ha fundido con las raíces del santuario... Seguro que volverá a aparecer.', huida:'Ivyra sigue meditando en el corazón del santuario.'}}
+        textos:{inicio:'Una energía misteriosa llena el santuario... Las raíces brillan y las flores se abren. ¡Ivyra despierta!', victoria:'Ivyra se ha fundido con las raíces del santuario...', huida:'Ivyra sigue meditando en el corazón del santuario.'}}
     },
     barco: {
       sinSurf:'¡Desde el barco no se puede surfear, que vamos navegando!',
@@ -3040,7 +3040,7 @@ const CONFIG = {
       salidas:[{x:6,y:8,a:'torref2',x2:6,y2:2,dir:'abajo'}],
       objetos:[{id:'obj_torref3',x:1,y:1,superpociones:2}],
       legendaria:{esp:'farolux', nivel:30, x:6, y:2, flag:'farolux', imagen:'farolux', tam:30, brillo:'#ffb040',
-        textos:{inicio:'Una luz naranja se enciende en la oscuridad... ¡El farol flota hacia ti!', victoria:'El farol se ha apagado y Farolux ha desaparecido... Seguro que vuelve a encenderse otra noche.', huida:'La luz del farol sigue brillando en lo alto de la torre.'}},
+        textos:{inicio:'Una luz naranja se enciende en la oscuridad... ¡El farol flota hacia ti!', victoria:'El farol se ha apagado y Farolux ha desaparecido...', huida:'La luz del farol sigue brillando en lo alto de la torre.'}},
       npcs:[
         {id:'tf3_0',x:10,y:5,dir:'izq',nombre:'GUARDIANA DEL FAROL',accion:'entrenador',premio:2,aspecto:{piel:'#e2c8b0',pelo:'#c8c8c8',camiseta:'#3a2a4a',pantalon:'#1e1a2a',peinado:'largo'},
           antes:'Nadie toca el farol de lo alto de la torre. ¡Nadie!', despues:'Está bien... Acércate al farol. Pero con cuidado.', equipo:[['ghaut',22],['velvigor',25],['leobone',22]]},
@@ -3244,7 +3244,7 @@ const CONFIG = {
       casillas:["xwwwwwwwwwwwwx","xzzzzaaaazzzzx","xzzzzaaaazzzzx","xzCzzzzzzzzCzx","xzzzzzzzzzzzzx","xzzzzzzzzzzzzx","xzCzzzzzzzzCzx","xzzzzzzzzzzzzx","xzzzzzzzzzzzzx","xzzzzz^zzzzzzx","xxxxxxxxxxxxxx"],
       salidas:[{x:6,y:9,a:'kalim5',x2:6,y2:2,dir:'abajo'}],
       legendaria:{esp:'kalim', nivel:72, x:6, y:3, flag:'kalim', imagen:'kalim', tam:50, volteo:true, brillo:'#58e0a0',
-        textos:{inicio:'Un viento huracanado recorre la cima de la torre... ¡KALIM despliega sus alas!', victoria:'Kalim se eleva entre las nubes... Seguro que volverá a la cima de su torre.', huida:'Kalim sigue vigilando el mar desde lo alto de su torre.'}}
+        textos:{inicio:'Un viento huracanado recorre la cima de la torre... ¡KALIM despliega sus alas!', victoria:'Kalim se eleva entre las nubes...', huida:'Kalim sigue vigilando el mar desde lo alto de su torre.'}}
     },
     victoria1: {
       nombre:'Calle Victoria', borde:'C', oscuro:true, oscuridad:.6, fondo:'cueva', musica:'cueva', encuentrosEn:'c', prob:.08,
@@ -3279,7 +3279,7 @@ const CONFIG = {
     victoria2: {
       nombre:'Calle Victoria S1', borde:'C', oscuro:true, oscuridad:.6, fondo:'cueva', musica:'cueva', encuentrosEn:'c', prob:.08,
       casillas:["CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","CCcc^ccccccCCCCCCCCCCCCCCCCCCC","CCccccccc<cCCCCCCCCCCCCCCCCCCC","CCcccccccccCCCCCCccccccccccCCC","CCcccccccccCCCCCCcccccccc<cCCC","CCcecccccccCCCCCCccccccccccCCC","CCcccccccccCCCCCCccccccccccCCC","CCCCCCccccCCCCCCCccccccccccCCC","CCCCCCccccCCCCCCCccccccccccCCC","CCCCCCccccCCCCCCCccccccccccCCC","CCCCCCccccCCCCCCCccccccccccCCC","CCCCCCcccccccccccccccccccccCCC","CCCCCCccccccccccccccccccccccCC","CCCCCCcccccccccccccccCccccccCC","CCCCCCcccccccccccccecCccccccCC","CCCCCCcccccccccccccccCccccccCC","CCCCCCCCCCCCCCCCCCCCCCcccc^cCC","CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"],
-      salidas:[{x:4,y:2,a:'victoria1',x2:4,y2:3,dir:'arriba'},{x:26,y:17,a:'victoria3',x2:26,y2:16,dir:'abajo'}],
+      salidas:[{x:4,y:2,a:'victoria1',x2:4,y2:3,dir:'abajo'},{x:26,y:17,a:'victoria3',x2:26,y2:16,dir:'abajo'}],
       encuentros:[{esp:'kleker',min:40,max:42,peso:5},{esp:'grower',min:41,max:44,peso:5},{esp:'grower',min:43,max:45,peso:2},{esp:'simentor',min:42,max:44,peso:3},{esp:'psidro',min:41,max:44,peso:6},{esp:'kraus',min:41,max:43,peso:18},{esp:'rocco',min:41,max:43,peso:14},{esp:'groto',min:41,max:43,peso:14},{esp:'kuman',min:41,max:43,peso:14},{esp:'strygon',min:41,max:43,peso:12},{esp:'kalun',min:41,max:43,peso:12},{esp:'murcielin',min:41,max:43,peso:16}],
       objetos:[{id:'obj_vic2',x:24,y:6,superesferas:3}],
       npcs:[
@@ -3603,7 +3603,7 @@ const CONFIG = {
     mansion0: {
       nombre:'Mansión COBRIX · Planta baja', borde:null, oscuro:true, oscuridad:0.5, musica:'cueva', suelo:'int-mansion', interior:{papel:'#6a5a6a',papelB:'#5a4a5a',zocalo:'#2a1e2a',baldosa:'#8a7a70',baldosaB:'#7a6a62',sofa:'#6a2a3a',alfombra:'#5a1a2a',cortina:'#4a2a4a',mostrador:'#6a5a4a'},
       casillas:["xww6wwww6wwwwx", "x%^zl#zz#lz^%x", "xzzzzzzzzzzzzx", "xz0000zz0000zx", "xzzzzzzzzzzzzx", "xzz2zzzzzz2zzx", "xzz1zzzzzz1zzx", "xzzzzzzzzzzzzx", "xpzzzzzzzzzzpx", "xxxxxxkxxxxxxx"],
-      salidas:[{x:6,y:9,a:'islamansion',x2:14,y2:11,dir:'abajo'},{x:2,y:1,a:'mansion1',x2:2,y2:2,dir:'arriba'},{x:11,y:1,a:'mansionS1',x2:11,y2:2,dir:'abajo'}],
+      salidas:[{x:6,y:9,a:'islamansion',x2:14,y2:11,dir:'abajo'},{x:2,y:1,a:'mansion1',x2:2,y2:2,dir:'abajo'},{x:11,y:1,a:'mansionS1',x2:11,y2:2,dir:'abajo'}],
       ocultos:{'4,1': {'id': 'man_oc1', 'superesferas': 2}, '12,8': {'id': 'man_oc2', 'revivires': 1}},
       objetos:[],
       npcs:[
@@ -3632,7 +3632,7 @@ const CONFIG = {
     mansion2: {
       nombre:'Mansión COBRIX · Ático', borde:null, oscuro:true, oscuridad:0.4, musica:'cueva', suelo:'int-mansion', interior:{papel:'#6a5a6a',papelB:'#5a4a5a',zocalo:'#2a1e2a',baldosa:'#8a7a70',baldosaB:'#7a6a62',sofa:'#6a2a3a',alfombra:'#5a1a2a',cortina:'#4a2a4a',mostrador:'#6a5a4a'},
       casillas:["xww6wwww6wwwwx", "xl#lzzzzz#l#zx", "xzzzzzzzzzzzzx", "xz##zzzz##zzzx", "xzzzzzzzzzzzzx", "x#zzzz22zzzz#x", "xzzzzz11zzzzzx", "xzzzzzzzzzzzzx", "xpzzzzzzzzz^px", "xxxxxxxxxxxxxx"],
-      salidas:[{x:11,y:8,a:'mansion1',x2:11,y2:7,dir:'abajo'}],
+      salidas:[{x:11,y:8,a:'mansion1',x2:11,y2:7,dir:'arriba'}],
       ocultos:{'2,1': {'id': 'man_oc5', 'superesferas': 3}, '9,3': {'id': 'man_oc6', 'superpociones': 3}},
       objetos:[{id:'man_tesoro',x:6,y:1,dinero:10000}],
       npcs:[
@@ -3645,7 +3645,7 @@ const CONFIG = {
     mansionS1: {
       nombre:'Mansión COBRIX · Sótano 1', borde:null, oscuro:true, oscuridad:0.65, musica:'cueva', suelo:'int-mansion', interior:{papel:'#6a5a6a',papelB:'#5a4a5a',zocalo:'#2a1e2a',baldosa:'#8a7a70',baldosaB:'#7a6a62',sofa:'#6a2a3a',alfombra:'#5a1a2a',cortina:'#4a2a4a',mostrador:'#6a5a4a'},
       casillas:["xww6wwww6wwwwx", "xgqgqzzzzzz^%x", "xzzzzzzzzzzzzx", "xzz22zz22zzzzx", "xzzzzzzzzzzzzx", "x#zzzzzzzzzz#x", "xzzzzzqqzzzzzx", "xzzzzzzzzzzzzx", "xp^zzzzzzzzzpx", "xxxxxxxxxxxxxx"],
-      salidas:[{x:11,y:1,a:'mansion0',x2:11,y2:2,dir:'arriba'},{x:2,y:8,a:'mansionS2',x2:2,y2:7,dir:'abajo'}],
+      salidas:[{x:11,y:1,a:'mansion0',x2:11,y2:2,dir:'abajo'},{x:2,y:8,a:'mansionS2',x2:2,y2:7,dir:'arriba'}],
       ocultos:{'1,5': {'id': 'man_oc7', 'curaestados': 3}, '12,5': {'id': 'man_oc8', 'revivires': 2}},
       objetos:[],
       npcs:[
@@ -3804,7 +3804,7 @@ const CONFIG = {
     bk_comercial1: {
       nombre:'Centro Comercial · Planta 1', borde:null, musica:'centro', suelo:'int-bk_comercial1', interior:{papel:'#f4eef8',papelB:'#e4dcf0',zocalo:'#6a5aa8',baldosa:'#fafaff',baldosaB:'#e8e6f4',sofa:'#6a5aa8',alfombra:'#8a6ad8',cortina:'#a88ae8',mostrador:'#d8c8a8'},
       casillas:["xww6wwww6wwwwx", "xllllzzzzzz^%x", "xzzzzzzzzzzzzx", "xmmmmzzzzllllx", "xzzzzzzzzzzzzx", "xzllllzzllllzx", "xzzzzzzzzzzzzx", "x%zzzzzzzzzz%x", "xpzzzzzzzzzzpx", "xxxxxxkkxxxxxx"],
-      salidas:[{x:6,y:9,a:'bukera',x2:28,y2:11,dir:'abajo'},{x:7,y:9,a:'bukera',x2:29,y2:11,dir:'abajo'},{x:11,y:1,a:'bk_comercial2',x2:11,y2:2,dir:'arriba'}],
+      salidas:[{x:6,y:9,a:'bukera',x2:28,y2:11,dir:'abajo'},{x:7,y:9,a:'bukera',x2:29,y2:11,dir:'abajo'},{x:11,y:1,a:'bk_comercial2',x2:11,y2:2,dir:'abajo'}],
       npcs:[
         {id:'cc_farmacia',x:2,y:2,dir:'abajo',accion:'tienda',catalogo:'curativos',aspecto:{piel:'#f1c7a1',pelo:'#5a3420',camiseta:'#ffffff',pantalon:'#58b878',bata:true},textos:['¡Bienvenid{o} a la farmacia del centro comercial! Aquí tenemos todo para curar a tus criaturas.']},
         {id:'cc_cliente1',x:9,y:6,dir:'arriba',aspecto:{piel:'#c98e66',pelo:'#1e1e1e',camiseta:'#e84a3a',pantalon:'#2a2a3a'},textos:['¡En la segunda planta venden muñecos de criaturas! Sube por la escalera mecánica del fondo.']}
@@ -4565,6 +4565,7 @@ function ponerMapa(id,x,y,dir){
   if(id==='ruta3'&&E) E.flags.cruzoCueva=true;
   if(id==='puerto'&&E) E.flags.llegoPuerto=true;
   mapa=Object.assign({id},MAPAS[id]); mapa.al=mapa.casillas.length; mapa.an=mapa.casillas[0].length;
+  { const LG=mapa.legendaria, V=E&&E.legVuelve; if(LG&&V&&V[LG.flag]!=null){ if(horasTotales()>=V[LG.flag]) delete V[LG.flag]; else mapa._legFuera=true; } } // la legendaria vencida vuelve a los 3 días, al entrar de nuevo
   npcs=npcsDe(id); mapa._dorm=horaDormir(); if(id==='casa2'){ mapa._florTipo={}; for(const [p,k] of Object.entries(SLOT_FLOR)) mapa._florTipo[p]=k; } if(mapa.corral) generarCorral(); J.empuje=null; J.forz=0; if(mapa.puzle&&mapa.puzle.rocas) mapa._rocas=mapa.puzle.rocas.map(r=>[...r]);
   J.x=x; J.y=y; J.dir=dir||J.dir; J.mov=false; J.prog=1;
   if(esExterior(id)&&!_snapMode) completarVisibles(); // lo que se ve de los mapas de al lado, al momento; el resto, poco a poco
@@ -4678,9 +4679,11 @@ function actualizarMundo(dt){
   if(ocupado) return;
   if(take('start')){ run(menu); return; }
   if(take('a')){ interactuar(); return; }
-  const d=dirActual(); if(!d) return;
+  const d=dirActual(); if(!d){ J._trasPuerta=null; return; }
+  if(J._trasPuerta&&J._trasPuerta!==d) J._trasPuerta=null;
   J.dir=d; const [dx,dy]=DIRS[d], tx=J.x+dx, ty=J.y+dy;
   const s=salidaEn(tx,ty);
+  if(J._trasPuerta&&(s||salidaEn(J.x,J.y))) return; // recién llegado por una puerta: no volver a cruzarla sin soltar la tecla
   if(s&&s.medallas&&(E.medallas||[]).length<s.medallas&&!TELETRANSPORTE){ run(async()=>{ await say('GUARDIÁN: ¡Alto! Para entrar en la LIGA hay que enseñar las 7 medallas de la región.'); await say(`Tú llevas ${(E.medallas||[]).length}. ¡Vuelve cuando las tengas todas!`); }); return; }
   if(s&&s.medallas&&!ocupado&&!J._medOk&&(E.medallas||[]).length>=s.medallas){ J._medOk=true; run(async()=>{ await say('GUARDIÁN: ¡Las 7 medallas! Todo en orden. ¡Adelante, y mucha suerte con los Altos Mandos!'); }); return; }
   if(s&&casaCerrada(s.a)&&!CASAS_NOCHE.includes(mapa.id)){ run(async()=>{ await say('La puerta está cerrada. Es muy tarde y aquí ya están todos durmiendo...'); await say('Vuelve por la mañana, a partir de las 7:00.'); }); return; }
@@ -4750,7 +4753,10 @@ async function cambiarMapa(s){
   if(LF&&LF.salto){ const [dx,dy]=DIRS[s.dir], px=J.x+LF.off[0], py=J.y+LF.off[1], largo=Math.max(1,Math.abs(s.x2-px)+Math.abs(s.y2-py));
     ponerMapa(s.a,LF.T.x,LF.T.y,J.dir); J.x=s.x2; J.y=s.y2; J.dx=dx; J.dy=dy; J.largo=largo; J.prog=0; J.mov=true; J.salto=true; J.dir=s.dir; sfx('ok'); }
   else if(LF){ ponerMapa(s.a,LF.T.x,LF.T.y,J.dir); }
-  else { sfx('puerta'); await anim('fundido',220,1); ponerMapa(s.a,s.x2,s.y2,s.dir); if(esExterior(s.a)) completarVecinos(); }
+  else { sfx('puerta'); await anim('fundido',220,1);
+    if(mapa&&!esCueva(mapa.id)&&MAPAS[mapa.id].borde&&esCueva(s.a)){ const [bx,by]=DIRS[J.dir]||[0,0], x=J.x-bx, y=J.y-by, c=casilla(x,y); // para la CUERDA HUIDA: dónde estabas al entrar
+      E.cuerdaVuelta=(c!=null&&!SOLIDAS.has(c)&&!salidaEn(x,y))?{a:mapa.id,x,y,cueva:s.a}:{a:mapa.id,x:J.x,y:J.y,cueva:s.a}; }
+    ponerMapa(s.a,s.x2,s.y2,s.dir); if(esExterior(s.a)) completarVecinos(); }
   { const cc=casilla(J.x,J.y); if(J.surf&&cc!=='~'&&cc!=='ʁ') J.surf=false; else if(!J.surf&&cc==='~'&&E.tabla) J.surf=true; }
   ui.cambioClima=LF&&(mapa._clima||null)!==(climaAntes||null)?{de:climaAntes||null,t:performance.now()}:null;
   Musica.poner(musicaDelMapa());
@@ -4760,11 +4766,25 @@ async function cambiarMapa(s){
   const ev=mapa.eventoRival; if(ev&&!ev.zona&&!TELETRANSPORTE&&cumple(ev.desde)&&!E.flags['venc_'+ev.id]) await eventoRival(ev);
   if(mapa.id==='lab'&&!E.flags.inicial&&!E.flags.labIntro) await introLab();
   const av=mapa.avisoEntrada; if(av&&!E.flags[av.flag]&&!E.flags.comisariaLibre){ E.flags[av.flag]=true; guardar(); await avisoGuarda(av); }
+  if(!LF) J._trasPuerta=dirActual();
 }
 async function avisoGuarda(av){
-  let pos=null; for(const d of [J.dir,'abajo','arriba','izq','der']){ const [dx,dy]=DIRS[d], x=J.x+dx, y=J.y+dy, c=casilla(x,y); if(c!=null&&!SOLIDAS.has(c)&&!npcEn(x,y)&&!salidaEn(x,y)){ pos={x,y,d}; break; } }
-  if(!pos) return; const n={id:'_aviso',x:pos.x,y:pos.y,dir:OPUESTA[pos.d],aspecto:{piel:'#e2b088',pelo:'#2a2a2a',camiseta:'#2c3e70',pantalon:'#1e2a4a',gorra:'#2c3e70',placa:true}};
-  J.dir=pos.d; npcs.push(n); sfx('exclama'); ui.exclama={n,t:performance.now()}; await esperar(700); ui.exclama=null; for(const t of av.textos) await say(t); npcs=npcs.filter(o=>o!==n); }
+  const asp={piel:'#e2b088',pelo:'#2a2a2a',camiseta:'#2c3e70',pantalon:'#1e2a4a',gorra:'#2c3e70',placa:true}, P=av.puerta;
+  // sale a unos pasos de ti, mejor por el lado de la comisaría
+  let ini=null; for(const d of Object.keys(DIRS)){ const [dx,dy]=DIRS[d]; let x=J.x,y=J.y,k=0; while(k<6&&libreNPC(x+dx,y+dy)&&!salidaEn(x+dx,y+dy)){ x+=dx; y+=dy; k++; }
+    if(k<2) continue; const pt=k+(P?-(Math.abs(P[0]-x)+Math.abs(P[1]-y))*.3:0); if(!ini||pt>ini.pt) ini={x,y,pt}; }
+  if(!ini){ let pos=null; for(const d of [J.dir,'abajo','arriba','izq','der']){ const [dx,dy]=DIRS[d], x=J.x+dx, y=J.y+dy; if(libreNPC(x,y)&&!salidaEn(x,y)){ pos={x,y}; break; } } if(!pos) return; ini=pos; }
+  const n={id:'_aviso',nombre:'GUARDIA',x:ini.x,y:ini.y,dir:dirDe(J.x-ini.x,J.y-ini.y),aspecto:asp}; npcs.push(n);
+  sfx('exclama'); ui.exclama={n,t:performance.now()}; await esperar(650); ui.exclama=null;
+  J.dir=dirDe(n.x-J.x,n.y-J.y)||J.dir;
+  await decirComo(n,av.textos[0]); await correrHacia(n); await esperar(120);
+  for(const t of av.textos.slice(1)) await decirComo(n,t);
+  // y se va corriendo a la comisaría
+  const ruta=P?caminoNPC(n,[[P[0],P[1]+1]],3000):null;
+  if(ruta){ for(const [dx,dy] of ruta){ await pasoNPC(n,dx,dy,120); if(Math.abs(n.x-J.x)>8||n.y-J.y>6||J.y-n.y>5) break; } // fuera de la pantalla
+    if(n.x===P[0]&&n.y===P[1]+1){ await pasoNPC(n,0,-1,140); sfx('puerta'); } npcs=npcs.filter(o=>o!==n); }
+  else await alejarse(n);
+}
 const COBCOM=['cobcom_0a','cobcom_0b','cobcom_1a','cobcom_1b','cobcom_1c','cobcom_2a','cobcom_2b','cobcom_jefe'];
 async function revisarComisaria(){ if(E.flags.comisariaLibre||!COBCOM.every(id=>E.flags['venc_'+id])) return;
   E.flags.comisariaLibre=true; guardar(); await say('¡Has expulsado a todos los soldados del Equipo COBRIX de la comisaría!');
@@ -4777,9 +4797,9 @@ async function revisarComisaria(){ if(E.flags.comisariaLibre||!COBCOM.every(id=>
 const dirDe=(dx,dy)=>dx>0?'der':dx<0?'izq':dy>0?'abajo':'arriba';
 async function pasoNPC(n,dx,dy,ms=150){ n.dir=dirDe(dx,dy); n.x+=dx; n.y+=dy; n._k=(n._k||0)+1; n._anim={t0:performance.now(),dx,dy,k:n._k,dur:ms}; await esperar(ms); }
 function libreNPC(x,y,yo){ const c=casilla(x,y); return c!=null&&x>=0&&y>=0&&x<mapa.an&&y<mapa.al&&!SOLIDAS.has(c)&&!(x===J.x&&y===J.y)&&!npcs.some(o=>o!==yo&&o.x===x&&o.y===y)&&!objEn(x,y); }
-function caminoNPC(n,metas,max=40){ const k=(x,y)=>x+','+y, prev=new Map([[k(n.x,n.y),null]]), q=[[n.x,n.y]], M=new Set(metas.map(([x,y])=>k(x,y)));
+function caminoNPC(n,metas,lim=600){ const k=(x,y)=>x+','+y, prev=new Map([[k(n.x,n.y),null]]), q=[[n.x,n.y]], M=new Set(metas.map(([x,y])=>k(x,y)));
   while(q.length){ const [x,y]=q.shift(); if(M.has(k(x,y))){ const r=[]; let c=k(x,y); while(prev.get(c)){ const [a,b]=c.split(',').map(Number), [pa,pb]=prev.get(c).split(',').map(Number); r.unshift([a-pa,b-pb]); c=prev.get(c); } return r; }
-    if(prev.size>600) break; for(const [dx,dy] of Object.values(DIRS)){ const nx=x+dx, ny=y+dy, kk=k(nx,ny); if(prev.has(kk)||!libreNPC(nx,ny,n)||(salidaEn(nx,ny)&&!M.has(kk))) continue; prev.set(kk,k(x,y)); q.push([nx,ny]); } }
+    if(prev.size>lim) break; for(const [dx,dy] of Object.values(DIRS)){ const nx=x+dx, ny=y+dy, kk=k(nx,ny); if(prev.has(kk)||!libreNPC(nx,ny,n)||(salidaEn(nx,ny)&&!M.has(kk))) continue; prev.set(kk,k(x,y)); q.push([nx,ny]); } }
   return null; }
 async function correrHacia(n){ const metas=Object.values(DIRS).map(([dx,dy])=>[J.x+dx,J.y+dy]).filter(([x,y])=>libreNPC(x,y,n)||(x===n.x&&y===n.y));
   const ruta=caminoNPC(n,metas)||[]; for(const [dx,dy] of ruta) await pasoNPC(n,dx,dy,140);
@@ -4815,14 +4835,14 @@ async function eventoRival(ev){
   Musica.poner(musicaDelMapa()); }
 async function darObjeto(o){ const prevH=ui.hablante; ui.hablante=null; try{ await darObjeto0(o); } finally{ ui.hablante=prevH; } }
 async function darObjeto0(o){ const N=CONFIG.heroe.nombre;
-  const L=[['repelentes','REPELENTES','REPELENTE'],['superrepelentes','SUPERREPELENTES','SUPERREPELENTE'],['esferas','ESFERAS','ESFERA'],['superesferas','SUPERESFERAS','SUPERESFERA'],['megaesferas','MEGAESFERAS','MEGAESFERA'],['aquaesferas','AQUAESFERAS','AQUAESFERA'],['rutaesferas','RUTAESFERAS','RUTAESFERA'],['sopas','SOPAS CALIENTES','SOPA CALIENTE'],['pociones','POCIONES','POCIÓN'],['superpociones','SUPERPOCIONES','SUPERPOCIÓN'],['revivires','REVIVIR','REVIVIR'],['curaestados','CURA ESTADO','CURA ESTADO']];
+  const L=[['repelentes','REPELENTES','REPELENTE'],['superrepelentes','SUPERREPELENTES','SUPERREPELENTE'],['esferas','ESFERAS','ESFERA'],['superesferas','SUPERESFERAS','SUPERESFERA'],['megaesferas','MEGAESFERAS','MEGAESFERA'],['aquaesferas','AQUAESFERAS','AQUAESFERA'],['rutaesferas','RUTAESFERAS','RUTAESFERA'],['sopas','SOPAS CALIENTES','SOPA CALIENTE'],['pociones','POCIONES','POCIÓN'],['superpociones','SUPERPOCIONES','SUPERPOCIÓN'],['revivires','REVIVIR','REVIVIR'],['curaestados','CURA ESTADO','CURA ESTADO'],['cuerdas','CUERDAS HUIDA','CUERDA HUIDA']];
   for(const [k,pl,sg] of L) if(o[k]){ E[k]=(E[k]||0)+o[k]; await say(`¡${N} ${o._regalo?'recibió':'encontró'} ${o[k]} ${o[k]>1?pl:sg}!`); }
   if(o.dinero){ E.dinero+=o.dinero; await say(`¡${N} ${o._regalo?'recibió':'encontró'} ${o.dinero} monedas!`); }
   if(o.radar){ E.radar=true; await say(`¡${N} recibió el RADAR! Úsalo desde la MOCHILA para detectar objetos escondidos cerca.`); }
   if(o.amuleto){ E.amuleto=true; await say(`¡${N} recibió el AMULETO! Póntelo desde la MOCHILA: con él, las criaturas salvajes te atacan un 20% menos.`); }
   if(o.reloj){ E.reloj=true; await say('¡Un reloj de bolsillo dorado! Lleva grabado el nombre: MANUEL.'); }
   sfx('objeto'); }
-function legVisible(){ const LG=mapa&&mapa.legendaria; return !!LG&&!E.flags[LG.flag]&&(!LG.requiere||!!E.flags[LG.requiere]); }
+function legVisible(){ const LG=mapa&&mapa.legendaria; return !!LG&&!mapa._legFuera&&!E.flags[LG.flag]&&(!LG.requiere||!!E.flags[LG.requiere]); }
 function interactuar(){
   const [dx,dy]=DIRS[J.dir], fx=J.x+dx, fy=J.y+dy;
   const LG=mapa.legendaria;
@@ -4988,7 +5008,8 @@ const OBJETOS=[
   {k:'superpociones',nombre:'SUPERPOCIÓN',plural:'SUPERPOCIONES',precio:150,desc:'Recupera 60 PS a una de tus criaturas. Se puede usar en combate.'},
   {k:'repelentes',nombre:'REPELENTE',plural:'REPELENTES',precio:80,desc:'Durante 100 pasos no te saldrán criaturas salvajes.'},
   {k:'superrepelentes',nombre:'SUPERREPELENTE',plural:'SUPERREPELENTES',precio:180,desc:'Durante 250 pasos no te saldrán criaturas salvajes.'},
-  {k:'curaestados',nombre:'CURA ESTADO',plural:'CURA ESTADO',precio:120,desc:'Cura quemaduras, veneno, parálisis, sueño y congelación.'}];
+  {k:'curaestados',nombre:'CURA ESTADO',plural:'CURA ESTADO',precio:120,desc:'Cura quemaduras, veneno, parálisis, sueño y congelación.'},
+  {k:'cuerdas',nombre:'CUERDA HUIDA',plural:'CUERDAS HUIDA',precio:550,desc:'Dentro de una cueva, tira de ella: subes girando y apareces en la entrada de fuera de la cueva.'}];
 const HIERBAS=[
   {k:'hierbas',nombre:'HIERBA CURATIVA',plural:'HIERBAS CURATIVAS',precio:100,cura:30,desc:'Hierba medicinal regada con agua termal. Recupera 30 PS.'},
   {k:'calendulas',nombre:'CALÉNDULA',plural:'CALÉNDULAS',precio:120,cura:50,desc:'Flor de caléndula que calma las heridas. Recupera 50 PS.'},
@@ -5201,7 +5222,7 @@ const LISTA_ESFERAS=['esferas','superesferas','aquaesferas','rutaesferas','megae
 const ES_ESFERA=k=>LISTA_ESFERAS.includes(k);
 // orden de los recursos: curas de PS de menos a más, luego reanimar, luego curar estados y al final repelentes
 function ordenRecurso(o){ const ps={pociones:20,superpociones:60}[o.k]??o.cura;
-  if(o.k==='revivires'||o.revive) return [1,o.k==='revivires'?0:1]; if(o.k==='curaestados') return [2,0]; if(o.k==='repelentes'||o.k==='superrepelentes') return [3,o.k==='repelentes'?0:1];
+  if(o.k==='revivires'||o.revive) return [1,o.k==='revivires'?0:1]; if(o.k==='curaestados') return [2,0]; if(o.k==='repelentes'||o.k==='superrepelentes') return [3,o.k==='repelentes'?0:1]; if(o.k==='cuerdas') return [3,2];
   if(ps) return [0,ps]; return [4,0]; }
 function listaBolsillo(b){ const L=listaMochila(); let R=b===0?L.filter(o=>!o.clave&&!ES_ESFERA(o.k)).sort((a,c)=>{ const A=ordenRecurso(a), C=ordenRecurso(c); return A[0]-C[0]||A[1]-C[1]; }):b===1?LISTA_ESFERAS.map(k=>L.find(o=>o.k===k)).filter(Boolean):L.filter(o=>o.clave);
   if(!R.length) R=[{k:'_vacio',nombre:'(Vacío)',clave:true,desc:b===1?'No llevas ninguna esfera. Se compran en las tiendas.':'No llevas nada en este bolsillo.'}]; return R; }
@@ -5234,6 +5255,9 @@ async function mochila(enCombate){
       if(!(E[o.k]>0)){ await say(`No te quedan ${o.plural}.`); continue; }
       if(ES_ESFERA(o.k)){ if(!enCombate){ await say('Las ESFERAS se lanzan durante un combate contra criaturas salvajes.'); continue; } return o.k.slice(0,-1); }
       if(o.k==='superpociones'){ ui.mochila=null; if(await usarPocion(enCombate,'superpociones',60,'SUPERPOCIÓN')) return 'pocion'; ui.mochila={idx:k,bol:0}; }
+      if(o.k==='cuerdas'){ if(enCombate){ await say('¡Ahora no sirve de nada!'); continue; }
+        if(!destinoCuerda()){ await say('Aquí no sirve. La CUERDA HUIDA solo funciona dentro de las cuevas.'); continue; }
+        E.cuerdas--; guardar(); return 'cuerda'; }
       if(o.k==='repelentes'||o.k==='superrepelentes'){ if(enCombate){ await say('¡Ahora no sirve de nada!'); continue; }
         const pasos=o.k==='repelentes'?100:250; E[o.k]--; E.repel=Math.max(E.repel||0,pasos); sfx('ok'); await say(`${CONFIG.heroe.nombre} usó un ${o.nombre}. Durante ${pasos} pasos no saldrán criaturas salvajes.`); continue; }
       if(o.revive){ ui.mochila=null; if(await usarRevivir(enCombate,o.k,o.nombre)) return 'pocion'; ui.mochila={idx:k,bol:0}; continue; }
@@ -5520,9 +5544,26 @@ async function encuentroLegendario(LG){
   const c=crear(LG.esp,LG.nivel); c._musica='legendaria'; c._imagen=LG.imagen;
   const r=await combate([c],null);
   if(r==='captura'){ E.flags[LG.flag]=true; for(const c of [...E.equipo,...(E.caja||[])]) delete c._imagen; guardar(); await say(`¡Has capturado a la criatura legendaria ${ESP[LG.esp].nombre}!`); }
-  else if(r==='victoria') await say(T.victoria||`${ESP[LG.esp].nombre} se ha sumergido en la lava... Seguro que volverá a aparecer en el cráter.`);
+  else if(r==='victoria'){ E.legVuelve=E.legVuelve||{}; E.legVuelve[LG.flag]=horasTotales()+72; mapa._legFuera=true; guardar();
+    await say(T.victoria||`${ESP[LG.esp].nombre} se ha sumergido en la lava...`); await say('Puede que en unos días vuelva a aparecer...'); }
   else if(r==='huida') await say(T.huida||`${ESP[LG.esp].nombre} sigue vigilando el cráter desde la lava.`);
 }
+// CUERDA HUIDA: desde una cueva, a la entrada de fuera más cercana
+const esCueva=id=>{ const m=MAPAS[id]; return !!m&&m.borde==='C'&&(!!m.oscuro||id==='cima')&&id!=='hondo'; };
+function destinoCuerda(){ if(!mapa||!esCueva(mapa.id)) return null; const vis=new Set([mapa.id]); let q=[mapa.id];
+  const V=E.cuerdaVuelta; if(V&&MAPAS[V.a]){ // primero, la entrada por la que entraste a esta cueva
+    const red=new Set([mapa.id]); let c=[mapa.id]; while(c.length){ const n=[]; for(const id of c) for(const s of (MAPAS[id].salidas||[])) if(esCueva(s.a)&&!red.has(s.a)){ red.add(s.a); n.push(s.a); } c=n; }
+    if(red.has(V.cueva)) return {a:V.a,x2:V.x,y2:V.y}; }
+  while(q.length){ const nq=[]; for(const id of q) for(const s of (MAPAS[id].salidas||[])){ const B=MAPAS[s.a]; if(!B||vis.has(s.a)||s.medallas||(s.req&&!E.flags[s.req])) continue; vis.add(s.a);
+      if(esCueva(s.a)) nq.push(s.a); else if(B.borde) return s; }
+    q=nq; }
+  return null; }
+async function usarCuerda(){ const s=destinoCuerda(); if(!s) return; const N=CONFIG.heroe.nombre;
+  J.enBici=false; J.surf=false; await say(`¡${N} usó la CUERDA HUIDA!`); sfx('timbre');
+  ui.cuerda={t0:performance.now(),dur:1000}; await esperar(1000); await anim('fundido',260,1); ui.cuerda=null;
+  ponerMapa(s.a,s.x2,s.y2,'abajo'); if(esExterior(s.a)) completarVecinos(); { const cc=casilla(J.x,J.y); if(cc==='~'&&E.tabla) J.surf=true; }
+  Musica.poner(musicaDelMapa()); ui.cartel={texto:mapa.nombre,t:performance.now()}; ui.cuerda={t0:performance.now(),dur:800,bajar:true};
+  await anim('fundido',260,0); await esperar(800); ui.cuerda=null; J.dir='abajo'; guardar(); }
 const ROPA=[['ROJO','#e0483e'],['GRANATE','#7a1a2a'],['CORAL','#f07a6a'],['AZUL','#2f4f9a'],['MARINO','#1e2a5a'],['CELESTE','#4aa8e0'],['TURQUESA','#2ab0a8'],['VERDE','#3a9a4a'],['OLIVA','#6a7a3a'],['AMARILLO','#f0c838'],['DORADO','#d4a72c'],['NARANJA','#f08a2a'],['MORADO','#8a4ac8'],['LILA','#b89ad8'],['ROSA','#f07ab0'],['NEGRO','#2a2a32'],['BLANCO','#f4f4f4'],['GRIS','#8a8f98'],['PLATEADO','#b8bec8'],['BEIGE','#d8c8a8'],['MARRÓN','#7a4a2a']];
 const PEINADOS_CHICO=[['CORTO','corto'],['DE PUNTA','pinchos'],['RIZADO','rizado'],['CRESTA','cresta'],['FLEQUILLO','flequillo'],['RAPADO','rapado'],['TUPÉ','tupe'],['AFRO','afro'],['MELENITA','melenita'],['CALVO','calvo'],['RAYA AL LADO','raya'],['DESPEINADO','despeinado'],['MOÑO','mono'],['RASTAS','rastas'],['REPEINADO','repeinado'],['MILITAR','militar'],['COLETILLA','coletilla'],['ENTRADAS','entradas']];
 const PEINADOS_CHICA=[['LARGO','largo'],['COLETA','coleta'],['DOS MOÑOS','monos'],['TRENZAS','trenzas'],['MELENA','melena'],['CORTITO','bob'],['MOÑO ALTO','monoAlto'],['ONDULADO','ondulado'],['AFRO','afro'],['COLETA ALTA','coletaAlta'],['PIXIE','pixie'],['TRENZA AL LADO','trenzaLado'],['FLEQUILLO RECTO','flequilloRecto'],['MOÑO DE ABUELA','monoBajo'],['PERMANENTE','permanente']];
@@ -5658,7 +5699,7 @@ async function menuInterno(){
         const j=await elegir(E.equipo.map(nom),{tipo:'equipo',cancelar:true,idx:k,prompt:`¿Dónde pones a ${nom(c)}?   B: volver`});
         if(j>=0&&j!==k){ [E.equipo[k],E.equipo[j]]=[E.equipo[j],E.equipo[k]]; guardar(); sfx('ok'); idxE=j; } }
     }
-    else if(i===2) await mochila(false);
+    else if(i===2){ if(await mochila(false)==='cuerda'){ await usarCuerda(); return; } }
     else if(i===3){ if(await verMapa()) return; }
     else if(i===4) await verEncargos();
     else if(i===5){ await say(guardarAhora()?'Partida guardada.':'Este navegador no permite guardar.'); return; }
@@ -6944,6 +6985,12 @@ function lienzoCasilla0(ch,tx,ty){
   switch(ch){
     case '.': { const t=Math.floor((Math.sin(tx*.21+ty*.13)+Math.sin(tx*.07-ty*.19+2))*1.2+3); return cacheado('.'+v+'_'+t,()=>{ const L=baseCesped(capa(16,16),v); if(t===3||enCeniza()) return L; const k=(t-3)*.035; L.d=L.d.map(c=>c?(k>0?cla(c,k):osc(c,-k)):c); return L; }); }
     case ',': return cacheado(',',pCespedAlto);
+    case 'ⓘ': return hdCasilla('SAGRADA'+((tx*7+ty*3)%4),lienzoCasilla0('.',tx,ty),x=>{ // hierba sagrada del santuario: musgo bajo turquesa, con flores rosas y brillos
+      const q=(tx*7+ty*3)%4; x.fillStyle='rgba(60,200,170,.30)'; x.fillRect(0,0,48,48);
+      for(let k=0;k<9;k++){ const bx=4+((k*17+q*11)%40), by=8+((k*23+q*7)%34); x.fillStyle='#2a8a7a'; x.beginPath(); x.ellipse(bx,by+2,6,3,0,0,Math.PI*2); x.fill();
+        x.fillStyle='#5ad0b0'; x.beginPath(); x.ellipse(bx-1,by,5,2.4,0,0,Math.PI*2); x.fill(); x.fillStyle='#b8f4e0'; x.fillRect(bx-3,by-1,2,1); }
+      for(let k=0;k<3;k++){ const fx=8+((k*19+q*13)%32), fy=8+((k*29+q*5)%30), col=k%2?'#f08ac8':'#c08af0'; x.fillStyle=col; for(const [ox,oy] of [[0,-2.4],[2.4,0],[0,2.4],[-2.4,0]]){ x.beginPath(); x.arc(fx+ox,fy+oy,1.9,0,Math.PI*2); x.fill(); } x.fillStyle='#fff6a8'; x.beginPath(); x.arc(fx,fy,1.3,0,Math.PI*2); x.fill(); }
+      x.fillStyle='rgba(255,255,255,.9)'; for(let k=0;k<2;k++){ const sx=6+((k*31+q*17)%36), sy=5+((k*13+q*19)%36); x.fillRect(sx,sy-2,1,5); x.fillRect(sx-2,sy,5,1); } });
     case 'T': return cacheado('T'+(v%2),()=>pArbol(v%2));
     case 'h': return cacheado('h',()=>pArbusto(0));
     case 's': { const m=mascaraAgua(tx,ty,'s~'), md=mascara(tx,ty,'~'), fr=Math.floor(tiempo*2.5)%8; return cacheado('s'+m+'_'+md+'_'+fr+'_'+(v%2),()=>pAguaBaja(m,md,fr,v%2)); }
@@ -7776,6 +7823,10 @@ function dibujarMundo(){
   ents.push({y:oy/TS,d:()=>{ if(_snapMode) return; if(J.enBici&&!J.surf){ const px=Math.round(ox-camX), py=Math.round(oy-camY); dibujarBici(px,py,J.dir,J.mov?J.prog:0); dibujarPersona(px,py-2,J.dir,0,CONFIG.heroe,CONFIG.heroe.mochila,false); dibujarManillar(px,py-2,J.dir); return; }
     if(J.surf){ const px=Math.round(ox-camX), py=Math.round(oy-camY), bob=dibujarTabla(px,py,J.dir); dibujarPersona(px,py+Math.round(bob)-4,J.dir,0,CONFIG.heroe,CONFIG.heroe.mochila,false); return; } const vadea=!J.salto&&(casilla(J.x,J.y)==='s'||(J.mov&&J.prog<.5&&casilla(J.x-J.dx,J.y-J.dy)==='s')), vx=Math.round(ox-camX), vy=Math.round(oy-camY);
     if(vadea){ g.save(); for(let k=0;k<2;k++){ const q=(tiempo*.9+k*.5)%1; g.globalAlpha=(1-q)*.8; g.strokeStyle='#ffffff'; g.lineWidth=1; g.beginPath(); g.ellipse(vx+8,vy+14,4+q*7,1.4+q*2.4,0,0,Math.PI*2); g.stroke(); } g.restore(); }
+    if(ui.cuerda){ const cu=ui.cuerda, q=Math.min(1,(performance.now()-cu.t0)/cu.dur), alto=Math.round((cu.bajar?1-q:q)*(cu.bajar?1-q:q)*44), giro=['abajo','izq','arriba','der'][Math.floor(performance.now()/(cu.bajar?70+q*90:160-q*100))%4];
+      g.save(); g.fillStyle='rgba(20,20,30,.25)'; g.beginPath(); g.ellipse(vx+8,vy+14,5*(1-alto/60),1.8*(1-alto/60),0,0,Math.PI*2); g.fill(); g.restore();
+      g.save(); g.strokeStyle='#c8a050'; g.lineWidth=1.5; g.beginPath(); g.moveTo(vx+8,vy-alto-4); g.lineTo(vx+8,vy-alto-60); g.stroke(); g.restore();
+      dibujarPersona(vx,vy-alto,giro,0,CONFIG.heroe,CONFIG.heroe.mochila,false); return; }
     dibujarPersona(Math.round(ox-camX),Math.round(oy-camY)-(J.mov&&J.salto?Math.round(Math.sin(J.prog*Math.PI)*(J.largo>1?12:7)):0),dirVer,paso,CONFIG.heroe,CONFIG.heroe.mochila,sentado);
     if(vadea){ g.save(); g.globalAlpha=.55; g.fillStyle='#7cc4ee'; g.beginPath(); g.ellipse(vx+8,vy+14.5,6.5,2.2,0,0,Math.PI*2); g.fill(); g.globalAlpha=.9; g.fillStyle='#ffffff'; g.fillRect(vx+3,vy+13,3,1); g.fillRect(vx+10,vy+14,3,1);
       if(J.mov){ const q=(J.prog*2)%1; for(const [dx,s2] of [[-1,1],[1,-1]]){ g.globalAlpha=1-q; g.fillRect(vx+8+dx*(4+q*5),vy+12-Math.sin(q*Math.PI)*5,1,1); g.fillRect(vx+8+dx*(6+q*4)+s2,vy+13-Math.sin(q*Math.PI)*3,1,1); } } g.restore(); } if(sentado&&casilla(J.x,J.y)==='n'){ const bc=lienzoCasilla('n',J.x,J.y); g.drawImage(bc,0,bc.height*.72,bc.width,bc.height*.28,Math.round(ox-camX),Math.round(oy-camY)+11.5,TS,4.5); } }});
@@ -9431,6 +9482,11 @@ function iconoMochila(k){ if(_icMochila.has(k)) return _icMochila.get(k);
       x.fillStyle='rgba(255,250,210,.85)'; x.fill(trazo(p=>{ p.moveTo(24,3); p.lineTo(24,20); p.lineTo(10,20); p.closePath(); })); x.fillStyle='rgba(180,120,20,.35)'; x.fill(trazo(p=>{ p.moveTo(24,20); p.lineTo(38,20); p.lineTo(24,43); p.closePath(); }));
       x.strokeStyle='#8a5a10'; x.lineWidth=1.2; x.beginPath(); x.moveTo(10,20); x.lineTo(38,20); x.moveTo(24,3); x.lineTo(24,43); x.stroke(); x.lineWidth=2.4; x.strokeStyle='#2a2034'; x.stroke(D);
       x.fillStyle='#ffffff'; x.fill(trazo(p=>{ p.moveTo(39,5); p.lineTo(41,9); p.lineTo(45,11); p.lineTo(41,13); p.lineTo(39,17); p.lineTo(37,13); p.lineTo(33,11); p.lineTo(37,9); p.closePath(); })); break; }
+    case 'cuerdas': { sombra(24,44,16); x.lineWidth=5; x.strokeStyle='#2a2034'; for(let k=0;k<3;k++){ x.beginPath(); x.ellipse(24,27-k*3,15-k*1.5,9-k,0,0,Math.PI*2); x.stroke(); }
+      x.lineWidth=3.2; for(let k=0;k<3;k++){ x.strokeStyle=k%2?'#d8a858':'#c08a3a'; x.beginPath(); x.ellipse(24,27-k*3,15-k*1.5,9-k,0,0,Math.PI*2); x.stroke(); }
+      x.strokeStyle='#8a5a20'; x.lineWidth=1; x.setLineDash([2,3]); for(let k=0;k<3;k++){ x.beginPath(); x.ellipse(24,27-k*3,15-k*1.5,9-k,0,0,Math.PI*2); x.stroke(); } x.setLineDash([]);
+      x.lineWidth=5; x.strokeStyle='#2a2034'; x.beginPath(); x.moveTo(36,22); x.quadraticCurveTo(44,12,38,4); x.stroke(); x.lineWidth=3.2; x.strokeStyle='#d8a858'; x.stroke();
+      pieza(x,ELL(38,5,3.5,3.5),'#e84a4a',{dx:1,dy:1,lw:1.8}); break; }
     case 'repelentes': spray('#4ab06a'); break;
     case 'superrepelentes': spray('#8a5ad8'); break;
     case 'curaestados': { sombra(24,45,11); pieza(x,rr(15,4,18,8,3),'#4ab06a',O); pieza(x,rr(13,11,22,33,5),'#f6f6fa',{...O,luz:[18,18,4,10]}); x.fillStyle='#e84a4a'; x.fillRect(21,19,6,16); x.fillRect(16,24,16,6); x.strokeStyle='#2a2034'; x.lineWidth=1; x.strokeRect(21,19,6,16); break; }
@@ -9477,7 +9533,7 @@ function dibujarMochila(c){
   const LM=listaBolsillo((ui.mochila&&ui.mochila.bol)||0), FIL=6, ini=Math.max(0,Math.min(c.idx-2,LM.length-FIL)); LM.forEach((o,i)=>{ if(i<ini||i>=ini+FIL) return; const y=28+(i-ini)*14, sel=i===c.idx; if(sel) forma(113,y-1,120,14,'#ffe08a');
     if(o.medalla){ const col=(E.colores||{})[o.medalla]||'#e8b818'; g.fillStyle='#3a2a1a'; g.beginPath(); g.arc(124,y+6,6,0,Math.PI*2); g.fill(); g.fillStyle=col; g.beginPath(); g.arc(124,y+6,4.5,0,Math.PI*2); g.fill(); g.fillStyle='rgba(255,255,255,.6)'; g.fillRect(122,y+3,2,2); }
     const icM=!o.medalla&&iconoMochila(o.k); if(icM){ g.save(); g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high'; g.drawImage(icM,117,y-.5,14,14); g.restore(); }
-    else if(o.medalla||o.k==='_vacio'){} else if(ES_ESFERA(o.k)){ dibujarBola(124,y+6,0,o.k.slice(0,-1)); } else if(o.k==='pociones'||o.k==='superpociones'){ iconoPocion(124,y+7,1); if(o.k==='superpociones') fr('#3a6ad8',122,y+7,4,3); } else if(o.k==='repelentes'||o.k==='superrepelentes'){ fr('#2a2034',121,y+1,7,11); fr(o.k==='repelentes'?'#58b878':'#a858d8',122,y+3,5,8); fr('#e8e8e8',122,y+2,5,2); fr('#ffffff',123,y+5,1,4); } else if(o.k==='curaestados'){ fr('#2a2034',120,y+2,9,9); fr('#f6d64a',121,y+3,7,7); fr('#ffffff',123,y+4,3,5); fr('#ffffff',122,y+5,5,3); } else if(o.k==='revivires') iconoRevivir(124,y+6); else if(o.k==='cana') iconoCana(124,y+6); else if(o.k==='bici') iconoBici(124,y+6); else if(o.k==='pase'){ fr('#2a2034',118,y+2,12,9); fr('#f4e8c8',119,y+3,10,7); fr('#3a6ad8',119,y+3,10,2); fr('#e04848',126,y+6,2,2); } else if(o.cura||o.revive){ const col=o.k==='sopas'?'#e8903a':o.k==='hierbas'?'#4aa848':o.k==='calendulas'?'#f6a018':o.k==='limonadas'?'#f6e040':o.k==='colas'?'#5a2a1a':o.k==='mojitos'?'#7ad070':'#7ad0a0'; g.fillStyle='#2a2034'; g.beginPath(); g.ellipse(124,y+6,5,4,-.6,0,Math.PI*2); g.fill(); g.fillStyle=col; g.beginPath(); g.ellipse(124,y+6,4,3,-.6,0,Math.PI*2); g.fill(); fr('#2a5a2a',121,y+9,1,3); } else if(o.k==='huevo'){ g.fillStyle='#2a2034'; g.beginPath(); g.ellipse(124,y+6,4.5,5.5,0,0,Math.PI*2); g.fill(); g.fillStyle='#fff6e0'; g.beginPath(); g.ellipse(124,y+6,3.5,4.5,0,0,Math.PI*2); g.fill(); fr('#58b878',122,y+5,2,2); fr('#58b878',125,y+8,2,1); } else if(o.k==='amuleto'){ g.fillStyle='#2a2034'; g.beginPath(); g.arc(124,y+7,4.5,0,Math.PI*2); g.fill(); g.fillStyle='#e8b818'; g.beginPath(); g.arc(124,y+7,3.5,0,Math.PI*2); g.fill(); fr('#c83a3a',123,y+6,2,2); fr('#2a2034',124,y+1,1,3); }
+    else if(o.medalla||o.k==='_vacio'){} else if(ES_ESFERA(o.k)){ dibujarBola(124,y+6,0,o.k.slice(0,-1)); } else if(o.k==='pociones'||o.k==='superpociones'){ iconoPocion(124,y+7,1); if(o.k==='superpociones') fr('#3a6ad8',122,y+7,4,3); } else if(o.k==='repelentes'||o.k==='superrepelentes'){ fr('#2a2034',121,y+1,7,11); fr(o.k==='repelentes'?'#58b878':'#a858d8',122,y+3,5,8); fr('#e8e8e8',122,y+2,5,2); fr('#ffffff',123,y+5,1,4); } else if(o.k==='curaestados'){ fr('#2a2034',120,y+2,9,9); fr('#f6d64a',121,y+3,7,7); fr('#ffffff',123,y+4,3,5); fr('#ffffff',122,y+5,5,3); } else if(o.k==='revivires') iconoRevivir(124,y+6); else if(o.k==='cuerdas'){ g.save(); g.lineWidth=2.6; g.strokeStyle='#2a2034'; g.beginPath(); g.ellipse(124,y+7,5,3.4,0,0,Math.PI*2); g.stroke(); g.lineWidth=1.4; g.strokeStyle='#d8a858'; g.stroke(); g.beginPath(); g.ellipse(124,y+5,4,2.6,0,0,Math.PI*2); g.stroke(); g.restore(); } else if(o.k==='cana') iconoCana(124,y+6); else if(o.k==='bici') iconoBici(124,y+6); else if(o.k==='pase'){ fr('#2a2034',118,y+2,12,9); fr('#f4e8c8',119,y+3,10,7); fr('#3a6ad8',119,y+3,10,2); fr('#e04848',126,y+6,2,2); } else if(o.cura||o.revive){ const col=o.k==='sopas'?'#e8903a':o.k==='hierbas'?'#4aa848':o.k==='calendulas'?'#f6a018':o.k==='limonadas'?'#f6e040':o.k==='colas'?'#5a2a1a':o.k==='mojitos'?'#7ad070':'#7ad0a0'; g.fillStyle='#2a2034'; g.beginPath(); g.ellipse(124,y+6,5,4,-.6,0,Math.PI*2); g.fill(); g.fillStyle=col; g.beginPath(); g.ellipse(124,y+6,4,3,-.6,0,Math.PI*2); g.fill(); fr('#2a5a2a',121,y+9,1,3); } else if(o.k==='huevo'){ g.fillStyle='#2a2034'; g.beginPath(); g.ellipse(124,y+6,4.5,5.5,0,0,Math.PI*2); g.fill(); g.fillStyle='#fff6e0'; g.beginPath(); g.ellipse(124,y+6,3.5,4.5,0,0,Math.PI*2); g.fill(); fr('#58b878',122,y+5,2,2); fr('#58b878',125,y+8,2,1); } else if(o.k==='amuleto'){ g.fillStyle='#2a2034'; g.beginPath(); g.arc(124,y+7,4.5,0,Math.PI*2); g.fill(); g.fillStyle='#e8b818'; g.beginPath(); g.arc(124,y+7,3.5,0,Math.PI*2); g.fill(); fr('#c83a3a',123,y+6,2,2); fr('#2a2034',124,y+1,1,3); }
     else if(o.k==='radar'){ g.fillStyle='#2a2034'; g.beginPath(); g.arc(124,y+6.5,5.5,0,Math.PI*2); g.fill(); g.fillStyle='#1e5a3a'; g.beginPath(); g.arc(124,y+6.5,4.5,0,Math.PI*2); g.fill(); g.strokeStyle='#58e090'; g.lineWidth=.7; g.beginPath(); g.arc(124,y+6.5,2.6,0,Math.PI*2); g.stroke(); g.beginPath(); g.moveTo(124,y+6.5); g.lineTo(124+Math.cos(tiempo*3)*4.3,y+6.5+Math.sin(tiempo*3)*4.3); g.stroke(); fr('#b8ffd0',126,y+4,1,1); }
     else if(o.k==='repartir'){ g.fillStyle='#2a2034'; g.beginPath(); g.moveTo(118.5,y+11); g.lineTo(118.5,y+3); g.lineTo(121,y+6); g.lineTo(124,y+1.5); g.lineTo(127,y+6); g.lineTo(129.5,y+3); g.lineTo(129.5,y+11); g.closePath(); g.fill();
       g.fillStyle='#9a948c'; g.beginPath(); g.moveTo(119.5,y+10); g.lineTo(119.5,y+5); g.lineTo(121.2,y+7.2); g.lineTo(124,y+3.2); g.lineTo(126.8,y+7.2); g.lineTo(128.5,y+5); g.lineTo(128.5,y+10); g.closePath(); g.fill(); fr('#c4beb4',120,y+8,8,1); fr('#6a645e',120,y+10,8,1); fr('#58c8e8',123,y+7,2,2); fr(E.repartirOn?'#58e090':'#e05050',120,y+8,1,1); fr(E.repartirOn?'#58e090':'#e05050',127,y+8,1,1); }
@@ -9776,7 +9832,8 @@ function sfx(n){ SFX.tocar(n); }
 function musicaDelMapa(){ return mapa&&(mapa.musica||({casa:'hogar',lab:'hogar',tienda:'centro'})[mapa.id]||(PISTAS[mapa.id]?mapa.id:'pueblo')); }
 
 let ultimo=performance.now();
-function bucle(t){ const dt=Math.min(.05,(t-ultimo)/1000); ultimo=t; actualizar(dt); dibujar(); pulsado.clear(); requestAnimationFrame(bucle); }
+let _errBucle=0;
+function bucle(t){ requestAnimationFrame(bucle); const dt=Math.min(.05,(t-ultimo)/1000); ultimo=t; try{ actualizar(dt); dibujar(); } catch(e){ if(_errBucle++<5) console.error(e); } pulsado.clear(); }
 
 // ---------- taller de personaje ----------
 const campos={nombre:'f-nombre'};
