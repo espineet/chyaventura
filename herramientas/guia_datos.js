@@ -61,7 +61,7 @@ const D=await p.evaluate(()=>{
   bloq.push({lugar:'Agua',mapa:'Lagos, ríos y mar',que:'No puedes nadar',abre:'TABLA SURF (al ganar la Medalla Ola)'});
   // ---- evoluciones
   const esEvo=new Set(Object.values(ESP).filter(e=>e.evoluciona).map(e=>e.evoluciona[1]));
-  const familias=[]; for(const id of CONFIG.dex){ if(esEvo.has(id)) continue; const f=[]; let e=id; while(e){ const x=ESP[e]; f.push({id:e,nombre:x.nombre,tipos:tipos(e),nivel:x.evoluciona?x.evoluciona[0]:null,img:x.imagen||e,leg:!!x.legendaria,
+  const familias=[]; for(const id of CONFIG.dex){ if(esEvo.has(id)) continue; const f=[]; let e=id; while(e){ const x=ESP[e]; f.push({id:e,nombre:x.nombre,tipos:tipos(e),nivel:x.evoluciona?x.evoluciona[0]:null,img:x.imagen||e,leg:!!x.legendaria,f:etapaEvo(e).F,
       ataques:x.aprende.map(([l,m])=>({l,n:MOV[m]?MOV[m].nombre:m,t:MOV[m]?MOV[m].tipo:'',p:MOV[m]?MOV[m].poder:0}))}); e=x.evoluciona?x.evoluciona[1]:null; } familias.push(f); }
   // ---- COBRIX
   const cobrix=[]; for(const [mid,m] of Object.entries(MAPAS)) for(const n of m.npcs||[]){ if(!(n.equipo&&(/cobrix|cob/i.test(n.id)||/COBRIX/i.test(n.nombre||'')))) continue;
@@ -85,7 +85,7 @@ const D=await p.evaluate(()=>{
     return {orden:i+1,nombre:MAPAS[gid].nombre,lugar:lugarDe[gid]||'',pisos:pisos.length,mecanica:mec,entrenadores:ent,lider}; });
   const usadas=new Set(); gyms.forEach(gy=>[...gy.entrenadores.flatMap(e=>e.equipo),...gy.lider.equipo].forEach(x=>usadas.add(x.img))); familias.flat().forEach(x=>usadas.add(x.img)); cobrix.forEach(c=>c.equipo.forEach(x=>usadas.add(x.img))); enc.forEach(r=>[r.tierra,r.vado||[],...(r.zonas||[]).map(z=>z[1]),r.agua||[],r.pesca||[]].flat().forEach(x=>usadas.add(x.img)));
   const imgs={}; for(const k of usadas) if(IMAGENES[k]) imgs[k]=IMAGENES[k];
-  const dex=CONFIG.dex.map((id,i)=>({n:i+1,id,nombre:ESP[id].nombre,tipos:tipos(id),img:ESP[id].imagen||id,leg:!!ESP[id].legendaria}));
+  const dex=CONFIG.dex.map((id,i)=>({n:i+1,id,nombre:ESP[id].nombre,tipos:tipos(id),img:ESP[id].imagen||id,leg:!!ESP[id].legendaria,f:etapaEvo(id).F}));
   dex.forEach(x=>{ if(IMAGENES[x.img]) imgs[x.img]=IMAGENES[x.img]; });
   const ET={atq:'ataque',def:'defensa',vel:'velocidad',prec:'precisión',eva:'evasión'}; const EST={dor:'dormir',par:'paralizar',que:'quemar',ven:'envenenar',con:'congelar',conf:'confundir'};
   const efecto=m=>{ const r=[]; if(m.estado) r.push((EST[m.estado]||m.estado).replace(/^./,c=>c.toUpperCase())+' al rival');

@@ -8163,10 +8163,28 @@ function arteDe(esp,img){ const e=ESP[esp];
   if(DIBUJOS[esp]){ let c=_arte.get(esp); if(!c){ const d=DIBUJOS[esp]; c=document.createElement('canvas'); c.width=d.w; c.height=d.h; const x=c.getContext('2d'); x.lineJoin='round'; x.lineCap='round'; d.f(x); _arte.set(esp,c); } return c; }
   return null; }
 // dibuja la criatura con los pies en (cx, base); tam = tamaño máximo en píxeles de pantalla
+// tamaño según la etapa de evolución: la primera es la más pequeña y la última la más grande de su familia
+const _etapa={};
+function etapaEvo(esp){ if(_etapa[esp]) return _etapa[esp]; if(!ESP[esp]) return {F:1,tam:56};
+  const L=[]; let e=raizEsp(esp), n=0; while(e&&ESP[e]&&n++<6){ L.push(e); e=ESP[e].evoluciona?ESP[e].evoluciona[1]:null; }
+  const i=Math.max(0,L.indexOf(esp)), F=L.length>=3?[.62,.81,1][Math.min(i,2)]:L.length===2?[.74,1][i]:1, maxT=Math.max(...L.map(k=>ESP[k].tam||56));
+  return _etapa[esp]={F,tam:maxT*F}; }
+function lineaEvo(esp){ const L=[]; let e=raizEsp(esp), n=0; while(e&&ESP[e]&&n++<6){ L.push(e); e=ESP[e].evoluciona?ESP[e].evoluciona[1]:null; } return L; }
+// tamaño (raíz de la superficie) que puede ocupar un dibujo en una caja, sin pasarse de alto ni de ancho
+function tamCaja(esp,caja,maxH,maxW=1e9,img){ const a=arteDe(esp,img); if(!a||!(a.naturalWidth||a.width)) return caja*.8; const w=a.naturalWidth||a.width, h=a.naturalHeight||a.height, r=Math.sqrt(w*h);
+  return r*Math.min(caja*.95/r,Math.min(caja*1.25,maxW)/w,Math.min(caja*1.05,maxH)/h); }
+// cada etapa se ve más pequeña que la siguiente: primero se mide la última y las demás salen de ella
+function tamVisual(esp,caja,maxH,maxW=1e9,img){ const L=lineaEvo(esp), ult=L[L.length-1]||esp, F=etapaEvo(esp).F;
+  const sUlt=tamCaja(ult,caja,maxH,maxW,ult===esp?img:undefined); return Math.min(tamCaja(esp,caja,maxH,maxW,img),sUlt*F); }
+function dibujarArteTam(esp,cx,base,sz,volteo,img){ const a=arteDe(esp,img); if(!a||!(a.naturalWidth||a.width)){ dibujarArte(esp,cx,base,sz,volteo,1e9,img); return; }
+  const w=a.naturalWidth||a.width, h=a.naturalHeight||a.height, k=sz/Math.sqrt(w*h), W=w*k, H=h*k;
+  g.save(); g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high';
+  if(volteo){ g.translate(cx+W/2,base-H); g.scale(-1,1); g.drawImage(a,0,0,W,H); } else g.drawImage(a,cx-W/2,base-H,W,H);
+  g.restore(); }
 function dibujarArte(esp,cx,base,tam,volteo,maxH=1e9,img){
   const a=arteDe(esp,img);
   if(!a){ const c=spriteCriatura(esp), s=Math.max(1,Math.floor(tam/12)); g.save(); if(volteo){ g.translate(cx+6*s,base-12*s); g.scale(-1,1); g.drawImage(c,0,0,12*s,12*s); } else g.drawImage(c,cx-6*s,base-12*s,12*s,12*s); g.restore(); return; }
-  const w=a.naturalWidth||a.width, h=a.naturalHeight||a.height, k=Math.min(tam/w,tam*.92/h,maxH/h), W=w*k, H=h*k;
+  const w=a.naturalWidth||a.width, h=a.naturalHeight||a.height, k=Math.min(tam*.95/Math.sqrt(w*h),tam*1.25/w,tam*1.05/h,maxH/h), W=w*k, H=h*k;
   g.save(); g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high';
   if(volteo){ g.translate(cx+W/2,base-H); g.scale(-1,1); g.drawImage(a,0,0,W,H); } else g.drawImage(a,cx-W/2,base-H,W,H);
   g.restore(); }
@@ -9378,7 +9396,7 @@ function dibujarCombate(){
       else delete c._entrada; } let dy=0; if(c._caida){ dy=Math.min(90,(ahora-c._caida)/350*60); }
     const hundido=c._bajoTierra?Math.min(1,(ahora-(c._hundir||0))/650):(c._emerge&&ahora-c._emerge<450?1-(ahora-c._emerge)/450:0); dy+=hundido*Math.min(88,(ESP[esp].tam||56)*1.05);
     if(hundido>0){ g.save(); g.fillStyle='#7a5432'; g.beginPath(); g.ellipse(cx,base-1,14+hundido*6,3+hundido*3,0,Math.PI,0); g.fill(); g.fillStyle='#5a3a20'; for(const [px,py] of [[-9,-2],[6,-3],[12,-1],[-3,-4]]) g.fillRect(cx+px*(.6+hundido*.5),base+py*hundido,2,2); g.restore(); }
-    if(dy>=90) return; let [ox,oy]=desplazamientoEmbestida(c); if(c._golpe&&ahora-c._golpe<450){ const q=(ahora-c._golpe)/450; ox+=Math.sin(q*40)*4*(1-q); } g.save(); if(c._caida){ g.beginPath(); g.rect(0,0,240,suelo); g.clip(); } else if(hundido>0){ g.beginPath(); g.rect(0,0,240,base-1); g.clip(); } if(visible(c)) dibujarArte(esp,cx+ox,base+dy+oy,(ESP[esp].tam||56)*k*(c._imagen?1.08:1),volteo,maxH*(c._imagen?1.1:1),esp===c.esp?c._imagen:undefined); g.restore(); };
+    if(dy>=90) return; let [ox,oy]=desplazamientoEmbestida(c); if(c._golpe&&ahora-c._golpe<450){ const q=(ahora-c._golpe)/450; ox+=Math.sin(q*40)*4*(1-q); } g.save(); if(c._caida){ g.beginPath(); g.rect(0,0,240,suelo); g.clip(); } else if(hundido>0){ g.beginPath(); g.rect(0,0,240,base-1); g.clip(); } if(visible(c)) dibujarArteTam(esp,cx+ox,base+dy+oy,tamVisual(esp,(etapaEvo(esp).tam/etapaEvo(esp).F)*k*(c._imagen?1.08:1),maxH*k*(c._imagen?1.1:1),1e9,esp===c.esp?c._imagen:undefined),volteo,esp===c.esp?c._imagen:undefined); g.restore(); };
   const tiembla=B.temblor&&ahora<B.temblor.hasta&&ahora>=(B.temblor.desde||0); if(tiembla){ g.save(); g.translate((Math.random()-.5)*B.temblor.f*2,(Math.random()-.5)*B.temblor.f*2); }
   g.drawImage(fondoCombate(B&&B.enAgua?'agua':mapa.fondo),0,0); if(exterior()&&oscuridadNoche()>0){ g.fillStyle=`rgba(12,18,52,${oscuridadNoche()*.7})`; g.fillRect(0,0,240,160); }
   g.fillStyle='rgba(40,70,30,.25)'; g.beginPath(); g.ellipse(176,60,24,4,0,0,Math.PI*2); g.fill();
@@ -9434,7 +9452,7 @@ function dibujarDex(c){
   texto(`VISTOS ${nv}   CAPTURADOS ${nc}`,232-anchoTexto(`VISTOS ${nv}   CAPTURADOS ${nc}`,8),13,'#ffd8cc',8,'#5a1810');
   forma(6,22,106,96,'#2a2a34'); forma(9,25,100,90,'#e8f2e0');
   for(let y=28;y<112;y+=6) fr('#dce8d4',10,y,98,1);
-  if(visto){ const a=arteDe(e); if(a){ const w=a.naturalWidth||a.width, h=a.naturalHeight||a.height, k=Math.min(84/w,76/h);
+  if(visto){ const a=arteDe(e); if(a){ const w=a.naturalWidth||a.width, h=a.naturalHeight||a.height, k=tamVisual(e,80,82,96)/Math.sqrt(w*h);
       g.save(); g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high'; if(ESP[e].mira==='der'){ g.translate(59+w*k/2,110-h*k); g.scale(-1,1); g.drawImage(a,0,0,w*k,h*k); } else g.drawImage(a,59-w*k/2,110-h*k,w*k,h*k); g.restore(); }
     if(capt) g.drawImage(bolaCanvas(),97,28,10,10); }
   else texto('?',53,80,'#a8b4a0',28,'#e8f2e0');
@@ -9670,7 +9688,7 @@ function dibujarEleccion(){
   if(ini+nv<c.opciones.length){ fr('#e2574a',x+w/2-3,y+h-4,7,1); fr('#e2574a',x+w/2-2,y+h-3,5,1); fr('#e2574a',x+w/2-1,y+h-2,3,1); }
   if(c.vista){ const v=c.vista(c.idx); if(v){ caja(4,6,74,92); fr('#f4f0e6',9,11,64,58); fr('#e6dfcf',9,61,64,8);
       try{ if(v.k){ const ic=iconoMochila(v.k); if(ic){ g.save(); g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high'; g.drawImage(ic,17,13,48,48); g.restore(); } }
-        else if(v.esp) dibujarArte(v.esp,41,66,50,ESP[v.esp].mira==='der');
+        else if(v.esp) dibujarArteTam(v.esp,41,66,tamVisual(v.esp,52,54,62),ESP[v.esp].mira==='der');
         else if(v.lienzo){ g.save(); g.imageSmoothingEnabled=true; g.drawImage(v.lienzo,17,13,48,48); g.restore(); } }catch(e){}
       const pr=v.precio!=null?`${v.precio} $`:''; if(pr) texto(pr,41-anchoTexto(pr,8)/2,82,'#5a3418',8);
       texto(`Tienes ${E.dinero} $`,10,94,'#4a5868',6); } }
