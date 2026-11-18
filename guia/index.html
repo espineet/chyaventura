@@ -42,6 +42,12 @@ h2{font-family:var(--display);font-weight:600;font-size:24px;margin:22px 0 4px}
 .card img{height:76px;width:auto;object-fit:contain}
 .nom{font-family:var(--display);font-weight:600}
 .tipos{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.portipo{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;margin:8px 0}
+.pt{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;gap:2px 8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 8px;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.pt small{grid-column:1/-1;opacity:.7;font-size:11px}
+.pt.on{outline:2px solid currentColor}
+.pt.todos{display:inline-block;margin-top:4px}
+.barra{height:8px;border-radius:4px;background:var(--line);overflow:hidden}.barra i{display:block;height:100%}
 .t{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;padding:1px 6px;border-radius:4px;text-shadow:0 1px 0 rgba(0,0,0,.25)}
 .tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
 table{border-collapse:collapse;width:100%;font-size:14px}
@@ -532,7 +538,10 @@ const DER=new Set(D.der||[]); // las que están dibujadas mirando a la derecha s
 const img=(k,alt)=>IM[k]?`<img src="${IM[k]}" alt="${esc(alt)}" loading="lazy"${DER.has(k)?' style="transform:scaleX(-1)"':''}>`:'';
 const RIV=[["Auron", "Puerta del gimnasio de Coral", 9, "Sale del gimnasio y te reta"], ["Thomas", "Ruta 3", 15, "Tras cruzar la Cueva Eco"], ["Martina", "Desierto Árido", 20, "Con la Medalla Brasa"], ["Thomas", "Pueblo Termas", 27, ""], ["Auron", "Ciudad Bukera", 29, "Con la Medalla Raíz"], ["Martina", "Puerto Salitre", 31, ""], ["Auron", "Poblado Hondo", 34, ""], ["Thomas", "Laberinto Verde (Ruta 8)", 40, "Con la Medalla Cantera"], ["Martina", "Presa del Río Chy", 44, "Te da el PASE DE BARCO"], ["Thomas", "Bosque Pértico", 46, "Con el PASE DE TAMAYO"], ["Auron", "Calle Victoria", 56, ""], ["Martina", "Liga Chy", 60, "Antes de la Liga"]];
 const S={
- dex:{t:'Chykedex',f:()=>`<h2>Chykedex</h2><p class="intro">${D.dex.length} criaturas. Las de fondo dorado son legendarias.</p><div class="grid">${D.dex.map(e=>`<div class="card${e.leg?' leg':''}"><span class="num">Nº ${String(e.n).padStart(3,'0')}</span>${img(e.img,e.nombre)}<span class="nom">${esc(e.nombre)}</span><span class="tipos">${e.tipos.map(tipo).join('')}</span></div>`).join('')}</div>`},
+ dex:{t:'Chykedex',f:()=>{ const cu={},pu={}; for(const e of D.dex){ e.tipos.forEach(t=>cu[t]=(cu[t]||0)+1); if(e.tipos.length===1) pu[e.tipos[0]]=(pu[e.tipos[0]]||0)+1; }
+   const ord=Object.keys(cu).sort((a,b)=>cu[b]-cu[a]||String(NT[a]||a).localeCompare(NT[b]||b)), mx=Math.max(...Object.values(cu));
+   const resumen=`<div class="bloque"><h3>Criaturas por tipo</h3><p class="sub">Cuántas criaturas de la Chykedex tienen cada tipo (las de dos tipos cuentan en los dos). Pulsa un tipo para ver solo esas.</p><div class="portipo">${ord.map(t=>`<button class="pt" data-t="${t}">${tipo(t)}<span class="barra"><i style="width:${(cu[t]/mx*100).toFixed(1)}%;background:${COL[t]||'#888'}"></i></span><b>${cu[t]}</b><small>${pu[t]||0} solo ${esc(NT[t]||t)} · ${cu[t]-(pu[t]||0)} con dos tipos</small></button>`).join('')}</div><button class="pt todos" data-t="">Ver todas (${D.dex.length})</button></div>`;
+   return `<h2>Chykedex</h2><p class="intro">${D.dex.length} criaturas. Las de fondo dorado son legendarias.</p>${resumen}<div class="grid">${D.dex.map(e=>`<div class="card${e.leg?' leg':''}" data-tipos="${e.tipos.join(' ')}"><span class="num">Nº ${String(e.n).padStart(3,'0')}</span>${img(e.img,e.nombre)}<span class="nom">${esc(e.nombre)}</span><span class="tipos">${e.tipos.map(tipo).join('')}</span></div>`).join('')}</div>`; }},
  regalos:{t:'Regalos',f:()=>`<h2>Personas que te dan objetos</h2><p class="intro">Ordenados según cuándo puedes conseguirlos en la aventura: primero los que están a tu alcance al empezar. Incluye encargos, líderes de gimnasio y premios por ganar combates.</p><div class="tablebox"><table><thead><tr><th>Dónde</th><th>Quién</th><th>Te da</th><th>Cuándo</th></tr></thead><tbody>${D.regalos.map(r=>`<tr><td>${esc(r.lugar)}<div class="sub">${esc(r.mapa)}</div></td><td>${esc(r.quien)}</td><td class="obj">${esc(r.obj)}</td><td>${esc(r.cuando)}</td></tr>`).join('')}</tbody></table></div>`},
  bloqueos:{t:'Bloqueos',f:()=>`<h2>Bloqueos del mapa</h2><p class="intro">Todo lo que te corta el paso y lo que tienes que hacer para que se abra.</p><div class="tablebox"><table><thead><tr><th>Dónde</th><th>Qué bloquea</th><th>Cómo se abre</th></tr></thead><tbody>${D.bloq.map(r=>`<tr><td>${esc(r.lugar)}<div class="sub">${esc(r.mapa)}</div></td><td>${esc(r.que)}</td><td class="obj">${esc(r.abre.charAt(0).toUpperCase()+r.abre.slice(1))}</td></tr>`).join('')}</tbody></table></div>`},
  evoluciones:{t:'Evoluciones',f:()=>`<h2>Evoluciones y ataques</h2><p class="intro">Cada familia con su nivel de evolución. Abre «Ataques» para ver qué aprende y a qué nivel (los ataques son los mismos para toda la familia).</p><div class="buscar"><input id="q" type="search" placeholder="Buscar criatura…" aria-label="Buscar criatura"></div><div id="fams">${D.familias.map(f=>{ const leg=f.some(x=>x.leg); const et=f.map((x,i)=>`${i?`<div class="flecha"><b>→</b>Nv. ${f[i-1].nivel}</div>`:''}<div class="etapa">${img(x.img,x.nombre)}<span class="nom">${esc(x.nombre)}</span><span class="tipos">${x.tipos.map(tipo).join('')}</span></div>`).join('');
@@ -662,6 +671,10 @@ const nav=document.getElementById('nav'), main=document.getElementById('main');
 nav.innerHTML=Object.entries(S).map(([k,v])=>`<a href="#${k}" data-k="${k}">${v.t}</a>`).join('');
 function ver(){ let k=location.hash.slice(1); if(!S[k]) k='dex'; main.innerHTML=S[k].f(); if(S[k].on) S[k].on(); nav.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',a.dataset.k===k?'true':'false')); }
 addEventListener('hashchange',()=>{ ver(); window.scrollTo(0,0); }); ver();
+
+document.addEventListener('click',ev=>{ const b=ev.target.closest('.pt'); if(!b) return; const t=b.dataset.t, sec=b.closest('section')||document;
+  document.querySelectorAll('.pt').forEach(x=>x.classList.toggle('on',!!t&&x===b));
+  document.querySelectorAll('.card[data-tipos]').forEach(c=>c.style.display=!t||c.dataset.tipos.split(' ').includes(t)?'':'none'); });
 </script>
 
 </body>
