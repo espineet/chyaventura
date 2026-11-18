@@ -9954,15 +9954,19 @@ bBorrar.addEventListener('click',()=>{
 
 // ---------- exportar / importar la partida en un archivo ----------
 const avisoPartida=t=>{ const el=document.getElementById('aviso-partida'); if(el){ el.textContent=t; } };
-document.getElementById('exportar').addEventListener('click',()=>{
+document.getElementById('exportar').addEventListener('click',async()=>{
   if(E&&E.flags&&E.flags.inicial&&!B) guardarAhora();
   let txt=null; try{ txt=localStorage.getItem(CLAVE_PARTIDA); }catch(e){}
   if(!txt){ avisoPartida('Todavía no hay ninguna partida guardada que exportar.'); return; }
   const datos={juego:'chyaventura',version:2,fecha:new Date().toISOString(),heroe:{heroe:CONFIG.heroe,rival:CONFIG.rival.nombre},partida:JSON.parse(txt)};
   const nombre='chyaventura-'+(CONFIG.heroe.nombre||'partida').toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.json';
+  const ok='Partida exportada en el archivo '+nombre+'. Guárdalo bien: con él puedes recuperarla en cualquier navegador.';
+  // dentro de Claude, la descarga pasa por el permiso de descargas; en la web normal, con un enlace de descarga
+  let dl=null; try{ dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null; }catch(e){ dl=null; }
+  if(dl){ try{ await dl.save({filename:nombre,data:JSON.stringify(datos)}); avisoPartida(ok); }catch(e){ avisoPartida(e&&e.code==='declined'?'Exportación cancelada.':'No se ha podido exportar la partida aquí. Prueba desde chyaventura.pages.dev.'); } return; }
   const blob=new Blob([JSON.stringify(datos)],{type:'application/json'}), url=URL.createObjectURL(blob), a=document.createElement('a');
   a.href=url; a.download=nombre; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
-  avisoPartida('Partida exportada en el archivo '+nombre+'. Guárdalo bien: con él puedes recuperarla en cualquier navegador.'); });
+  avisoPartida(ok); });
 const fImp=document.getElementById('f-importar');
 document.getElementById('importar').addEventListener('click',()=>{ fImp.value=''; fImp.click(); });
 fImp.addEventListener('change',async()=>{ const f=fImp.files&&fImp.files[0]; if(!f) return;
