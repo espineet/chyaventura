@@ -26,6 +26,11 @@ P
 mkdir -p "$R/guia"
 python3 "$H/envolver.py" "$JUEGO" "$R/index.html"
 python3 "$H/envolver.py" "$T/guia.html" "$R/guia/index.html"
+# 2b) los dibujos, en archivos aparte (se cargan antes y el navegador los guarda); la guía usa los mismos
+rm -rf "$R/img"
+python3 "$H/separar_imagenes.py" "$R/index.html" "$R/img" "img/"
+python3 "$H/separar_imagenes.py" "$R/guia/index.html" "$R/img" "../img/"
+printf '/img/*\n  Cache-Control: public, max-age=31536000, immutable\n' > "$R/_headers"
 # 3) subir a GitHub
 cd "$R"; git add -A
 if git diff --cached --quiet; then echo "Nada nuevo que publicar."; exit 0; fi

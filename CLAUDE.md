@@ -24,6 +24,9 @@ Siempre que se modifique el juego o la guía, en el mismo turno:
   `/home/user/criaturas/index.html`. `publicar.sh` le añade la cabecera (`envolver.py`).
   Si ese archivo no existe (sesión nueva), `publicar.sh` lo recupera del `index.html` del repo
   (`desenvolver.py`); también se puede leer el artefacto del juego con la herramienta Artifact.
+- En Pages los dibujos van en archivos aparte: `publicar.sh` saca los `data:image` del juego y de la guía a
+  `img/<resumen>.webp` (`separar_imagenes.py`) y `_headers` los deja en caché un año. El artefacto y el
+  archivo de trabajo siguen siendo un solo HTML; `desenvolver.py` vuelve a meter los dibujos al recuperarlo.
 - La guía se genera desde el juego: `guia_datos.js` (con Playwright) saca los datos,
   `armario_js.py` copia el código que dibuja a las personas para la sección ARMARIO, y todo se
   rellena en `guia_tpl.html`.
