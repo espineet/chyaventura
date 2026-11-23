@@ -7111,6 +7111,26 @@ function arbolVariado(x,tx,ty){ const v=Math.floor(hs(tx,ty,3)*4), tipo=hs(tx,ty
   x.strokeStyle='#4a2a14'; x.lineWidth=1; x.beginPath(); x.moveTo(23+dx,33); x.lineTo(23+dx,41); x.moveTo(26+dx,31); x.lineTo(26+dx,37); x.stroke();
   if(tipo<.5){ copa(x,24+dx,18,Math.min(23,22*esc),v,['#21582c','#2c6e36','#438a44','#68a85c'],'#163a20'); return; } // grande y oscuro
   copa(x,24+dx,18+(v%2),(20+(v>>1))*Math.min(1,esc),v); }
+// roca de los acantilados y de las paredes de cueva: la parte de arriba se ve como roca maciza (no como suelo)
+function rocaHD(x,m,os,q,tx,ty){ const ceni=enCeniza();
+  const P=os?{base:'#241c20',bulto:'#33282c',luz:'#4e4044',sombra:'#120c0e',borde:'#6a5a58'}:ceni?{base:'#4a403c',bulto:'#5e524c',luz:'#7e7068',sombra:'#28201e',borde:'#9a8a80'}:{base:'#7a6a5a',bulto:'#8e7c68',luz:'#b4a088',sombra:'#463a2e',borde:'#d2c0a4'};
+  if(m&4){ // parte de arriba de la masa de roca
+    x.fillStyle=P.base; x.fillRect(0,0,48,48);
+    for(let i=0;i<6;i++){ const bx=6+hs(i,q,121)*36, by=6+hs(q,i,122)*36, r=7+hs(i,q+3,123)*7;
+      x.fillStyle=P.sombra; x.globalAlpha=.55; x.beginPath(); x.ellipse(bx+1.5,by+2.5,r,r*.75,0,0,Math.PI*2); x.fill(); x.globalAlpha=1;
+      const gr=x.createRadialGradient(bx-r*.35,by-r*.4,1,bx,by,r); gr.addColorStop(0,P.luz); gr.addColorStop(.55,P.bulto); gr.addColorStop(1,P.base); x.fillStyle=gr; x.beginPath(); x.ellipse(bx,by,r,r*.75,0,0,Math.PI*2); x.fill(); }
+    x.strokeStyle=P.sombra; x.lineWidth=1.4; x.lineCap='round'; for(let i=0;i<2;i++){ const sx=8+hs(i,q,124)*30, sy=8+hs(q,i,125)*30; x.beginPath(); x.moveTo(sx,sy); x.lineTo(sx+5,sy+4); x.lineTo(sx+3,sy+10); x.stroke(); }
+    if(!os&&!ceni&&hs(tx,ty,126)<.45){ for(let i=0;i<2;i++){ const gx=8+hs(tx+i,ty,127)*32, gy=10+hs(tx,ty+i,128)*28; x.strokeStyle='#3c7a34'; x.lineWidth=1.4; for(const d of [-2.5,0,2.5]){ x.beginPath(); x.moveTo(gx,gy); x.lineTo(gx+d,gy-5); x.stroke(); } } }
+    // bordes donde se acaba la roca: canto claro y una sombra fuera
+    if(!(m&1)){ x.fillStyle=P.borde; x.fillRect(0,0,48,3); x.fillStyle=P.sombra; x.fillRect(0,3,48,1.5); }
+    if(!(m&8)){ x.fillStyle=P.borde; x.globalAlpha=.75; x.fillRect(0,0,3,48); x.globalAlpha=1; x.fillStyle=P.sombra; x.fillRect(3,0,1.5,48); }
+    if(!(m&2)){ x.fillStyle=P.sombra; x.fillRect(44,0,4,48); x.fillStyle=P.borde; x.globalAlpha=.5; x.fillRect(43,0,1.5,48); x.globalAlpha=1; }
+    return; }
+  // cara de la pared: más oscura y con grietas verticales, con un canto claro arriba si encima hay roca
+  if(os){ x.fillStyle='rgba(20,10,14,.32)'; x.fillRect(0,0,48,48); }
+  x.strokeStyle=os?'rgba(10,6,8,.6)':'rgba(40,28,20,.45)'; x.lineWidth=1.6; for(let i=0;i<3;i++){ const cx=6+hs(i,q,129)*36; x.beginPath(); x.moveTo(cx,6+hs(q,i,130)*8); x.lineTo(cx+2,22); x.lineTo(cx-1,34+hs(i,i,131)*6); x.stroke(); }
+  if(m&1){ x.fillStyle=P.borde; x.fillRect(0,0,48,3); x.fillStyle=P.sombra; x.fillRect(0,3,48,2); }
+  const gr=x.createLinearGradient(0,30,0,48); gr.addColorStop(0,'rgba(0,0,0,0)'); gr.addColorStop(1,os?'rgba(0,0,0,.45)':'rgba(30,20,10,.35)'); x.fillStyle=gr; x.fillRect(0,30,48,18); }
 function lienzoCasilla0(ch,tx,ty){
   if(ch==='Ϧ') return lienzoCasilla0('z',tx,ty); if(ch==='Ꝥ') return lienzoCasilla0('a',tx,ty); // columna y trono: se dibujan aparte (salaCampeon)
   if(mapa&&mapa.abandonado&&!_sinAband&&'Ⓑ@ⓌⓉⓔ'.includes(ch)){ _sinAband=true; let b; try{ b=lienzoCasilla0(ch,tx,ty); } finally{ _sinAband=false; } return hdCasilla('ABAND'+ch+tx+'_'+ty,b,x=>manchasAbandono(x,tx,ty,ch)); }
@@ -7163,14 +7183,16 @@ function lienzoCasilla0(ch,tx,ty){
     case 'A': { const des=mapa.id==='desierto', m=mascara(tx,ty,des?'AP~srCE=SnLYϘЧ*jJyZ':'AP~srCE=SnLYϘЧ*ⓕⓓ'), h=hs(tx,ty,99), d=des?(h<.5?0:3):h<.05?1:h<.08?2:(h<.5?0:3); const b=cacheado('A'+m+'_'+d,()=>pArena(m,d)), g=ladosHierba(tx,ty)&~m;
       if(!des) return g?hdCasilla('ARH'+m+'_'+g+'_'+d+'_'+(tx%2),b,x=>bordeHierbaHD(x,tx,ty,g,tx%2,false)):b; return hdCasilla('ADS'+tx+'_'+ty,b,x=>{ ondasDuna(x,tx,ty,.16); if(g) bordeHierbaHD(x,tx,ty,g,0,false); }); }
     case 'P': return cacheado('P'+(v%3),()=>pPalmera(v%3));
-    case 'C': { const m=mascara(tx,ty,'CE'), os=!!mapa.oscuro; return cacheado('C'+m+os+(v%2),()=>pRocaMuro(m,os,v%2)); }
+    case 'C': { const m=mascara(tx,ty,'CE'), os=!!mapa.oscuro, b=cacheado('C'+m+os+(v%2),()=>pRocaMuro(m,os,v%2)), q=(tx*7+ty*3)%4; return hdCasilla('ROCA'+m+'_'+os+'_'+q+(enCeniza()?'c':''),b,x=>rocaHD(x,m,os,q,tx,ty)); }
     case ']': { const ab=!!(E&&E.flags.grutaAbierta), os=!!mapa.oscuro; return cacheado(']'+ab+os,()=>{ const L=pRocaMuro(mascara(tx,ty,'C]'),os,0);
       R(L,3,3,10,13,'#2a2a34'); R(L,4,4,8,12,ab?'#0a0a12':'#8a92a0'); if(!ab){ R(L,4,4,8,1,'#c8d0dc'); R(L,7,4,2,12,'#6a7280'); for(const [rx,ry] of [[5,6],[10,6],[5,13],[10,13]]) P(L,rx,ry,'#e8ecf2'); R(L,13,7,2,3,'#1e2a1e'); P(L,13,8,'#58f058'); }
       else { R(L,5,11,6,1,'#5a4a3a'); R(L,6,13,4,1,'#5a4a3a'); } return L; }); }
     case 'E': { // boca de túnel en el borde del mapa (dos casillas): orientada hacia dentro del mapa
       const par=casilla(tx,ty+1)==='E'?'arriba':casilla(tx,ty-1)==='E'?'abajo':null, lado=tx<=0?'izq':tx>=mapa.an-1?'der':null;
       if(par&&lado){ const c=tunelLateral(lado,tx,par==='arriba'?ty:ty-1); return c[par==='arriba'?0:1]; }
-      const os=!!mapa.oscuro; return cacheado('E'+os,()=>pEntrada(os,0)); }
+      const os=!!mapa.oscuro, b=cacheado('E'+os,()=>pEntrada(os,0)); if(os||!'CEZ'.includes(casilla(tx,ty-1)||'')) return b;
+      // con roca encima: el canto de arriba de la boca también es roca (sin la franja de hierba)
+      return hdCasilla('EROCA'+(enCeniza()?'c':''),b,x=>{ const P=enCeniza()?['#4a403c','#9a8a80','#28201e']:['#7a6a5a','#d2c0a4','#463a2e']; x.fillStyle=P[0]; x.fillRect(0,0,48,10); x.fillStyle=P[1]; x.fillRect(0,0,48,3); x.fillStyle=P[2]; x.fillRect(0,9,48,2); }); }
     case 'c': return cacheado('c'+v,()=>pSueloCueva(v));
     case '^': if(mapa&&mapa.salidas) return escaleraHD(tx,ty);
       return cacheado('^',()=>{ const L=pSueloCueva(0); for(let i=0;i<4;i++){ const y=2+i*3, w=12-i*2, x=2+i; R(L,x,y,w,3,cla(C.cuevaRoca,.25)); R(L,x,y,w,1,cla(C.cuevaRoca,.5)); R(L,x,y+2,w,1,osc(C.cuevaRoca,.35)); } return contorno(L,'#241a18'); });
@@ -7352,7 +7374,7 @@ function lienzoCasilla0(ch,tx,ty){
     case 'd': { const m=mascara(tx,ty,'d'), fr=Math.floor(tiempo*3)%6; return cacheado('d'+m+'_'+fr+'_'+((tx+ty)%3),()=>pTermal(m,fr,(tx+ty)%3)); }
     case 'j': return cacheado('j',pHierbaSeca);
     case 'u': { const m=mascara(tx,ty,'u'), fr=Math.floor(tiempo*3)%6; return cacheado('u'+m+'_'+fr+'_'+(tx%3)+(ty%3),()=>pLava(m,fr+tx*2+ty)); }
-    case 'Z': { const m=mascara(tx,ty,'Zu'), ml=mascara(tx,ty,'u'); return cacheado('Z'+m+'_'+ml+'_'+(tx%9)+'_'+(ty%9),()=>pLadera(m,ml,v,tx,ty)); }
+    case 'Z': { const m=mascara(tx,ty,'Zu'), ml=mascara(tx,ty,'u'), b=cacheado('Z'+m+'_'+ml+'_'+(tx%9)+'_'+(ty%9),()=>pLadera(m,ml,v,tx,ty)); if(ml) return b; const mr=mascara(tx,ty,'ZE'), q=(tx*7+ty*3)%4; return hdCasilla('ZROCA'+mr+'_'+q+(enCeniza()?'c':''),b,x=>rocaHD(x,mr,false,q,tx,ty)); }
     case 'J': return cacheado('J'+(v%2),()=>pArbolSeco(v%2));
     case 'i': { const fr=Math.floor(tiempo*4)%4; return cacheado('i'+fr,()=>pFumarola(1,fr)); }
     case 'X': case '-': case 'N': { const m=mascara(tx,ty,'X-N'); return cacheado('X'+ch+m+(v%2),()=>pAsfalto(m,ch,v%2)); }
