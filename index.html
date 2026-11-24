@@ -9494,7 +9494,67 @@ async function teletransportar(l){ const id=l.mapas[0], m=MAPAS[id]; ui.pausa=fa
   await anim('fundido',250,1); if(mejor) ponerMapa(id,mejor[0],mejor[1],'abajo'); E.viaje=null; Musica.poner(musicaDelMapa()); ui.cartel={texto:mapa.nombre+' (teletransporte)',t:performance.now()}; await anim('fundido',250,0); }
 
 // ---------- fondo de combate ----------
-function fondoCombate(tipo='campo'){ return cacheado('fondo'+tipo,()=>{ if(tipo==='cueva') return fondoCueva(); if(tipo==='volcan') return fondoVolcan(); if(tipo==='playa') return fondoPlaya(); if(tipo==='agua') return fondoAgua(); if(tipo==='desierto') return fondoDesierto();
+// ---------- fondos de combate según el lugar ----------
+const GYM_COLOR={fuego:['#c8402a','#f08a3a'],agua:['#2a6ac8','#58b0f0'],hielo:['#58a8c8','#c8f0ff'],aire:['#5a8ad8','#b8d8ff'],roca:['#8a6a48','#c8a878'],ciudad:['#5a6070','#a8b0c0'],planta:['#3a8a48','#8ad070']};
+function tipoFondoCombate(){ if(B&&B.enAgua) return 'agua'; const id=mapa.id;
+  if(id.startsWith('liga')) return 'liga';
+  if(id.startsWith('gym_')) return 'gimnasio_'+(TEMA_GYM[id]||'planta');
+  if(/^(cascada\d?|gruta)$/.test(id)||mapa.cuevaHielo) return 'hielo';
+  if(id==='cementerio'||/^torref\d/.test(id)) return 'fantasma';
+  if(mapa.fondo) return mapa.fondo;
+  if(mapa.oscuro) return 'cueva';
+  if(!mapa.borde) return 'interior';
+  if(/^(pertico|laberinto)$/.test(id)) return 'bosque';
+  try{ if(edificios().lista.length>=4) return 'ciudad'; }catch(e){}
+  return 'campo'; }
+function platCombate(L,cx,cy,rx,ry,c){ elipse(L,cx,cy+2,rx,ry,()=>c[3]); elipse(L,cx,cy,rx,ry,(dx,dy,x,y)=>{ const r2=dx*dx+dy*dy; if(r2>.82) return c[0]; const l=-(dx*.3+dy*.9); return hs(x,y,6)<.06?c[0]:l>.35?c[1]:c[2]; }); }
+function sueloBandas(L,y0,a,b,mota,k=7){ for(let y=y0;y<160;y++) for(let x=0;x<240;x++){ let c=Math.floor((y-y0)/k)%2?a:b; if(hs(x,y,4)<.04) c=mota; P(L,x,y,c); } }
+const FONDOS_EXTRA={
+  bosque(){ const L=capa(240,160);
+    for(let y=0;y<60;y++) for(let x=0;x<240;x++) P(L,x,y,y<20?'#8ccbf4':'#9cd4f6');
+    for(let i=0;i<16;i++){ const x=i*16+Math.floor(hs(i,1,7)*8), r=12+hs(i,2,7)*8, y=34-hs(i,3,7)*10; R(L,x-2,y,5,30,'#5a3a22'); circulo(L,x,y,r,(a,b)=>b<-.3&&a<0?'#3e8a44':b>.3?'#1e5a2a':'#2e7034'); }
+    for(let x=0;x<240;x++){ const h=Math.round(50+Math.sin(x*.09)*3); for(let y=h;y<60;y++) P(L,x,y,'#24602c'); }
+    sueloBandas(L,60,'#7ab860','#70ae58','#5a9a48');
+    for(let i=0;i<9;i++){ const x=hs(i,4,7)*240, y=70+hs(i,5,7)*80; elipse(L,x,y,10,3,()=> '#94cc78'); }
+    platCombate(L,176,58,44,11,['#4a8a44','#a8d880','#7ab860','#3a6a34']); platCombate(L,64,112,52,12,['#4a8a44','#a8d880','#7ab860','#3a6a34']); return L; },
+  hielo(){ const L=capa(240,160);
+    for(let y=0;y<160;y++) for(let x=0;x<240;x++){ const h=hs(x>>1,y>>1,31); let c=y<60?(h<.1?'#3a5a78':'#24405a'):(Math.floor((y-60)/7)%2?'#c8e4f0':'#bcdcec'); if(y>=60&&hs(x,y,4)<.05) c='#e8f8ff'; P(L,x,y,c); }
+    for(let i=0;i<18;i++){ const x=Math.floor(hs(i,1,33)*232), l=8+Math.floor(hs(i,2,33)*20); for(let y=0;y<l;y++){ const w=Math.max(0,Math.round((l-y)/4)); R(L,x-w,y,w*2+1,1,y<3?'#e8f8ff':'#9ad0ec'); } }
+    for(let i=0;i<6;i++){ const x=10+hs(i,4,33)*220, y=40+hs(i,5,33)*14; for(let k=0;k<10;k++) R(L,x-Math.floor(k/3),y-k,1+Math.floor(k/1.6),1,k<2?'#ffffff':'#8ad8f8'); }
+    platCombate(L,176,58,44,11,['#9ac8e0','#ffffff','#d8f0fa','#6a9ab8']); platCombate(L,64,112,52,12,['#9ac8e0','#ffffff','#d8f0fa','#6a9ab8']); return L; },
+  fantasma(){ const L=capa(240,160);
+    for(let y=0;y<60;y++) for(let x=0;x<240;x++){ let c=y<20?'#1e1430':y<40?'#2a1c44':'#3a2a58'; if(hs(x,y,41)<.006) c='#ffffff'; P(L,x,y,c); }
+    circulo(L,196,18,10,(a,b)=>a+b>.6?'#d8d0a8':'#fff4d0');
+    for(let i=0;i<9;i++){ const x=8+i*27+Math.floor(hs(i,1,43)*8), h=10+Math.floor(hs(i,2,43)*8); R(L,x,58-h,10,h,'#4a4060'); circulo(L,x+5,58-h,5,()=> '#4a4060'); R(L,x+4,58-h+2,2,6,'#2a2238'); R(L,x+2,58-h+4,6,2,'#2a2238'); }
+    sueloBandas(L,58,'#4a4458','#443e52','#5a5470');
+    for(let i=0;i<5;i++){ const x=hs(i,3,43)*240, y=64+hs(i,4,43)*80; elipse(L,x,y,30,4,(dx)=> Math.abs(dx)>.7?null:'#6a6480'); }
+    platCombate(L,176,58,44,11,['#3a3448','#7a7090','#5a5470','#2a2438']); platCombate(L,64,112,52,12,['#3a3448','#7a7090','#5a5470','#2a2438']); return L; },
+  gimnasio(tema){ const L=capa(240,160), [c1,c2]=GYM_COLOR[tema]||GYM_COLOR.planta;
+    for(let y=0;y<56;y++) for(let x=0;x<240;x++){ let c=y<8?'#2a2a34':y<44?((Math.floor(y/6)%2)?'#4a4a58':'#40404c'):c1; if(y>=8&&y<44&&hs(x>>1,y,51)<.22) c=['#e8b890','#c88a68','#f0d0a0','#8a5a40','#e86a5a','#5a8ae8'][Math.floor(hs(x,y,52)*6)]; P(L,x,y,c); }
+    R(L,0,44,240,3,c2); R(L,0,52,240,4,'#2a2a34');
+    sueloBandas(L,56,'#d8c8a8','#e2d2b2','#c8b898',8);
+    for(let y=56;y<160;y++){ P(L,120,y,c1); P(L,121,y,c1); } elipse(L,120,104,34,14,(dx,dy)=>{ const r=dx*dx+dy*dy; return r>.86?c1:null; });
+    platCombate(L,176,58,44,11,[c1,c2,c2,'#2a2a34']); platCombate(L,64,112,52,12,[c1,c2,c2,'#2a2a34']); return L; },
+  liga(){ const L=capa(240,160);
+    for(let y=0;y<56;y++) for(let x=0;x<240;x++){ let c=y<46?((Math.floor(x/4)%2)?'#8a1a1a':'#7a1414'):'#c8a040'; P(L,x,y,c); }
+    for(const cx of [16,64,176,224]){ R(L,cx-7,0,14,48,'#e8dcc0'); R(L,cx-5,0,3,48,'#fffaf0'); R(L,cx+3,0,3,48,'#c8bca0'); R(L,cx-9,0,18,4,'#e8c860'); R(L,cx-9,44,18,4,'#e8c860'); }
+    for(const cx of [40,200]){ R(L,cx-8,6,16,26,'#c8281a'); R(L,cx-8,6,16,3,'#f2c84a'); circulo(L,cx,18,4,()=> '#f2c84a'); }
+    sueloBandas(L,56,'#f4e4b0','#ecd8a0','#fff4d0',8);
+    for(let y=56;y<160;y++) for(let x=96;x<144;x++) P(L,x,y,(x===96||x===143)?'#e8b818':'#c8281a');
+    platCombate(L,176,58,44,11,['#b8902a','#fff0b0','#e8c860','#8a6a1a']); platCombate(L,64,112,52,12,['#b8902a','#fff0b0','#e8c860','#8a6a1a']); return L; },
+  interior(){ const L=capa(240,160);
+    for(let y=0;y<56;y++) for(let x=0;x<240;x++){ let c=y<44?((Math.floor(x/6)%2)?'#e8dcc4':'#ded0b4'):'#8a5a32'; P(L,x,y,c); }
+    for(const cx of [40,200]){ R(L,cx-14,10,28,22,'#6a4a2a'); R(L,cx-12,12,24,18,'#9ad0f0'); R(L,cx-1,12,2,18,'#6a4a2a'); R(L,cx-12,20,24,2,'#6a4a2a'); }
+    R(L,104,16,32,22,'#6a4a2a'); R(L,106,18,28,18,'#7ab860'); circulo(L,120,26,5,()=> '#f6d050');
+    for(let y=56;y<160;y++) for(let x=0;x<240;x++){ const tabla=Math.floor((y-56)/9); let c=(tabla%2)?'#b8844e':'#c49058'; if((x+tabla*13)%40===0) c='#8a5a32'; if(hs(x,y,4)<.03) c='#a8743e'; P(L,x,y,c); }
+    platCombate(L,176,58,44,11,['#6a3a6a','#c878a8','#a85888','#4a2a4a']); platCombate(L,64,112,52,12,['#6a3a6a','#c878a8','#a85888','#4a2a4a']); return L; },
+  ciudad(){ const L=capa(240,160); cielo(L);
+    for(let i=0;i<12;i++){ const x=i*21-4, w=18+Math.floor(hs(i,1,61)*6), h=14+Math.floor(hs(i,2,61)*26), col=['#7a8aa8','#a8583e','#8a9ab0','#c89a6a','#6a7890'][i%5];
+      R(L,x,52-h,w,h,col); for(let wy=52-h+3;wy<50;wy+=5) for(let wx=x+2;wx<x+w-2;wx+=4) P(L,wx,wy,hs(wx,wy,62)<.5?'#f8e8a0':'#c8e4f8'); R(L,x,52-h,w,1,'#2a2a34'); }
+    R(L,0,52,240,6,'#8a8a90');
+    for(let y=58;y<160;y++) for(let x=0;x<240;x++){ const fy=Math.floor((y-58)/8), fx=Math.floor((x+(fy%2)*6)/12); let c=(fx+fy)%2?'#c8c0b0':'#bab2a2'; if((x+(fy%2)*6)%12===0||(y-58)%8===0) c='#9a9282'; P(L,x,y,c); }
+    platCombate(L,176,58,44,11,['#7a7a80','#d8d8dc','#b8b8c0','#5a5a62']); platCombate(L,64,112,52,12,['#7a7a80','#d8d8dc','#b8b8c0','#5a5a62']); return L; } };
+function fondoCombate(tipo='campo'){ return cacheado('fondo'+tipo,()=>{ if(tipo==='cueva') return fondoCueva(); if(tipo==='volcan') return fondoVolcan(); if(tipo==='playa') return fondoPlaya(); if(tipo==='agua') return fondoAgua(); if(tipo==='desierto') return fondoDesierto(); if(FONDOS_EXTRA[tipo.split('_')[0]]) return FONDOS_EXTRA[tipo.split('_')[0]](tipo.split('_')[1]);
   const L=capa(240,160), cielo=['#6cb8f0','#7cc2f2','#8ccbf4','#9cd4f6','#acdcf8','#bce4f8'];
   for(let y=0;y<50;y++){ const i=Math.min(5,Math.floor(y/8)); for(let x=0;x<240;x++){ const d=(y%8>=6)&&((x+y)%2===0)&&i<5; P(L,x,y,d?cielo[i+1]:cielo[i]); } }
   const nube=(cx,cy,s)=>{ for(const [dx,dy,r] of [[0,0,6],[8,-3,7],[16,0,6],[7,2,6]]) circulo(L,cx+dx*s,cy+dy*s,r*s,(a,b)=>b>.35?'#d8ecf8':'#ffffff'); };
@@ -9612,7 +9672,7 @@ function dibujarCombate(){
     if(hundido>0){ g.save(); g.fillStyle='#7a5432'; g.beginPath(); g.ellipse(cx,base-1,14+hundido*6,3+hundido*3,0,Math.PI,0); g.fill(); g.fillStyle='#5a3a20'; for(const [px,py] of [[-9,-2],[6,-3],[12,-1],[-3,-4]]) g.fillRect(cx+px*(.6+hundido*.5),base+py*hundido,2,2); g.restore(); }
     if(dy>=90) return; let [ox,oy]=desplazamientoEmbestida(c); if(c._golpe&&ahora-c._golpe<450){ const q=(ahora-c._golpe)/450; ox+=Math.sin(q*40)*4*(1-q); } g.save(); if(c._caida){ g.beginPath(); g.rect(0,0,240,suelo); g.clip(); } else if(hundido>0){ g.beginPath(); g.rect(0,0,240,base-1); g.clip(); } if(visible(c)){ const tam=tamVisual(esp,(etapaEvo(esp).tam/etapaEvo(esp).F)*k*(c._imagen?1.08:1),maxH*k*(c._imagen?1.1:1),1e9,esp===c.esp?c._imagen:undefined), im=esp===c.esp?c._imagen:undefined; if(fx) arteConEfecto(esp,cx+ox,base+dy+oy,tam,volteo,im,fx); else dibujarArteTam(esp,cx+ox,base+dy+oy,tam,volteo,im); } g.restore(); };
   const tiembla=B.temblor&&ahora<B.temblor.hasta&&ahora>=(B.temblor.desde||0); if(tiembla){ g.save(); g.translate((Math.random()-.5)*B.temblor.f*2,(Math.random()-.5)*B.temblor.f*2); }
-  g.drawImage(fondoCombate(B&&B.enAgua?'agua':mapa.fondo),0,0); if(exterior()&&oscuridadNoche()>0){ g.fillStyle=`rgba(12,18,52,${oscuridadNoche()*.7})`; g.fillRect(0,0,240,160); }
+  g.drawImage(fondoCombate(tipoFondoCombate()),0,0); if(exterior()&&oscuridadNoche()>0){ g.fillStyle=`rgba(12,18,52,${oscuridadNoche()*.7})`; g.fillRect(0,0,240,160); }
   g.fillStyle='rgba(40,70,30,.25)'; g.beginPath(); g.ellipse(176,60,24,4,0,0,Math.PI*2); g.fill();
   if(B.entr){ const q=Math.min(1,(ahora-B.entr.t0)/350), s=B.entr.sale?Math.min(1,(ahora-B.entr.sale)/350):0, ox=(1-ease(q))*90+ease(s)*90; g.save(); g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high'; { const pc=personaCombate(B.entr.a), h=78, w=h*pc.width/pc.height; g.fillStyle='rgba(30,40,30,.25)'; g.beginPath(); g.ellipse(176+ox,62,w*.32,3,0,0,Math.PI*2); g.fill(); g.drawImage(pc,176+ox-w/2,-14,w,h); } g.restore(); }
   if(!B.bola) pintar(B.rival,176,64,false,66);
@@ -9990,14 +10050,14 @@ const PISTAS={
   centro:{ bpm:100, onda:.25, bajo:'arpegio', bateria:'suave', arp:true,
     acordes:['F','C','Dm','Bb','F','C','Bb','C'],
     mel:["A5:2 C6:2 A5:2 F5:2","G5:2 E5:2 C5:4","F5:2 A5:2 D6:2 C6:2","Bb5:6 r:2","A5:2 C6:2 F6:2 E6:2","D6:2 C6:2 G5:4","Bb5:2 A5:2 G5:2 Bb5:2","A5:4 G5:4"] },
-  salvaje:{ bpm:160, onda:.5, bajo:'rapido', bateria:'rapida',
-    acordes:['Em','Em','C','D','Em','Em','C','B','Am','B','Em','Em','C','D','B','B'],
-    mel:["E5:1 G5:1 B5:1 E6:1 D6:2 B5:2","G5:1 A5:1 B5:2 E5:2 G5:2","C6:2 B5:1 A5:1 G5:2 E5:2","F#5:2 A5:2 D6:2 C6:2","B5:3 A5:1 G5:2 E5:2","E6:2 D6:1 B5:1 G5:2 B5:2","C6:2 E6:2 C6:2 G5:2","D#6:4 B5:4",
-         "A5:2 C6:2 E6:2 C6:2","D#6:2 F#6:2 B5:4","G6:2 F#6:1 E6:1 D6:2 B5:2","E6:6 r:2","C6:1 D6:1 E6:2 G6:2 E6:2","F#6:2 D6:2 A5:2 F#5:2","B5:2 D#6:2 F#6:2 D#6:2","B5:4 r:4"] },
-  entrenador:{ bpm:168, onda:.25, bajo:'rapido', bateria:'rapida', arp:true,
-    acordes:['Am','F','G','E','Am','F','G','E','F','G','Am','Am','Dm','E','Am','E'],
-    mel:["A5:2 C6:2 E6:3 D6:1","C6:2 A5:2 F5:4","G5:2 B5:2 D6:2 G6:2","G#6:4 E6:4","A6:2 G6:1 E6:1 C6:2 A5:2","F6:2 E6:1 C6:1 A5:2 C6:2","D6:2 B5:2 G5:2 B5:2","E6:6 r:2",
-         "C6:2 F6:2 A6:2 F6:2","D6:2 G6:2 B6:2 G6:2","A6:3 G6:1 E6:2 C6:2","A5:6 r:2","D6:2 F6:2 A6:2 F6:2","E6:2 G#6:2 B6:2 G#6:2","A6:4 E6:4","B5:2 D6:2 E6:4"] },
+  salvaje:{ bpm:150, onda:.5, bajo:'rapido', bateria:'rapida',
+    acordes:['Dm','Dm','Bb','C','Dm','Dm','Gm','A','Bb','C','Am','Dm','Gm','C','F','A'],
+    mel:["D5:1 F5:1 A5:1 D6:1 C6:2 A5:2","Bb5:1 A5:1 G5:1 F5:1 E5:2 F5:2","D5:1 F5:1 Bb5:2 A5:1 G5:1 F5:2","E5:1 G5:1 C6:2 Bb5:1 A5:1 G5:2","A5:2 D6:2 F6:2 E6:1 D6:1","C6:2 A5:2 F5:2 A5:2","Bb5:1 A5:1 G5:1 D5:1 G5:2 Bb5:2","A5:4 C#6:2 E6:2",
+         "F6:2 D6:1 Bb5:1 F5:2 Bb5:2","G6:2 E6:1 C6:1 G5:2 C6:2","E6:1 D6:1 C6:1 A5:1 E5:2 A5:2","D6:2 A5:2 F5:2 D5:2","G5:1 Bb5:1 D6:1 G6:1 F6:2 D6:2","E6:1 C6:1 G5:1 C6:1 E6:2 G6:2","F6:2 C6:2 A5:2 F5:2","E5:2 A5:2 C#6:2 E6:2"] },
+  entrenador:{ bpm:146, onda:.25, bajo:'marcha', bateria:'rapida', arp:true,
+    acordes:['Em','C','D','B','Em','C','Am','B','C','D','G','Em','Am','B','Em','B'],
+    mel:["E5:2 G5:1 B5:1 E6:2 B5:2","C6:1 B5:1 A5:1 G5:1 E5:4","F#5:1 A5:1 D6:2 C6:1 B5:1 A5:2","B5:2 D#6:2 F#6:4","G6:2 F#6:1 E6:1 B5:2 E6:2","E6:1 D6:1 C6:1 G5:1 C6:2 E6:2","A5:2 C6:1 E6:1 A6:2 G6:1 E6:1","F#6:4 D#6:2 B5:2",
+         "C6:2 E6:2 G6:3 F#6:1","D6:2 F#6:2 A6:3 G6:1","G6:2 D6:2 B5:2 G5:2","E5:1 G5:1 B5:1 E6:1 G6:4","A6:2 G6:1 F#6:1 E6:2 C6:2","B5:2 D#6:2 F#6:2 A6:2","G6:2 E6:2 B5:2 G5:2","F#5:2 A5:2 B5:4"] },
   victoria:{ bpm:140, onda:.5, bajo:'marcha', bateria:'marcha', bucle:false,
     acordes:['C','F','G','C'],
     mel:["G5:1 C6:1 E6:1 G6:3 E6:2","F6:2 A6:2 G6:2 F6:2","E6:2 D6:2 B5:2 D6:2","C6:8"] }
@@ -10046,16 +10106,23 @@ const Musica=(()=>{
     gg.gain.setValueAtTime(0,t); gg.gain.linearRampToValueAtTime(vol,t+.008);
     const fin=t+Math.max(.04,dur*.92); gg.gain.setValueAtTime(vol*.8,Math.max(t+.01,fin-.03)); gg.gain.linearRampToValueAtTime(0,fin);
     o.connect(gg); gg.connect(bus); o.start(t); o.stop(fin+.02); }
-  // piano sintetizado: varios armónicos, ataque rápido y caída suave, con un filtro que lo hace cálido
-  let _ondaPiano=null;
-  function ondaPiano(){ if(_ondaPiano) return _ondaPiano; const A=[0,1,.55,.3,.2,.11,.07,.04,.025,.015], re=new Float32Array(A.length), im=new Float32Array(A.length); A.forEach((a,i)=>im[i]=a); return _ondaPiano=ctx.createPeriodicWave(re,im); }
+  // piano: cuerpo cálido (pocos armónicos) que se apaga despacio + brillo del martillo que se apaga rápido,
+  // dos cuerdas un poco desafinadas entre sí, golpe de martillo y un filtro que se va cerrando como en un piano de verdad
+  const _ondas={};
+  function onda(nom,A){ if(_ondas[nom]) return _ondas[nom]; const re=new Float32Array(A.length), im=new Float32Array(A.length); A.forEach((a,i)=>im[i]=a); return _ondas[nom]=ctx.createPeriodicWave(re,im); }
   function piano(bus,f,t,dur,vol){
-    const o=ctx.createOscillator(), o2=ctx.createOscillator(), gg=ctx.createGain(), fl=ctx.createBiquadFilter();
-    o.setPeriodicWave(ondaPiano()); o2.setPeriodicWave(ondaPiano()); o.frequency.setValueAtTime(f,t); o2.frequency.setValueAtTime(f*1.0015,t);
-    fl.type='lowpass'; fl.Q.value=.3; fl.frequency.setValueAtTime(Math.min(9000,f*7),t); fl.frequency.exponentialRampToValueAtTime(Math.max(400,f*1.6),t+1.4);
-    const rel=Math.min(2.4,Math.max(.6,dur*1.8));
-    gg.gain.setValueAtTime(0,t); gg.gain.linearRampToValueAtTime(vol,t+.005); gg.gain.exponentialRampToValueAtTime(vol*.4,t+.2); gg.gain.exponentialRampToValueAtTime(.0004,t+rel);
-    const h=ctx.createGain(); h.gain.value=.5; o.connect(fl); o2.connect(h); h.connect(fl); fl.connect(gg); gg.connect(bus); o.start(t); o2.start(t); o.stop(t+rel+.05); o2.stop(t+rel+.05); }
+    const agudo=f>700?Math.max(.45,700/f):1; vol*=agudo;
+    const cuerpo=onda('cuerpo',[0,1,.32,.12,.05,.02]), brillo=onda('brillo',[0,.15,.35,.3,.22,.14,.09,.05,.03]);
+    const salida=ctx.createGain(), fl=ctx.createBiquadFilter(); fl.type='lowpass'; fl.Q.value=.2;
+    fl.frequency.setValueAtTime(Math.min(7000,f*6),t); fl.frequency.setTargetAtTime(Math.max(500,f*2),t+.01,.35);
+    const caida=f<200?1.6:f<500?1.1:.7, fin=t+Math.max(dur,.15);
+    const capa=(w,fr,v,tau)=>{ const o=ctx.createOscillator(), g2=ctx.createGain(); o.setPeriodicWave(w); o.frequency.setValueAtTime(fr,t);
+      g2.gain.setValueAtTime(0,t); g2.gain.linearRampToValueAtTime(v,t+.004); g2.gain.setTargetAtTime(0,t+.006,tau); g2.gain.setTargetAtTime(0,fin,.09);
+      o.connect(g2); g2.connect(fl); o.start(t); o.stop(fin+.6); };
+    capa(cuerpo,f,vol,caida); capa(cuerpo,f*1.0018,vol*.45,caida*.9); capa(brillo,f,vol*.55,.08);
+    if(ruido){ const r=ctx.createBufferSource(), bp=ctx.createBiquadFilter(), gr=ctx.createGain(); r.buffer=ruido; bp.type='bandpass'; bp.frequency.value=Math.min(4000,f*3); bp.Q.value=.8;
+      gr.gain.setValueAtTime(vol*.35,t); gr.gain.exponentialRampToValueAtTime(.0001,t+.025); r.connect(bp); bp.connect(gr); gr.connect(fl); r.start(t,Math.random()*.5); r.stop(t+.04); }
+    fl.connect(salida); salida.connect(bus); }
   function golpe(bus,tipo,t){
     if(tipo==='bombo'){ const o=ctx.createOscillator(), gg=ctx.createGain(); o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(40,t+.12);
       gg.gain.setValueAtTime(.35,t); gg.gain.exponentialRampToValueAtTime(.001,t+.14); o.connect(gg); gg.connect(bus); o.start(t); o.stop(t+.16); return; }
@@ -10077,17 +10144,20 @@ const Musica=(()=>{
       if(a.i>=c.ev.length){ a.i=0; a.vuelta++; if(c.p.bucle===false){ actual=null; return; } }
       const e=c.ev[a.i], t=a.inicio+(a.vuelta*c.len+e.t)*s; if(t>hasta) break;
       if(t>=ctx.currentTime-.02){ const d=e.d*s;
-        if(e.c==='mel') piano(a.bus,hz(e.m),t,d,.13);
-        else if(e.c==='eco') piano(a.bus,hz(e.m),t,d,.04);
-        else if(e.c==='arp') piano(a.bus,hz(e.m-12),t,d,.025);
-        else if(e.c==='bajo') piano(a.bus,hz(e.m),t,d,.1);
+        const baja=m=>{ m-=12; while(m>84) m-=12; return m; };
+        if(e.c==='mel') piano(a.bus,hz(baja(e.m)),t,d,.16);
+        else if(e.c==='eco') piano(a.bus,hz(baja(e.m)),t,d,.04);
+        else if(e.c==='arp'){ if(e.t%4===0) piano(a.bus,hz(e.m-24),t,d*3,.035); }
+        else if(e.c==='bajo') piano(a.bus,hz(e.m),t,d,.11);
         /* sin batería: música más suave */ }
       a.i++; }
   }
   function parar(){ if(!actual) return; const b=actual.bus; actual=null; try{ b.gain.setValueAtTime(b.gain.value,ctx.currentTime); b.gain.linearRampToValueAtTime(0,ctx.currentTime+.35); setTimeout(()=>b.disconnect(),500); }catch(e){} }
   function iniciarAudio(){
     if(ctx) return; try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
-    master=ctx.createGain(); master.gain.value=activo?.5:0; const suav=ctx.createBiquadFilter(); suav.type='lowpass'; suav.frequency.value=4200; master.connect(suav); suav.connect(ctx.destination);
+    master=ctx.createGain(); master.gain.value=activo?.5:0; const suav=ctx.createBiquadFilter(); suav.type='lowpass'; suav.frequency.value=5200; master.connect(suav); suav.connect(ctx.destination);
+    try{ const n=Math.floor(ctx.sampleRate*2.2), imp=ctx.createBuffer(2,n,ctx.sampleRate); for(let ch=0;ch<2;ch++){ const d=imp.getChannelData(ch); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3.2); }
+      const rev=ctx.createConvolver(); rev.buffer=imp; const hum=ctx.createGain(); hum.gain.value=.28; master.connect(rev); rev.connect(hum); hum.connect(suav); }catch(e){}
     ruido=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate); const d=ruido.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
     if(deseada) arrancar(deseada);
   }
